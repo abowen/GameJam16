@@ -1,17 +1,16 @@
 var Prefab = (function() {
 
-    function Prefab(game_state, name, position, properties) {
+    function Prefab(game, name, position, properties) {
         "use strict";
-        Phaser.Sprite.call(this, game_state.game, position.x, position.y, properties.texture);
+        Phaser.Sprite.call(this, game, position.x, position.y, properties.spritesheet);
 
-        this.game_state = game_state;
+        this.game = game;
 
         this.name = name;
 
-        this.game_state.groups[properties.group].add(this);
+        this.game[properties.group] = this.game[properties.group] || this.game.add.group();
+        this.game[properties.group].addChild(this);
         this.frame = +properties.frame;
-
-        this.game_state.prefabs[name] = this;
     };
 
     Prefab.prototype = Object.create(Phaser.Sprite.prototype);
