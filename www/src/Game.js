@@ -14,6 +14,7 @@ var cursors;
 BasicGame.Game.prototype = {
 
     init: function () {
+        this.physics.startSystem(Phaser.Physics.ARCADE);
         // TODO: Clearly emove before publishing
         //this.game.add.plugin(Phaser.Plugin.Debug);
 
@@ -56,7 +57,7 @@ BasicGame.Game.prototype = {
 
     preload: function () {
 
-        this.load.tilemap('level1', 'asset/tileset4.json', null, Phaser.Tilemap.TILED_JSON);
+        this.load.tilemap('level1', 'asset/tileset.json', null, Phaser.Tilemap.TILED_JSON);
         this.load.image('tiles', 'asset/tiles.png');
 
         //http://phaser.io/examples/v2/sprites/spritesheet
@@ -68,12 +69,7 @@ BasicGame.Game.prototype = {
     },
 
     create: function () {
-        this.map = this.add.tilemap('level1');
-        this.map.addTilesetImage('tiles', 'tiles');
-
-        //create layer
-        this.backgroundLayer = this.map.createLayer('groundLayer');
-        this.backgroundLayer = this.map.createLayer('backgroundLayer');
+        this.createMap();
 
         // http://phaser.io/examples/v2/groups/group-as-layer
         // Create the sky layer, behind everything and donot move.
@@ -100,24 +96,19 @@ BasicGame.Game.prototype = {
         //http://phaser.io/examples/v2/input/cursor-key-movement
         cursors = this.game.input.keyboard.createCursorKeys();
 
-        this.character = this.add.sprite(
-             this.world.centerX,
-             this.world.centerY, 
-             'characterOrange');
-        this.character.anchor.setTo(0.5, 0.5);
+        this.characters = this.game.add.group();
+
+        this.character = new Character(this.game, this.world.centerX, this.world.centerY, 'characterOrange');
+
+        this.characters.addChild(this.character);
+        this.characters.enableBody = true;
+        this.game.physics.arcade.enable(this.characters);
 
         // Summon those fools from dark earth
         //this.summon = {};
         this.hasSummonAlready = false;
         this.summonKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
         this.summonKey.onDown.add(this.summonShit, this);
-
-        // animation name, frames, FPS, true? (maybe swap)
-        var framesPerSecond = 10;
-        this.character.animations.add('down', [0, 1, 2], framesPerSecond, true);
-        this.character.animations.add('right', [3, 4, 5], framesPerSecond, true);
-        this.character.animations.add('up', [6, 7, 8], framesPerSecond, true);
-        this.character.animations.add('left', [9, 10, 11], framesPerSecond, true);
 
         // http://phaser.io/examples/v2/particles/emitter-width
         // http://phaser.io/examples/v2/particles/firestarter
@@ -138,6 +129,19 @@ BasicGame.Game.prototype = {
         //MP3 requires decode, not Wav. this.game.sound.setDecodedCallback([ this.summonSound ], start, this);
     },
 
+
+    createMap: function(){
+        this.map = this.add.tilemap('level1');
+        this.map.addTilesetImage('tiles', 'tiles');
+
+        //create layer
+        this.groundLayer = this.map.createLayer('groundLayer');
+        this.backgroundLayer = this.map.createLayer('backgroundLayer');
+
+        this.map.setCollision([37, 38, 53, 54, 69, 70], true, this.backgroundLayer);
+        console.log('is this getting called')
+    },
+
     gameResized: function (width, height) {
 
         // This could be handy if you need to do any extra processing if the 
@@ -149,6 +153,8 @@ BasicGame.Game.prototype = {
     },
 
     update : function () {
+        this.physics.arcade.collide(this.characters, this.backgroundLayer);
+
         if (cursors.up.isDown)
         {
             this.character.y--;
