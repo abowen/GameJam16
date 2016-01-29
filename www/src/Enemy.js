@@ -1,6 +1,13 @@
 var Enemy = (function() {
     function Enemy(game_state, name, x, y, properties) {
         "use strict";
+        
+        // TODO: to be managed by the level state
+        properties = {
+            group: 'enemies',
+            spritesheet: 'enemy'
+        },
+        
         Prefab.call(this, game_state, name, {x:x, y:y}, properties);
 
         this.anchor.setTo(0.5);
@@ -19,7 +26,7 @@ var Enemy = (function() {
 
         this.stopped_frames = [1, 4, 4, 0, 1];
 
-        this.game_state.game.physics.arcade.enable(this);
+        this.game.physics.arcade.enable(this);
         if (this.axis === "x") {
             this.body.velocity.x = this.direction * this.walking_speed;
         } else {
@@ -33,27 +40,27 @@ var Enemy = (function() {
     Enemy.prototype.update = function() {
         "use strict";
         var new_position;
-        this.game_state.game.physics.arcade.collide(this, this.game_state.layers.walls, this.switch_direction, null, this);
-        this.game_state.game.physics.arcade.collide(this, this.game_state.layers.blocks, this.switch_direction, null, this);
-        this.game_state.game.physics.arcade.overlap(this, this.game_state.groups.bombs, this.switch_direction, null, this);
-        this.game_state.game.physics.arcade.overlap(this, this.game_state.groups.explosions, this.kill, null, this);
+        // this.game.physics.arcade.collide(this, this.game.layers.walls, this.switch_direction, null, this);
+        // this.game.physics.arcade.collide(this, this.game_state.layers.blocks, this.switch_direction, null, this);
+        // this.game.physics.arcade.overlap(this, this.game_state.groups.bombs, this.switch_direction, null, this);
+        // this.game.physics.arcade.overlap(this, this.game_state.groups.explosions, this.kill, null, this);
 
         if (this.body.velocity.x < 0) {
             // walking left
             this.scale.setTo(-1, 1);
-            this.animations.play("walking_left");
+            this.animations.play("left");
         } else if (this.body.velocity.x > 0) {
             // walking right
             this.scale.setTo(1, 1);
-            this.animations.play("walking_right");
+            this.animations.play("right");
         }
 
         if (this.body.velocity.y < 0) {
             // walking up
-            this.animations.play("walking_up");
+            this.animations.play("up");
         } else if (this.body.velocity.y > 0) {
             // walking down
-            this.animations.play("walking_down");
+            this.animations.play("down");
         }
 
         if (this.body.velocity.x === 0 && this.body.velocity.y === 0) {
