@@ -246,7 +246,7 @@ BasicGame.Game.prototype = {
     },
 
     spawnHuman: function() {
-        var human = new Character(this.game, this.game.rnd.between(0, this.world.width), 0, 'characterOrange');
+        var human = new Character(this.game, this.game.rnd.between(0, this.world.width), this.game.rnd.between(-10, 0), 'characterOrange');
         this.humans.addChild(human);
     },
 
