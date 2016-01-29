@@ -52,7 +52,6 @@ BasicGame.Game.prototype = {
         // Re-calculate scale mode and update screen size. This only applies if
         // ScaleMode is not set to RESIZE.
         this.scale.refresh();
-
     },
 
     preload: function () {
@@ -64,9 +63,11 @@ BasicGame.Game.prototype = {
         this.load.spritesheet('characterOrange', 'asset/characterOrangeLine.png', 16, 16, 12);
      //   this.load.spritesheet('enemy', 'asset/images/enemy_spritesheet.png', 16, 16, 12);
         this.load.image('summon', 'asset/summonRed.png');
+        this.load.image('characterSingle', 'asset/characterSingle.png');
 
         //http://phaser.io/examples/v2/audio/sound-complete
         this.load.audio('summonSound', 'asset/sfx/summon.wav');
+        this.load.audio('darkExploration', 'asset/music/DarkExploration.mp3');
     },
 
     create: function () {
@@ -85,19 +86,18 @@ BasicGame.Game.prototype = {
         this.collisionLayer = this.game.add.group();
         this.collisionLayer.z = 2;
 
-        // Moving objects that are blocked by mountains
-        this.objectLayer = this.game.add.group();
-        this.objectLayer.z = 3;
+        // Moving objects that are blocked by mountains        
+        this.characters = this.game.add.group();
+        this.characters.z = 3;
 
-        // Blood splatter, summons, etc.
-        this.groundLayer = this.game.add.group();
-        this.groundLayer.z = 4;
-
-
+        // Summon graphics
+        this.summonLayer = this.game.add.group();
+        this.summonLayer.z = 4;
+        
         //http://phaser.io/examples/v2/input/cursor-key-movement
         cursors = this.game.input.keyboard.createCursorKeys();
 
-        this.characters = this.game.add.group();
+        this.humans = this.game.add.group();
 
         this.character = new Character(this.game, this.world.centerX / 2, this.world.centerY, 'characterOrange');
                        
@@ -108,9 +108,7 @@ BasicGame.Game.prototype = {
         this.characters.enableBody = true;
         this.game.physics.arcade.enable(this.characters);
 
-        // Summon those fools from dark earth
-        //this.summon = {};
-        this.hasSummonAlready = false;
+        // Summon those fools from dark earth                
         this.summonKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
         this.summonKey.onDown.add(this.summonShit, this);
 
@@ -130,7 +128,36 @@ BasicGame.Game.prototype = {
 
         // Sound Effects
         this.summonSound = this.game.add.audio('summonSound');
-        //MP3 requires decode, not Wav. this.game.sound.setDecodedCallback([ this.summonSound ], start, this);
+
+
+        setInterval(this.spawnHuman.bind(this), 2000);
+
+        // Music        
+        // http://phaser.io/examples/v2/audio/loop
+        this.music = this.game.add.audio('darkExploration');        
+
+        // MP3's take time to decode, we can make a call back if required
+         this.game.sound.setDecodedCallback([ this.music ], this.startMusic, this);
+
+        for (var i=0;i<TOTAL_PLAYER_LIVES;i++)
+        {
+            var width = 16;
+            var padding = 4;
+            var xPosition = 16 + (width + padding) * i;
+
+            var characterLife = new Phaser.Sprite(
+                        this.game, 
+                        xPosition,
+                        20, 
+                        'characterSingle');
+            characterLife.anchor.setTo(0.5, 0.5);
+
+            this.textLayer.add(characterLife);
+        }
+    },
+
+    startMusic: function(){
+        this.music.loopFull(0.6);
     },
 
 
@@ -139,7 +166,7 @@ BasicGame.Game.prototype = {
         this.map.addTilesetImage('tiles', 'tiles');
 
         //create layer
-        this.groundLayer = this.map.createLayer('groundLayer');
+        this.groundLayer = this.map.createLayer('groundLayer');        
         this.backgroundLayer = this.map.createLayer('backgroundLayer');
 
         this.map.setCollision([37, 38, 53, 54, 69, 70], true, this.backgroundLayer);
@@ -182,6 +209,8 @@ BasicGame.Game.prototype = {
         else {
             this.character.animations.stop();
         }
+
+        this.updateHumans();
     },
 
     summonShit : function () {
@@ -195,7 +224,7 @@ BasicGame.Game.prototype = {
         this.emitter.emitX = summon.x;
         this.emitter.emitY = summon.y;
 
-        this.groundLayer.add(summon);
+        this.summonLayer.add(summon);
 
         var summonSpeed = 500;
 
@@ -214,5 +243,19 @@ BasicGame.Game.prototype = {
         tweenRotate.start();
 
         this.summonSound.play();
+    },
+
+    spawnHuman: function() {
+        var human = new Character(this.game, this.game.rnd.between(0, this.world.width), 0, 'characterOrange');
+        this.humans.addChild(human);
+    },
+
+    updateHumans: function() {
+        this.humans.forEach(function(human) {
+            human.y++;
+            human.animations.play('down');
+
+            if(human.y > this.world.height) human.destroy();
+        }.bind(this));
     }
 };
