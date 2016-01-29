@@ -53,6 +53,9 @@ BasicGame.Game.prototype = {
 
     preload: function () {
 
+        this.load.tilemap('level1', 'asset/tileset4.json', null, Phaser.Tilemap.TILED_JSON);
+        this.load.image('tiles', 'asset/tiles.png');
+
         // Here we load the assets required for our preloader (in this case a 
         // background and a loading bar)
 
@@ -62,6 +65,13 @@ BasicGame.Game.prototype = {
     },
 
     create: function () {
+        this.map = this.add.tilemap('level1');
+        this.map.addTilesetImage('tiles', 'tiles');
+
+        //create layer
+        this.backgroundLayer = this.map.createLayer('groundLayer');
+        this.backgroundLayer = this.map.createLayer('backgroundLayer');
+
         // http://phaser.io/examples/v2/groups/group-as-layer
         // Create the sky layer, behind everything and donot move.
         this.textLayer = this.game.add.group();
