@@ -9,9 +9,9 @@ Collaborators
 - Abul Dider
 
 ## Links
-https://gamejamnoobs.slack.com/messages/general/
-http://globalgamejam.org/
+- https://gamejamnoobs.slack.com/messages/general/
+- http://globalgamejam.org/
 
 ## Assets
-http://opengameart.org/content/blowhard-2-blow-harder
-http://opengameart.org/content/rpg-sprite-8-direction-human-male-16x16
+- http://opengameart.org/content/blowhard-2-blow-harder
+- http://opengameart.org/content/rpg-sprite-8-direction-human-male-16x16
