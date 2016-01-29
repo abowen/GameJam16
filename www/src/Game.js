@@ -61,6 +61,7 @@ BasicGame.Game.prototype = {
 
         //http://phaser.io/examples/v2/sprites/spritesheet
         this.load.spritesheet('characterOrange', 'asset/characterOrangeLine.png', 16, 16, 12);
+     //   this.load.spritesheet('enemy', 'asset/images/enemy_spritesheet.png', 16, 16, 12);
         this.load.image('summon', 'asset/summonRed.png');
         this.load.image('characterSingle', 'asset/characterSingle.png');
 
@@ -85,15 +86,23 @@ BasicGame.Game.prototype = {
         this.cloudLayer = this.game.add.group();
         this.cloudLayer.z = 1;
         // http://phaser.io/examples/v2/groups/group-as-layer
-        // Create the sky layer, behind everything and donot move.
-        this.textLayer = this.game.add.group();
-        this.textLayer.z = 0;
+        // Summon graphics
+        this.summonLayer = this.game.add.group();
+        this.summonLayer.z = 4;
 
+        // Moving objects that are blocked by mountains        
+        this.characters = this.game.add.group();
+        this.characters.z = 3;
         //http://phaser.io/examples/v2/input/cursor-key-movement
         cursors = this.game.input.keyboard.createCursorKeys();
 
+        this.humans = this.game.add.group();
 
-        this.character = new Character(this.game, this.world.centerX, this.world.centerY, 'characterOrange');
+        this.character = new Character(this.game, this.world.centerX / 2, this.world.centerY, 'characterOrange');
+                       
+      //  this.enemy = new Enemy(this.game, 'Enemy', this.world.centerX + (this.world.centerX / 2), this.world.centerY, 'enemy');
+
+        //this.characters.addChild(this.enemy);
         this.characters.addChild(this.character);
         this.characters.enableBody = true;
         this.game.physics.arcade.enable(this.characters);
@@ -118,6 +127,9 @@ BasicGame.Game.prototype = {
 
         // Sound Effects
         this.summonSound = this.game.add.audio('summonSound');
+
+
+        setInterval(this.spawnHuman.bind(this), 2000);
 
         // Music        
         // http://phaser.io/examples/v2/audio/loop
@@ -192,6 +204,8 @@ BasicGame.Game.prototype = {
         else {
             this.character.animations.stop();
         }
+
+        this.updateHumans();
     },
 
     summonShit : function () {
@@ -224,5 +238,19 @@ BasicGame.Game.prototype = {
         tweenRotate.start();
 
         this.summonSound.play();
+    },
+
+    spawnHuman: function() {
+        var human = new Character(this.game, this.game.rnd.between(0, this.world.width), -16, 'characterOrange');
+        this.humans.addChild(human);
+    },
+
+    updateHumans: function() {
+        this.humans.forEach(function(human) {
+            human.y++;
+            human.animations.play('down');
+
+            if(human.y > this.world.height) human.destroy();
+        }.bind(this));
     }
 };
