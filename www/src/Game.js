@@ -55,7 +55,7 @@ BasicGame.Game.prototype = {
     },
 
     preload: function () {
-
+        console.log('start of preload')
         this.load.tilemap('level1', 'asset/tileset.json', null, Phaser.Tilemap.TILED_JSON);
         this.load.image('tiles', 'asset/tiles.png');
 
@@ -71,11 +71,12 @@ BasicGame.Game.prototype = {
     },
 
     create: function () {
+        console.log('start of create')
         this.createMap();
 
         // Summon graphics
-        this.summonLayer = this.game.add.group();
-        this.summonLayer.z = 4;
+        this.textLayer = this.game.add.group();
+        this.textLayer.z = 4;
         // Moving objects that are blocked by mountains
         this.characters = this.game.add.group();
         this.characters.enableBody = true;
@@ -86,7 +87,7 @@ BasicGame.Game.prototype = {
         // http://phaser.io/examples/v2/groups/group-as-layer
         // Summon graphics
         this.summonLayer = this.game.add.group();
-        this.summonLayer.z = 4;
+        this.summonLayer.z = 1;
 
         // Moving objects that are blocked by mountains        
         this.characters = this.game.add.group();
@@ -97,7 +98,6 @@ BasicGame.Game.prototype = {
         this.humans = this.game.add.group();
 
         this.character = new Character(this.game, this.world.centerX / 2, this.world.centerY, 'characterOrange');
-                       
         this.enemy = new Enemy(this.game, 'Enemy', this.world.centerX + (this.world.centerX / 2), this.world.centerY, 'enemy');
 
         this.character.body.collideWorldBounds = true;
@@ -127,7 +127,6 @@ BasicGame.Game.prototype = {
         // Sound Effects
         this.summonSound = this.game.add.audio('summonSound');
 
-
         setInterval(this.spawnHuman.bind(this), 2000);
 
         // Music        
@@ -136,7 +135,6 @@ BasicGame.Game.prototype = {
 
         // MP3's take time to decode, we can make a call back if required
          this.game.sound.setDecodedCallback([ this.music ], this.startMusic, this);
-
         for (var i=0;i<TOTAL_PLAYER_LIVES;i++)
         {
             var width = 16;
@@ -149,7 +147,6 @@ BasicGame.Game.prototype = {
                         20, 
                         'characterSingle');
             characterLife.anchor.setTo(0.5, 0.5);
-
             this.textLayer.add(characterLife);
         }
     },
@@ -183,6 +180,7 @@ BasicGame.Game.prototype = {
     update : function () {
         this.physics.arcade.collide(this.backgroundLayer, this.characters);
         this.physics.arcade.collide(this.characters, this.humans);
+        this.physics.arcade.collide(this.characters, this.enemy);
 
         if (cursors.up.isDown)
         {
