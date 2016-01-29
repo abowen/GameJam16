@@ -66,6 +66,7 @@ BasicGame.Game.prototype = {
 
         //http://phaser.io/examples/v2/audio/sound-complete
         this.load.audio('summonSound', 'asset/sfx/summon.wav');
+        this.load.audio('darkExploration', 'asset/music/DarkExploration.mp3');
     },
 
     create: function () {
@@ -121,7 +122,13 @@ BasicGame.Game.prototype = {
 
         // Sound Effects
         this.summonSound = this.game.add.audio('summonSound');
-        //MP3 requires decode, not Wav. this.game.sound.setDecodedCallback([ this.summonSound ], start, this);
+
+        // Music        
+        // http://phaser.io/examples/v2/audio/loop
+        this.music = this.game.add.audio('darkExploration');        
+
+        // MP3's take time to decode, we can make a call back if required
+         this.game.sound.setDecodedCallback([ this.music ], this.startMusic, this);
 
         for (var i=0;i<TOTAL_PLAYER_LIVES;i++)
         {
@@ -138,6 +145,10 @@ BasicGame.Game.prototype = {
 
             this.textLayer.add(characterLife);
         }
+    },
+
+    startMusic: function(){
+        this.music.loopFull(0.6);
     },
 
 
