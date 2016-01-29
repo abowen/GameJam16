@@ -61,6 +61,7 @@ BasicGame.Game.prototype = {
 
         //http://phaser.io/examples/v2/sprites/spritesheet
         this.load.spritesheet('characterOrange', 'asset/characterOrangeLine.png', 16, 16, 12);
+        
      //   this.load.spritesheet('enemy', 'asset/images/enemy_spritesheet.png', 16, 16, 12);
         this.load.image('summon', 'asset/summonRed.png');
         this.load.image('characterSingle', 'asset/characterSingle.png');
@@ -249,7 +250,7 @@ BasicGame.Game.prototype = {
         this.humans.forEach(function(human) {
             human.y++;
             human.animations.play('down');
-
+            human.body.acceleration = {x: 0, y: this.game.rnd.between(0, 50)};
             if(human.y > this.world.height) human.destroy();
         }.bind(this));
     }
