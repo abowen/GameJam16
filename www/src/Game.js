@@ -113,7 +113,7 @@ BasicGame.Game.prototype = {
         this.summonKey.onDown.add(this.summonShit, this);
 
         // animation name, frames, FPS, true? (maybe swap)
-        var framesPerSecond = 10;
+        var framesPerSecond = 15;
         this.character.animations.add('down', [0, 1, 2], framesPerSecond, true);
         this.character.animations.add('right', [3, 4, 5], framesPerSecond, true);
         this.character.animations.add('up', [6, 7, 8], framesPerSecond, true);
