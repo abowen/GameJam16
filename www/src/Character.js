@@ -3,6 +3,7 @@ var Character = (function(){
         //BasicGame.Prefab.call(this, game, 'Player', {x:x, y:y}, properties);
         Phaser.Sprite.call(this, game, x, y, sprite);
 
+        this.speed = 5;
         this.game = game;
 
         this.game.physics.arcade.enable(this);
@@ -19,6 +20,23 @@ var Character = (function(){
 
     Character.prototype = Object.create(Phaser.Sprite.prototype);
     Character.prototype.constructor = Character;
+
+    Character.prototype.moveUp = function(){
+        this.y -= this.speed;
+        this.animations.play('up');
+    };
+    Character.prototype.moveDown = function(){
+        this.y += this.speed;
+        this.animations.play('down');
+    };
+    Character.prototype.moveLeft = function(){
+        this.x -= this.speed;
+        this.animations.play('left');
+    };
+    Character.prototype.moveRight = function(){
+        this.x += this.speed;
+        this.animations.play('right');
+    };
 
     return Character;
 })();
