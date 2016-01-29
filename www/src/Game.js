@@ -14,6 +14,9 @@ var cursors;
 BasicGame.Game.prototype = {
 
     init: function () {
+        // TODO: Clearly emove before publishing
+        //this.game.add.plugin(Phaser.Plugin.Debug);
+
         // set up input max pointers
         this.input.maxPointers = 1;
         // set up stage disable visibility change
@@ -81,7 +84,7 @@ BasicGame.Game.prototype = {
         this.cloudLayer = this.game.add.group();
         this.cloudLayer.z = 1;
 
-        // Mountains, walls, rivers that are static
+        // Mountains, walls, rivers that are static and objects collide into
         this.collisionLayer = this.game.add.group();
         this.collisionLayer.z = 2;
 
@@ -177,7 +180,7 @@ BasicGame.Game.prototype = {
         var summon = new Phaser.Sprite(
                         this.game, 
                         this.character.x,
-                        this.character.y, 
+                        -20, 
                         'summon');
         summon.anchor.setTo(0.5, 0.5);
 
@@ -185,5 +188,21 @@ BasicGame.Game.prototype = {
         this.emitter.emitY = summon.y;
 
         this.groundLayer.add(summon);
+
+        var summonSpeed = 1000;
+
+        var tween = this.game.add.tween(summon);
+        tween.to({
+            x: this.character.x,
+            y: this.character.y
+        }, summonSpeed, Phaser.Easing.Quadratic.Out);
+        
+        tween.start();
+
+        var tweenRotate = this.game.add.tween(summon);
+        tweenRotate.to({
+            angle: 200
+        }, summonSpeed, Phaser.Easing.Linear.None);
+        tweenRotate.start();
     }
 };
