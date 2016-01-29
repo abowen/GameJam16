@@ -1,5 +1,6 @@
 var Character = (function(){
     function Character(game, x, y, sprite){
+        //BasicGame.Prefab.call(this, game, 'Player', {x:x, y:y}, properties);
         Phaser.Sprite.call(this, game, x, y, sprite);
 
         this.game = game;
