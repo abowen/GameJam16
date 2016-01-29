@@ -1,23 +1,17 @@
-# Blank Phaser Project
+# Ritual Retro
 
 See [LICENSE.md](./LICENSE.md) for license terms and conditions.
 
-This template can be used for creating an Intel XDK game app using the open source game framework Phaser. It is a blank Phaser project, which contains the required files. To get start, please see the key file `app.js`.
+Collaborators
+- Josh Bradley
+- Dominik Raniszewski
+- Andrew Bowen
+- Abul Dider
 
-Intel(R) XDK
--------------------------------------------
-This template is part of the Intel(R) XDK. 
-Download the Intel XDK at http://xdk.intel.com.
+## Links
+https://gamejamnoobs.slack.com/messages/general/
+http://globalgamejam.org/
 
-Application Files
------------------
-* LICENSE.md
-* README.md
-* app.json
-* css/stylesheet.css
-* icons/
-* asset/
-* lib/
-* src/Game.js
-* src/app.js
-* index.html
+## Assets
+http://opengameart.org/content/blowhard-2-blow-harder
+http://opengameart.org/content/rpg-sprite-8-direction-human-male-16x16
