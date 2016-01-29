@@ -14,6 +14,7 @@ var cursors;
 BasicGame.Game.prototype = {
 
     init: function () {
+        this.physics.startSystem(Phaser.Physics.ARCADE);
         // TODO: Clearly emove before publishing
         //this.game.add.plugin(Phaser.Plugin.Debug);
 
@@ -56,24 +57,19 @@ BasicGame.Game.prototype = {
 
     preload: function () {
 
-        this.load.tilemap('level1', 'asset/tileset4.json', null, Phaser.Tilemap.TILED_JSON);
+        this.load.tilemap('level1', 'asset/tileset.json', null, Phaser.Tilemap.TILED_JSON);
         this.load.image('tiles', 'asset/tiles.png');
-
-        // Here we load the assets required for our preloader (in this case a 
-        // background and a loading bar)
 
         //http://phaser.io/examples/v2/sprites/spritesheet
         this.load.spritesheet('characterOrange', 'asset/characterOrangeLine.png', 16, 16, 12);
         this.load.image('summon', 'asset/summonRed.png');
+
+        //http://phaser.io/examples/v2/audio/sound-complete
+        this.load.audio('summonSound', 'asset/sfx/summon.wav');
     },
 
     create: function () {
-        this.map = this.add.tilemap('level1');
-        this.map.addTilesetImage('tiles', 'tiles');
-
-        //create layer
-        this.backgroundLayer = this.map.createLayer('groundLayer');
-        this.backgroundLayer = this.map.createLayer('backgroundLayer');
+        this.createMap();
 
         // http://phaser.io/examples/v2/groups/group-as-layer
         // Create the sky layer, behind everything and donot move.
@@ -100,24 +96,19 @@ BasicGame.Game.prototype = {
         //http://phaser.io/examples/v2/input/cursor-key-movement
         cursors = this.game.input.keyboard.createCursorKeys();
 
-        this.character = this.add.sprite(
-             this.world.centerX,
-             this.world.centerY, 
-             'characterOrange');
-        this.character.anchor.setTo(0.5, 0.5);
+        this.characters = this.game.add.group();
+
+        this.character = new Character(this.game, this.world.centerX, this.world.centerY, 'characterOrange');
+
+        this.characters.addChild(this.character);
+        this.characters.enableBody = true;
+        this.game.physics.arcade.enable(this.characters);
 
         // Summon those fools from dark earth
         //this.summon = {};
         this.hasSummonAlready = false;
         this.summonKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
         this.summonKey.onDown.add(this.summonShit, this);
-
-        // animation name, frames, FPS, true? (maybe swap)
-        var framesPerSecond = 15;
-        this.character.animations.add('down', [0, 1, 2], framesPerSecond, true);
-        this.character.animations.add('right', [3, 4, 5], framesPerSecond, true);
-        this.character.animations.add('up', [6, 7, 8], framesPerSecond, true);
-        this.character.animations.add('left', [9, 10, 11], framesPerSecond, true);
 
         // http://phaser.io/examples/v2/particles/emitter-width
         // http://phaser.io/examples/v2/particles/firestarter
@@ -132,6 +123,23 @@ BasicGame.Game.prototype = {
         this.emitter.setYSpeed(-100, 100);
         this.emitter.setAlpha(1, 0.2, 500);
         this.emitter.flow(1000, 30, 2, -1, true);
+
+        // Sound Effects
+        this.summonSound = this.game.add.audio('summonSound');
+        //MP3 requires decode, not Wav. this.game.sound.setDecodedCallback([ this.summonSound ], start, this);
+    },
+
+
+    createMap: function(){
+        this.map = this.add.tilemap('level1');
+        this.map.addTilesetImage('tiles', 'tiles');
+
+        //create layer
+        this.groundLayer = this.map.createLayer('groundLayer');
+        this.backgroundLayer = this.map.createLayer('backgroundLayer');
+
+        this.map.setCollision([37, 38, 53, 54, 69, 70], true, this.backgroundLayer);
+        console.log('is this getting called')
     },
 
     gameResized: function (width, height) {
@@ -145,6 +153,8 @@ BasicGame.Game.prototype = {
     },
 
     update : function () {
+        this.physics.arcade.collide(this.characters, this.backgroundLayer);
+
         if (cursors.up.isDown)
         {
             this.character.y--;
@@ -171,12 +181,6 @@ BasicGame.Game.prototype = {
     },
 
     summonShit : function () {
-        //this.game.add.sprite(this.game.world.randomX, this.game.world.randomY, 'summon');
-        // this.summon = this.add.sprite(
-        //     this.character.x,
-        //     this.character.y,
-        //     'summon');
-
         var summon = new Phaser.Sprite(
                         this.game, 
                         this.character.x,
@@ -189,7 +193,7 @@ BasicGame.Game.prototype = {
 
         this.groundLayer.add(summon);
 
-        var summonSpeed = 1000;
+        var summonSpeed = 500;
 
         var tween = this.game.add.tween(summon);
         tween.to({
@@ -204,5 +208,7 @@ BasicGame.Game.prototype = {
             angle: 200
         }, summonSpeed, Phaser.Easing.Linear.None);
         tweenRotate.start();
+
+        this.summonSound.play();
     }
 };
