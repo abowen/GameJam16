@@ -1,7 +1,7 @@
 // CONSTANTS
 var GAME_HEIGHT = 640;
 var GAME_WIDTH = 480;
-
+var TOTAL_PLAYER_LIVES = 5;
 
 
 (function () {
