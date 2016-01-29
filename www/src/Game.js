@@ -29,7 +29,7 @@ BasicGame.Game.prototype = {
         // * SHOW_ALL
         // * RESIZE
         // See http://docs.phaser.io/Phaser.ScaleManager.html for full document
-        this.scale.scaleMode = Phaser.ScaleManager.NO_SCALE;
+        this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
         // If you wish to align your game in the middle of the page then you can
         // set this value to true. It will place a re-calculated margin-left
         // pixel value onto the canvas element which is updated on orientation /
@@ -78,10 +78,8 @@ BasicGame.Game.prototype = {
         this.summonLayer.z = 4;
         // Moving objects that are blocked by mountains
         this.characters = this.game.add.group();
+        this.characters.enableBody = true;
         this.characters.z = 3;
-        // Mountains, walls, rivers that are static and objects collide into
-        this.collisionLayer = this.game.add.group();
-        this.collisionLayer.z = 2;
         // Create the cloud layer, just below the text
         this.cloudLayer = this.game.add.group();
         this.cloudLayer.z = 1;
@@ -92,7 +90,7 @@ BasicGame.Game.prototype = {
 
         // Moving objects that are blocked by mountains        
         this.characters = this.game.add.group();
-        this.characters.z = 3;
+        //this.characters.z = 3;
         //http://phaser.io/examples/v2/input/cursor-key-movement
         cursors = this.game.input.keyboard.createCursorKeys();
 
@@ -102,6 +100,7 @@ BasicGame.Game.prototype = {
                        
         this.enemy = new Enemy(this.game, 'Enemy', this.world.centerX + (this.world.centerX / 2), this.world.centerY, 'enemy');
 
+        this.character.body.collideWorldBounds = true;
 
         this.characters.addChild(this.character);
         this.characters.enableBody = true;
@@ -168,8 +167,7 @@ BasicGame.Game.prototype = {
         this.groundLayer = this.map.createLayer('groundLayer');        
         this.backgroundLayer = this.map.createLayer('backgroundLayer');
 
-        this.map.setCollision([37, 38, 53, 54, 69, 70], true, this.backgroundLayer);
-        console.log('is this getting called')
+        this.map.setCollision([7, 8, 9, 22, 23, 24, 13], true, this.backgroundLayer);
     },
 
     gameResized: function (width, height) {
@@ -183,7 +181,8 @@ BasicGame.Game.prototype = {
     },
 
     update : function () {
-        this.physics.arcade.collide(this.characters, this.backgroundLayer);
+        this.physics.arcade.collide(this.backgroundLayer, this.characters);
+        this.physics.arcade.collide(this.characters, this.humans);
 
         if (cursors.up.isDown)
         {
@@ -241,7 +240,7 @@ BasicGame.Game.prototype = {
     },
 
     spawnHuman: function() {
-        var human = new Character(this.game, this.game.rnd.between(0, this.world.width), this.game.rnd.between(-16, 0), 'characterOrange');
+        var human = new Character(this.game, this.game.rnd.between(0, this.world.width), -16, 'characterOrange');
         this.humans.addChild(human);
     },
 
