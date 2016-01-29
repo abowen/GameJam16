@@ -15,6 +15,8 @@ BasicGame.Game.prototype = {
 
     init: function () {
         this.physics.startSystem(Phaser.Physics.ARCADE);
+        // TODO: Clearly emove before publishing
+        //this.game.add.plugin(Phaser.Plugin.Debug);
 
         // set up input max pointers
         this.input.maxPointers = 1;
@@ -27,7 +29,7 @@ BasicGame.Game.prototype = {
         // * SHOW_ALL
         // * RESIZE
         // See http://docs.phaser.io/Phaser.ScaleManager.html for full document
-        this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+        this.scale.scaleMode = Phaser.ScaleManager.NO_SCALE;
         // If you wish to align your game in the middle of the page then you can
         // set this value to true. It will place a re-calculated margin-left
         // pixel value onto the canvas element which is updated on orientation /
@@ -78,7 +80,7 @@ BasicGame.Game.prototype = {
         this.cloudLayer = this.game.add.group();
         this.cloudLayer.z = 1;
 
-        // Mountains, walls, rivers that are static
+        // Mountains, walls, rivers that are static and objects collide into
         this.collisionLayer = this.game.add.group();
         this.collisionLayer.z = 2;
 
@@ -184,7 +186,7 @@ BasicGame.Game.prototype = {
         var summon = new Phaser.Sprite(
                         this.game, 
                         this.character.x,
-                        this.character.y, 
+                        -20, 
                         'summon');
         summon.anchor.setTo(0.5, 0.5);
 
@@ -192,5 +194,21 @@ BasicGame.Game.prototype = {
         this.emitter.emitY = summon.y;
 
         this.groundLayer.add(summon);
+
+        var summonSpeed = 1000;
+
+        var tween = this.game.add.tween(summon);
+        tween.to({
+            x: this.character.x,
+            y: this.character.y
+        }, summonSpeed, Phaser.Easing.Quadratic.Out);
+        
+        tween.start();
+
+        var tweenRotate = this.game.add.tween(summon);
+        tweenRotate.to({
+            angle: 200
+        }, summonSpeed, Phaser.Easing.Linear.None);
+        tweenRotate.start();
     }
 };
