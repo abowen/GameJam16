@@ -59,12 +59,12 @@ BasicGame.Game.prototype = {
         this.load.tilemap('level1', 'asset/tileset4.json', null, Phaser.Tilemap.TILED_JSON);
         this.load.image('tiles', 'asset/tiles.png');
 
-        // Here we load the assets required for our preloader (in this case a 
-        // background and a loading bar)
-
         //http://phaser.io/examples/v2/sprites/spritesheet
         this.load.spritesheet('characterOrange', 'asset/characterOrangeLine.png', 16, 16, 12);
         this.load.image('summon', 'asset/summonRed.png');
+
+        //http://phaser.io/examples/v2/audio/sound-complete
+        this.load.audio('summonSound', 'asset/sfx/summon.wav');
     },
 
     create: function () {
@@ -132,6 +132,10 @@ BasicGame.Game.prototype = {
         this.emitter.setYSpeed(-100, 100);
         this.emitter.setAlpha(1, 0.2, 500);
         this.emitter.flow(1000, 30, 2, -1, true);
+
+        // Sound Effects
+        this.summonSound = this.game.add.audio('summonSound');
+        //MP3 requires decode, not Wav. this.game.sound.setDecodedCallback([ this.summonSound ], start, this);
     },
 
     gameResized: function (width, height) {
@@ -171,12 +175,6 @@ BasicGame.Game.prototype = {
     },
 
     summonShit : function () {
-        //this.game.add.sprite(this.game.world.randomX, this.game.world.randomY, 'summon');
-        // this.summon = this.add.sprite(
-        //     this.character.x,
-        //     this.character.y,
-        //     'summon');
-
         var summon = new Phaser.Sprite(
                         this.game, 
                         this.character.x,
@@ -189,7 +187,7 @@ BasicGame.Game.prototype = {
 
         this.groundLayer.add(summon);
 
-        var summonSpeed = 1000;
+        var summonSpeed = 500;
 
         var tween = this.game.add.tween(summon);
         tween.to({
@@ -204,5 +202,7 @@ BasicGame.Game.prototype = {
             angle: 200
         }, summonSpeed, Phaser.Easing.Linear.None);
         tweenRotate.start();
+
+        this.summonSound.play();
     }
 };
