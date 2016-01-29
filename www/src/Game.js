@@ -61,6 +61,7 @@ BasicGame.Game.prototype = {
 
         //http://phaser.io/examples/v2/sprites/spritesheet
         this.load.spritesheet('characterOrange', 'asset/characterOrangeLine.png', 16, 16, 12);
+     //   this.load.spritesheet('enemy', 'asset/images/enemy_spritesheet.png', 16, 16, 12);
         this.load.image('summon', 'asset/summonRed.png');
         this.load.image('characterSingle', 'asset/characterSingle.png');
 
@@ -100,7 +101,11 @@ BasicGame.Game.prototype = {
 
         this.humans = this.game.add.group();
 
-        this.character = new Character(this.game, this.world.centerX, this.world.centerY, 'characterOrange');
+        this.character = new Character(this.game, this.world.centerX / 2, this.world.centerY, 'characterOrange');
+                       
+      //  this.enemy = new Enemy(this.game, 'Enemy', this.world.centerX + (this.world.centerX / 2), this.world.centerY, 'enemy');
+
+        //this.characters.addChild(this.enemy);
         this.characters.addChild(this.character);
         this.characters.enableBody = true;
         this.game.physics.arcade.enable(this.characters);
