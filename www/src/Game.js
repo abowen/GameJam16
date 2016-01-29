@@ -73,25 +73,27 @@ BasicGame.Game.prototype = {
         this.createMap();
 
         // http://phaser.io/examples/v2/groups/group-as-layer
-        // Create the sky layer, behind everything and donot move.
-        this.textLayer = this.game.add.group();
-        this.textLayer.z = 0;
-
-        // Create the cloud layer, just below the text
-        this.cloudLayer = this.game.add.group();
-        this.cloudLayer.z = 1;
-
-        // Mountains, walls, rivers that are static and objects collide into
-        this.collisionLayer = this.game.add.group();
-        this.collisionLayer.z = 2;
+        // Summon graphics
+        this.summonLayer = this.game.add.group();
+        this.summonLayer.z = 4;
 
         // Moving objects that are blocked by mountains        
         this.characters = this.game.add.group();
         this.characters.z = 3;
 
-        // Summon graphics
-        this.summonLayer = this.game.add.group();
-        this.summonLayer.z = 4;
+
+        // Mountains, walls, rivers that are static and objects collide into
+        this.collisionLayer = this.game.add.group();
+        this.collisionLayer.z = 2;
+
+
+        // Create the cloud layer, just below the text
+        this.cloudLayer = this.game.add.group();
+        this.cloudLayer.z = 1;
+
+        // Create the sky layer, behind everything and donot move.
+        this.textLayer = this.game.add.group();
+        this.textLayer.z = 0;
         
         //http://phaser.io/examples/v2/input/cursor-key-movement
         cursors = this.game.input.keyboard.createCursorKeys();
@@ -241,7 +243,7 @@ BasicGame.Game.prototype = {
     },
 
     spawnHuman: function() {
-        var human = new Character(this.game, this.game.rnd.between(0, this.world.width), 0, 'characterOrange');
+        var human = new Character(this.game, this.game.rnd.between(0, this.world.width), -16, 'characterOrange');
         this.humans.addChild(human);
     },
 
