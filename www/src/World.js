@@ -4,8 +4,6 @@ var World = (function() {
 
         };
 
-        this.humansKilled = 0;
-
         this.win_conditions = {
             rituals_performed: 3
         };
@@ -34,7 +32,7 @@ var World = (function() {
 
     World.prototype.devourHuman = function(human) {
         this.player.humans_devoured += 1;
-        this.killHuman(human);
+        this.makeWorldScarier(human);
     };
 
     World.prototype.cameraShake = function(effect) {
@@ -66,7 +64,7 @@ var World = (function() {
         this.player.souls_collected += 1;
         this.updateScore();
         this.calculateScreenShake();
-        this.killHuman(human);
+        this.makeWorldScarier(human);
     };
 
     World.prototype.updateScore = function() {
@@ -86,18 +84,18 @@ var World = (function() {
         this.game_state.scoreLayer.add(scoreIcon);                
     };
 
-    World.prototype.killHuman = function(human) {
+    World.prototype.makeWorldScarier = function() {
         // Tint the world
-        if (this.humansKilled < 16) {
-            this.humansKilled++;
+        if (this.player.souls_collected < 16) {
+            this.player.souls_collected++;
 
-            var tintValue = 16 - this.humansKilled;
+            var tintValue = 16 - this.player.souls_collected;
             var hexString = tintValue.toString(16);
             hexString = hexString + hexString;
             var tintColour = '0xff' + hexString + 'ff';
             //console.log(this.humansKilled + " " + tintColour);
-            //  human.groundLayer.tint = tintColour;
-            //  human.backgroundLayer.tint = tintColour;
+            this.game_state.groundLayer.tint = tintColour;
+            this.game_state.backgroundLayer.tint = tintColour;
         }
     }
 
