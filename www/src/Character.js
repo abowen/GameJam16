@@ -11,7 +11,7 @@ var Character = (function() {
         this.body.collideWorldBounds = true;
 
         this.speed = 200;
-        this.turboBoostSpeed = 20;
+        this.boostSpeed = 10;
         
         this.followers = []
         this.setAnimation();
@@ -21,10 +21,9 @@ var Character = (function() {
             offeringStone.body.velocity.y = 0;
             
             this.followers.forEach(function(follower) {
-                follower.kill();
-            }, this);;
-            this.followers = [];
-            this.speed = 200;
+                this.sacrificeFollower(follower);
+            }, this);
+            this.followers = [];            
         }
     };
 
@@ -33,17 +32,16 @@ var Character = (function() {
 
     Character.prototype.addFollower = function(follower) {
         // This order is important
+        this.speed -= this.boostSpeed;  
         follower.follow(this);
-        this.followers.push(follower);        
-        this.speed *= 0.8;
+        this.followers.push(follower);                    
     };
 
-    Character.prototype.turboBoost = function() {
-        // Sacrifice your last follower for brief boost
-        console.log("88888ooooo--- TUUUUUUURRRRRBOOOOOOOOOOO))))>")
-        this.speed += this.turboBoostSpeed;
-        // TODO: Lose turbo speed
-    }
+    Character.prototype.sacrificeFollower = function(follower) {
+        console.log("Slaughter the lamb.");   
+        this.speed += this.boostSpeed;
+        follower.kill();              
+    };
 
     Character.prototype.setAnimation = function() {
         this.animations.add('down', [0, 1, 2], this.framesPerSecond, true);
