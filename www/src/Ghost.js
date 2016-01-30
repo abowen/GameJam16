@@ -34,9 +34,9 @@ var Ghost = (function() {
         }        
     };
 
-    Ghost.prototype.timeToDie = function(character) {
+    Ghost.prototype.spawnAngel = function(character) {
         this.makeHeavenlyNoises();
-        
+
         var angel = this.game_state.game.add.sprite(this.x, this.y, 'angel');
         angel.anchor.set(0.5);
 

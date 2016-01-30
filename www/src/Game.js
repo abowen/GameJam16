@@ -304,9 +304,9 @@ BasicGame.Game.prototype = {
 
             var follower = this.character.followers.pop();
             this.character.sacrificeFollower(follower);
-
-            // TODO: Slow down humans
-            // TODO: Make world blue
+            this.world_state.sacrificeFollower(follower);
+                                
+            // TODO: Slow down humans & ogre (if turbo boost is temp)
             // TODO: Reduce size of ogre            
         }
     },

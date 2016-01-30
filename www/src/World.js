@@ -17,6 +17,7 @@ var World = (function() {
         };
 
         this.player = {
+            angels_collected: 0,
             souls_collected: 0,
             rituals_performed: 0
         };
@@ -27,6 +28,7 @@ var World = (function() {
             // TODO: Refactor back into Enemy.js
             // TODO: Can turn off anti-aliasing but couldnt work it out http://phaser.io/examples/v2/display/render-crisp
             isEatingHuman : false,
+            // TODO: Move scale as a function of humans_devoured
             scale : 0.5
         };
 
@@ -39,23 +41,6 @@ var World = (function() {
 
         var max = this.screenShake.counter.max();        
         this.game_state.game.world.setBounds(-max, -max, this.game_state.game.width + max, this.game_state.game.height + 2);
-    };
-
-    World.prototype.devourHuman = function(human) {
-        console.log("started eating");
-
-        this.enemy.humans_devoured += 1;
-        // TODO: Tween him into scale.
-        this.enemy.scale += 0.05;        
-        this.enemy.isEatingHuman = true;        
-        
-		setTimeout(function() {
-			console.log("stopped eating");
-            this.enemy.isEatingHuman = false;
-        }.bind(this), 1000);
-        
-        this.makeWorldScarier();
-        this.updateScore();
     };
 
     World.prototype.cameraShake = function(effect) {
@@ -80,21 +65,52 @@ var World = (function() {
         }.bind(this), screenShakeTimer);
     };              
 
+    World.prototype.devourHuman = function(human) {
+        console.log("started eating");
+
+        this.enemy.humans_devoured += 1;
+        // TODO: Tween him into scale.
+        this.enemy.scale += 0.05;        
+        this.enemy.isEatingHuman = true;        
+        
+        setTimeout(function() {
+            console.log("stopped eating");
+            this.enemy.isEatingHuman = false;
+        }.bind(this), 1000);
+        
+        this.refresh();
+    };
+
     World.prototype.sacrificeHuman = function(human) {
     	// kill human?
         this.player.souls_collected += 1;
-        this.updateScore();
-        this.calculateScreenShake();
-        this.makeWorldScarier(human);
+        
+        this.calculateScreenShake();        
+        this.refresh();
     };
     
     World.prototype.runRitual = function(human) {
     	// kill human?
         this.player.souls_collected = 0;
         this.player.rituals_performed += 1;
-        this.updateScore();
-        this.calculateScreenShake();
-        this.makeWorldScarier(human);
+        
+        this.calculateScreenShake();        
+        this.refresh();
+    };
+
+    World.prototype.sacrificeFollower = function() {        
+        if (this.enemy.humans_devoured > 0){
+            this.enemy.humans_devoured--;
+        } else {
+            this.player.angels_collected++;
+        }
+
+        this.refresh();
+    };
+
+    World.prototype.refresh = function() {
+        this.updateScore();        
+        this.makeWorldScarierOrCooler();
     };
 
     World.prototype.updateScore = function() {    	    	          
@@ -113,23 +129,31 @@ var World = (function() {
         
         
         if(this.lose_conditions.enemy.humans_devoured == this.enemy.humans_devoured) {
-
             this.game_state.gameOver(false);
         }           
     };
 
-    World.prototype.makeWorldScarier = function() {
-        // Tint the world
-        if (this.player.souls_collected < 16) {
-            this.player.souls_collected++;
+    World.prototype.makeWorldScarierOrCooler = function() {        
+        var tintColour = '0xffffff';
 
-            var tintValue = 16 - this.player.souls_collected;
+        var scoreDifference = this.player.angels_collected - this.enemy.humans_devoured;
+        if (scoreDifference > 0)
+        {
+            var tintValue = 16 - this.player.angels_collected;
             var hexString = tintValue.toString(16);
             hexString = hexString + hexString;
-            var tintColour = '0xff' + hexString + 'ff';            
-            this.game_state.groundLayer.tint = tintColour;
-            this.game_state.backgroundLayer.tint = tintColour;
+            tintColour = '0xffff' + hexString;
+
+        } else if (scoreDifference < 0) {
+            var tintValue = 16 - this.enemy.humans_devoured;
+            var hexString = tintValue.toString(16);
+            hexString = hexString + hexString;
+            tintColour = '0xff' + hexString + 'ff';
         }
+        
+        console.log('tint : ' + tintColour)
+        this.game_state.groundLayer.tint = tintColour;
+        this.game_state.backgroundLayer.tint = tintColour;        
     }
 
     return World;
