@@ -129,7 +129,7 @@ BasicGame.Game.prototype = {
         
         //this.humans = this.game.add.group();
 
-  //      this.game.offering_stone = this.offering_stone = new OfferingStone(this.game, this.world.centerX, this.world.centerY, 'offering_stone');
+        this.offeringStone = new OfferingStone(this, 'OfferingStone', this.world.centerX, this.world.centerY, 'offering_stone');
         this.character = new Character(this, this.world.centerX / 2, this.world.centerY, 'character');
         this.enemy = new Enemy(this, 'Enemy', this.world.centerX + (this.world.centerX / 2), this.world.centerY, 'enemy');
 
