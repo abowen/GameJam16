@@ -15,7 +15,6 @@ See [LICENSE.md](./LICENSE.md) for license terms and conditions.
 ## Links
 - http://globalgamejam.org/2016/games/black-and-white
 - https://gamejamnoobs.slack.com/messages/general/
-- http://globalgamejam.org/
 
 ## Assets
 - http://opengameart.org/content/blowhard-2-blow-harder
