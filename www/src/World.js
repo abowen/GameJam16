@@ -45,6 +45,7 @@ var World = (function() {
         console.log("started eating");
 
         this.enemy.humans_devoured += 1;
+        // TODO: Tween him into scale.
         this.enemy.scale += 0.05;        
         this.enemy.isEatingHuman = true;        
         

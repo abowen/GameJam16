@@ -1,15 +1,18 @@
 var Character = (function() {
     function Character(game_state, x, y, sprite) {
         //BasicGame.Prefab.call(this, game, 'Player', {x:x, y:y}, properties);
-        Phaser.Sprite.call(this, game_state.game, x, y, sprite);
-        this.speed = 7;
-        this.speed = 200;
         this.game_state = game_state;
+
+        Phaser.Sprite.call(this, game_state.game, x, y, sprite);        
         game_state.game.physics.arcade.enable(this);
         this.anchor.set(0.5);
-        // animation name, frames, FPS, true? (maybe swap)
+        
         this.framesPerSecond = 10;
         this.body.collideWorldBounds = true;
+
+        this.speed = 200;
+        this.turboBoostSpeed = 20;
+        
         this.followers = []
         this.setAnimation();
 
@@ -34,6 +37,13 @@ var Character = (function() {
         this.followers.push(follower);        
         this.speed *= 0.8;
     };
+
+    Character.prototype.turboBoost = function() {
+        // Sacrifice your last follower for brief boost
+        console.log("88888ooooo--- TUUUUUUURRRRRBOOOOOOOOOOO))))>")
+        this.speed += this.turboBoostSpeed;
+        // TODO: Lose turbo speed
+    }
 
     Character.prototype.setAnimation = function() {
         this.animations.add('down', [0, 1, 2], this.framesPerSecond, true);

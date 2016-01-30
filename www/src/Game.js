@@ -137,6 +137,10 @@ BasicGame.Game.prototype = {
         this.summonKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
         this.summonKey.onDown.add(this.summonShit, this);
 
+        // Yes it did
+        this.shitJustGotRealKey = this.game.input.keyboard.addKey(Phaser.Keyboard.CONTROL);
+        this.shitJustGotRealKey.onDown.add(this.shitJustGotReal, this);
+
         this.bloodParticles = this.make.bitmapData(3, 3);
         this.bloodParticles.rect(0, 0, 4, 4, '#ff0000');
         this.bloodParticles.update();
@@ -198,11 +202,8 @@ BasicGame.Game.prototype = {
             var keySprite = this.add.sprite(keyX, keyY, keys[i]);
             keySprite.scale.setTo(0.75);
             keySprite.alpha = 0.5;
-            keyX += keySprite.width + 10;
-            console.log(keyX);
-
+            keyX += keySprite.width + 10;            
             keySprite.anchor.set(0, 0);
-
             this.instructionLayer.addChild(keySprite);
         }
     },
@@ -279,6 +280,16 @@ BasicGame.Game.prototype = {
             this.character.y);
         
         this.summonSound.play();
+    },
+
+    shitJustGotReal: function() {
+        if (this.character.followers.length > 0){
+            this.character.turboBoost();
+            // TODO: Slow down humans
+            // TODO: Make world blue
+            // TODO: Reduce size of ogre
+            // TODO: Play sweet turbo sound            
+        }
     },
 
     spawnHuman: function() {

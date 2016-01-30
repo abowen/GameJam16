@@ -33,9 +33,7 @@ var Ghost = (function() {
             this.master = character;
         } else {
             this.master = character.followers[character.followers.length-1];            
-        }
-        console.log('follow:');
-        console.log(this.master);
+        }        
     };
 
     Ghost.prototype.stop = function() {

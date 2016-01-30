@@ -60,7 +60,7 @@ var Enemy = (function() {
     };
 
     Enemy.prototype.giggleWhileEating = function() {        
-        // Make him wobble on the spot because he is a fatty
+        // Make him wobble on the spot because he is munching
         var max = 1;
         var min = -1;
         
@@ -71,9 +71,7 @@ var Enemy = (function() {
         this.body.velocity.y = 0;
         
         this.body.x += movement;
-        this.body.y += movement;
-        
-        // TODO: Make him bigger            
+        this.body.y += movement;        
     };    
 
     Enemy.prototype.update = function() {
