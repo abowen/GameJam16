@@ -13,7 +13,7 @@ var Human = (function() {
 
 		this.lastMove = null;
 
-        this.devourHuman = function(human, character) {            
+        this.devourHuman = function(human, enemy) {            
             this.game_state.world_state.devourHuman(human);
 
             // Hardcoding is naughty
@@ -32,6 +32,9 @@ var Human = (function() {
             bodyPartTwo.frame = bodyPartTwoFrame;
 
             human.kill();
+	        this.game_state.devourSound.play();
+	        this.scream();
+	        this.game_state.emitter.flow(500, 30, 2, 100, false);
         };
 
         this.humanHitsSummon = function(human, summon) {
@@ -62,8 +65,7 @@ var Human = (function() {
                     alpha: 0
                 }, 250, "Linear", true, 250);
 
-                var scream = this.game_state.screams[Math.floor(Math.random() * this.game_state.screams.length)];
-                scream.play();
+                this.scream();
 
                 this.game_state.character.addFollower(new Ghost(this.game_state, human.x, human.y));                
                 this.game_state.world_state.sacrificeHuman(this);                
@@ -99,7 +101,14 @@ var Human = (function() {
 			this[moveIn]();
 			this.lastMove = moveIn;
 			if (this.y > this.game_state.game.height || this.y < 0 || this.x > this.game_state.game.height || this.x < 0) this.destroy();
+
+			this.game_state.emitter.emitX = this.game_state.enemy.x;
+	        this.game_state.emitter.emitY = this.game_state.enemy.y;
 		}
+    };
+
+    Human.prototype.scream = function() {
+        this.game_state.screams[this.game.rnd.between(0, this.game_state.screams.length - 1)].play();
     };
 
     return Human;
