@@ -53,9 +53,6 @@ BasicGame.Game.prototype = {
         // Re-calculate scale mode and update screen size. This only applies if
         // ScaleMode is not set to RESIZE.
         this.scale.refresh();
-
-        // TODO: Move this into game state once Dom has finished
-        this.humansKilled = 0;
     },
 
     preload: function() {
