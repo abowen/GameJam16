@@ -1,11 +1,19 @@
 var World = (function() {
-    function World(game_state) {
+        function World(game_state) {
         this.init_condition = {
 
         };
 
         this.win_conditions = {
-            rituals_performed: 3
+            player: {
+                rituals_performed: 3
+            }
+        };
+        
+        this.lose_conditions = {
+            enemy : {
+                humans_devoured: 15
+            }
         };
 
         this.player = {
@@ -15,7 +23,6 @@ var World = (function() {
 
         this.enemy = {
             humans_devoured: 0,
-            rituals_performed: 0,
             difficulty: 5,
             isEatingHuman : false
         };
@@ -32,7 +39,7 @@ var World = (function() {
     };
 
     World.prototype.devourHuman = function(human) {
-        this.player.humans_devoured += 1;        
+        this.enemy.humans_devoured += 1;        
         console.log("started eating");
         this.enemy.isEatingHuman = true;
         
@@ -42,6 +49,7 @@ var World = (function() {
         }.bind(this), 1000);
         
         this.makeWorldScarier();
+        this.updateScore();
     };
 
     World.prototype.cameraShake = function(effect) {
@@ -69,7 +77,21 @@ var World = (function() {
     World.prototype.sacrificeHuman = function(human) {
     	// kill human?
         this.player.souls_collected += 1;
-        this.updateScore();
+        this.game_state.powerUp.addPower();
+        //this.updateScore();
+        this.game_state.powerUp.addPower();
+
+        this.calculateScreenShake();
+        this.makeWorldScarier(human);
+    };
+    
+    World.prototype.runRitual = function(human) {
+    	// kill human?
+        this.player.souls_collected = 0;
+        this.player.rituals_performed += 1;
+        this.game_state.powerUp.addPower();
+        //this.updateScore();
+
         this.calculateScreenShake();
         this.makeWorldScarier(human);
     };
@@ -88,7 +110,12 @@ var World = (function() {
             'characterSingle');
         scoreIcon.anchor.setTo(0.5, 0.5);
      
-        this.game_state.scoreLayer.add(scoreIcon);                
+        this.game_state.scoreLayer.add(scoreIcon);     
+        
+        
+        if(this.lose_conditions.enemy.humans_devoured == this.enemy.humans_devoured) {
+            this.game_state.gameOver(false);
+        }           
     };
 
     World.prototype.makeWorldScarier = function() {

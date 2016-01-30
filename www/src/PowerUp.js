@@ -12,7 +12,6 @@ var PowerUp = (function() {
 
         this.alpha = 0.7;
         this.width = 4;
-        this.requriedKills = 10;
     };
 
     PowerUp.prototype = Object.create(Phaser.Sprite.prototype);
@@ -25,7 +24,7 @@ var PowerUp = (function() {
     };
 
     PowerUp.prototype.addPower = function(){
-        var powerRate = 620 / this.requriedKills;
+        var powerRate = 620 / this.game_state.world_state.win_conditions.player.rituals_performed;
         this.game.add.tween(this).to({
             width: this.width + powerRate,
             x: this.x + powerRate / 2
