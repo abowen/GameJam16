@@ -62,7 +62,7 @@ BasicGame.Game.prototype = {
         this.load.image('tiles', 'asset/tiles.png');
 
         //http://phaser.io/examples/v2/sprites/spritesheet
-        this.load.spritesheet('characterOrange', 'asset/characterOrangeLine.png', 16, 16, 12);
+        this.load.spritesheet('characterOrange', 'asset/characterBigLine.png', 32, 32, 12);
         this.load.spritesheet('enemy', 'asset/images/enemy_spritesheet.png', 16, 16, 12);
         this.load.spritesheet('human', 'asset/human.png', 16, 16, 30);
         this.load.image('summon', 'asset/summonRed.png');
