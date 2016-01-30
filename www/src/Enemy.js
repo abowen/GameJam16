@@ -11,27 +11,27 @@ var Enemy = (function() {
         Prefab.call(this, game_state, name, {x:x, y:y}, properties);
 
         this.anchor.setTo(0.5);
-
+        this.game = game_state.game;
         this.walking_speed = +properties.walking_speed;
         this.walking_distance = +properties.walking_distance;
         this.direction = +properties.direction;
         this.axis = properties.axis;
 
-        this.previous_position = (this.axis === "x") ? this.x : this.y;
+        this.previous_position = (this.axis === "x") ? this.x : this.y;        
 
+        this.game.physics.arcade.enable(this);
+        if (this.axis === "x") {
+            this.body.velocity.x = this.direction * this.walking_speed;
+        } else {
+            this.body.velocity.y = this.direction * this.walking_speed;
+        }
+        
         this.animations.add("down", [1, 2, 3], 10, true);
         this.animations.add("left", [4, 5, 6, 7], 10, true);
         this.animations.add("right", [4, 5, 6, 7], 10, true);
         this.animations.add("up", [0, 8, 9], 10, true);
 
         this.stopped_frames = [1, 4, 4, 0, 1];
-
-        this.game_state.game.physics.arcade.enable(this);
-        if (this.axis === "x") {
-            this.body.velocity.x = this.direction * this.walking_speed;
-        } else {
-            this.body.velocity.y = this.direction * this.walking_speed;
-        }
     };
 
     Enemy.prototype = Object.create(Prefab.prototype);
@@ -51,10 +51,6 @@ var Enemy = (function() {
         // this.game.physics.arcade.overlap(this, this.game_state.groups.explosions, this.kill, null, this);
         
         var followed_mob = this.game.character;
-        
-        
-
-
         var dist = this.game.math.distance(this.body.position.x, 
             this.body.position.y, 
             followed_mob.position.x,

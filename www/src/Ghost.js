@@ -1,18 +1,14 @@
 var Ghost = (function() {
-    function Ghost(game, x, y) {
-        MovingSprite.call(this, game, x, y, 'ghost', 'ghosts');
+    function Ghost(game_state, x, y) {
+        MovingSprite.call(this, game_state, x, y, 'ghost', 'ghosts');
 
         this.speed = 0.5;
-        this.game = game;
+        this.game = game_state.game;
         this.timer = 1000;
         this.framesPerSecond = 3;
 
         this.game.physics.enable(this);
         this.anchor.set(0.5);
-        
-
-
-        this.setAnimation();
 
         this.moves = ['moveUp', 'moveDown', 'moveLeft', 'moveRight'];
         this.game.physics.arcade.enable(this);
@@ -23,6 +19,8 @@ var Ghost = (function() {
             this.isGraveStone = false;
             this.alpha = 0.5;
         }.bind(this), 4000);
+        
+        this.setAnimation();
     };
 
     Ghost.prototype = Object.create(MovingSprite.prototype);

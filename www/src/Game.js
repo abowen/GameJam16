@@ -124,14 +124,12 @@ BasicGame.Game.prototype = {
         this.summonLayer = this.game.add.physicsGroup();
         this.summonLayer.z = 1;
 
-        // Moving objects that are blocked by mountains        
-        this.characters = this.game.add.group();
-        
+       
         //http://phaser.io/examples/v2/input/cursor-key-movement
         cursors = this.game.input.keyboard.createCursorKeys();
         this.game.ai = new Ai();
         
-        this.humans = this.game.add.group();
+        //this.humans = this.game.add.group();
 
   //      this.game.offering_stone = this.offering_stone = new OfferingStone(this.game, this.world.centerX, this.world.centerY, 'offering_stone');
         this.character = new Character(this, this.world.centerX / 2, this.world.centerY, 'character');
