@@ -134,20 +134,6 @@ BasicGame.Game.prototype = {
         this.summonKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
         this.summonKey.onDown.add(this.summonShit, this);
 
-        // http://phaser.io/examples/v2/particles/emitter-width
-        // http://phaser.io/examples/v2/particles/firestarter
-        this.summonParticles = this.make.bitmapData(2, 2);
-        this.summonParticles.rect(0, 0, 4, 4, '#ffffff');
-        this.summonParticles.update();
-
-        this.emitter = this.add.emitter(0, 0, 128);
-        this.emitter.makeParticles(this.summonParticles);
-        this.emitter.gravity = 0;
-        this.emitter.setXSpeed(250, -250);
-        this.emitter.setYSpeed(-100, 100);
-        this.emitter.setAlpha(1, 0.2, 500);
-        this.emitter.flow(1000, 30, 2, -1, true);    
-
         ////// SOUND EFFECTS
         this.summonSound = this.game.add.audio('explosionSound');
         this.explosionSound = this.game.add.audio('crashSound');
