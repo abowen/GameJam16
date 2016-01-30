@@ -57,7 +57,7 @@ var Ghost = (function() {
                 var vel_factor = this.speed;
 
                 if (dist > 20.0) {
-                    this.game.ai.follow(this, this.game.character, 30.0 * vel_factor, 30.0 * vel_factor);
+                    this.game.ai.follow(this, this.human, 30.0 * vel_factor, 30.0 * vel_factor);
                 } else {
                     this.stop();
                 }

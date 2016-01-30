@@ -48,7 +48,7 @@ var Human = (function() {
                 scream.play();
 
                 var ghost = new Ghost(this.game_state, human.x, human.y);
-                human.addFollower(ghost);
+                this.game_state.character.addFollower(ghost);
 
                 // Tint the world
                 if (this.humansKilled < 16) {
@@ -72,14 +72,8 @@ var Human = (function() {
 
     };
 
-
     Human.prototype = Object.create(MovingSprite.prototype);
-    Human.prototype.constructor = Human;
-
-    Human.prototype.addFollower = function(follower) {
-        this.followers.push(follower);
-        follower.follow(this);
-    };
+    Human.prototype.constructor = Human; 
 
     Human.prototype.update = function() {
          "use strict";
@@ -92,7 +86,7 @@ var Human = (function() {
         }
         this[moveIn]();
         this.lastMove = moveIn;
-		if (this.y > this.game.height || this.y < 0 || this.x > this.game.height || this.x < 0) this.kill();
+		if (this.y > this.game_state.game.height || this.y < 0 || this.x > this.game_state.game.height || this.x < 0) this.kill();
     };
 
     return Human;

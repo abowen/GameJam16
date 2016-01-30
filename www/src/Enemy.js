@@ -85,7 +85,7 @@ var Enemy = (function() {
         if (this.body.velocity.x === 0 && this.body.velocity.y === 0) {
             // stop current animation
             this.animations.stop();
-            this.frame = this.stopped_frames[this.body.facing];
+            //this.frame = this.stopped_frames[this.body.facing];
         }
 
         new_position = (this.axis === "x") ? this.x : this.y;

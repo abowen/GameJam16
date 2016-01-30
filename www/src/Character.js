@@ -11,12 +11,17 @@ var Character = (function(){
         // animation name, frames, FPS, true? (maybe swap)
         this.framesPerSecond = 10;        
         this.body.collideWorldBounds = true;
-
+        this.followers = []
         this.setAnimation();
     };
 
     Character.prototype = Object.create(Phaser.Sprite.prototype);
     Character.prototype.constructor = Character;
+    
+    Character.prototype.addFollower = function(follower) {
+        this.followers.push(follower);
+        follower.follow(this);
+    };
 
     Character.prototype.setAnimation = function() {
         this.animations.add('down', [0, 1, 2], this.framesPerSecond, true);
