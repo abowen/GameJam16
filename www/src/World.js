@@ -12,7 +12,7 @@ var World = (function() {
         
         this.lose_conditions = {
             enemy : {
-                humans_devoured: 10
+                humans_devoured: 10                
             }
         };
 
@@ -25,7 +25,9 @@ var World = (function() {
             humans_devoured: 0,
             difficulty: 5,
             // TODO: Refactor back into Enemy.js
-            isEatingHuman : false
+            // TODO: Can turn off anti-aliasing but couldnt work it out http://phaser.io/examples/v2/display/render-crisp
+            isEatingHuman : false,
+            scale : 0.5
         };
 
         this.screenShake = {
@@ -42,7 +44,8 @@ var World = (function() {
     World.prototype.devourHuman = function(human) {
         console.log("started eating");
 
-        this.enemy.humans_devoured += 1;                
+        this.enemy.humans_devoured += 1;
+        this.enemy.scale += 0.05;        
         this.enemy.isEatingHuman = true;        
         
 		setTimeout(function() {

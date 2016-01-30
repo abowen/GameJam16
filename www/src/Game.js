@@ -61,7 +61,7 @@ BasicGame.Game.prototype = {
 
         //http://phaser.io/examples/v2/sprites/spritesheet        
         this.load.spritesheet('character', 'asset/images/character_spritesheet_32.png', 32, 32, 12);
-        this.load.spritesheet('enemy', 'asset/images/enemy_spritesheet_32.png', 32, 32, 10);
+        this.load.spritesheet('enemy', 'asset/images/enemy_spritesheet_64.png', 64, 64, 10);
         this.load.spritesheet('offering_stone', 'asset/images/offering_stone_32.png', 32, 32, 8);
         this.load.spritesheet('human', 'asset/human.png', 16, 16, 30);
         this.load.spritesheet('humanparts', 'asset/images/humanparts_spritesheet_8.png', 8, 8, 4);

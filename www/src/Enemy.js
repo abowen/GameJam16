@@ -19,7 +19,7 @@ var Enemy = (function() {
         this.walking_speed = +properties.walking_speed;
         this.walking_distance = +properties.walking_distance;
         this.direction = +properties.direction;
-        this.axis = properties.axis;
+        this.axis = properties.axis;        
 
         this.previous_position = (this.axis === "x") ? this.x : this.y;
 
@@ -85,14 +85,11 @@ var Enemy = (function() {
             this.giggleWhileEating();
         }
         else {
-
-            
-            //this.game.physics.arcade.collide(this, this.game.groups.humans, this.switch_direction, null, this);
-            // this.game.physics.arcade.collide(this, this.game_state.layers.blocks, this.switch_direction, null, this);
-            // this.game.physics.arcade.overlap(this, this.game_state.groups.bombs, this.switch_direction, null, this);
-            // this.game.physics.arcade.overlap(this, this.game_state.groups.explosions, this.kill, null, this);
             var followed_mob = {};
             var dist = 0.0;
+            var scaleX = this.game_state.world_state.enemy.scale;
+            var scaleY = this.game_state.world_state.enemy.scale;
+
             if (this.game_state.humans && this.game_state.humans.children.length > 0) {
 
                 var closest_human = {};
@@ -128,12 +125,11 @@ var Enemy = (function() {
             }
 
             if (this.body.velocity.x < 0) {
-                // walking left
-                this.scale.setTo(-1, 1);
+                // walking left                
+                scaleX *= -1;
                 this.animations.play("left");
             } else if (this.body.velocity.x > 0) {
-                // walking right
-                this.scale.setTo(1, 1);
+                // walking right                
                 this.animations.play("right");
             }
 
@@ -143,7 +139,9 @@ var Enemy = (function() {
             } else if (this.body.velocity.y > 0) {
                 // walking down
                 this.animations.play("down");
-            }        
+            }     
+
+            this.scale.setTo(scaleX, scaleY);
         }    
 
         if (this.body.velocity.x === 0 && this.body.velocity.y === 0) {
