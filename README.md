@@ -9,8 +9,11 @@ See [LICENSE.md](./LICENSE.md) for license terms and conditions.
 - Andrew Bowen
 - Abul Dider
 
-### Sound
+### Music / Sound FX
 - Amanda J Lim
+
+### Screams
+- Natalie Rae Cheney
 
 ## Links
 - http://globalgamejam.org/2016/games/black-and-white
