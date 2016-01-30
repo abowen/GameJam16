@@ -233,7 +233,7 @@ BasicGame.Game.prototype = {
         var tiles = this.backgroundLayer.getTiles(0, 0, this.world.width, this.world.height);
         this.game.houseTiles = tiles.filter(function(f){return f.index === 2 || f.index === 3;});
 
-        this.map.setCollision([7, 8, 9, 22, 23, 24, 13], true, this.backgroundLayer);
+        this.map.setCollision([23, 24, 13, 130, 113, 24,108,109,124,125,126,141,142,143], true, this.backgroundLayer);
     },
 
     gameResized: function(width, height) {
@@ -285,7 +285,7 @@ BasicGame.Game.prototype = {
         } else if (cursors.right.isDown) {
             this.character.moveRight();
         } else {
-            this.character.animations.stop();
+            this.character.stop();
         }
 
         this.updateScore();
