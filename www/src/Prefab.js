@@ -7,7 +7,7 @@ var Prefab = (function() {
         this.game_state = game_state;
 
         this.name = name;
-
+        this.framesPerSecond = 10;
         this.game_state[properties.group] = this.game_state[properties.group] || this.game_state.game.add.group();
         this.game_state[properties.group].addChild(this);
         //this.frame = +properties.frame;
