@@ -45,18 +45,15 @@ var World = (function() {
     World.prototype.calculateScreenShake = function() {
         var isItTimeToScreenShakePartyYet = this.screenShake.counter.indexOf(this.player.souls_collected) == 0;
 
-        if (isItTimeToScreenShakePartyYet) {
-            console.log('!@#! screen shake party up !@#!')
+        if (isItTimeToScreenShakePartyYet) {            
             this.screenShake.effect = this.screenShake.counter.shift();
-        } else {
-            console.log('!@#! screen shake baby party !@#!')
+        } else {            
             this.screenShake.effect = 1;
         }
 
         var screenShakeTimer = isItTimeToScreenShakePartyYet ? 2000 : 250;
         setTimeout(function() {
-            this.screenShake.effect = 0;
-            console.log('!@#! screen shake party down !@#!')
+            this.screenShake.effect = 0;            
         }.bind(this), screenShakeTimer);
     };              
 
@@ -92,8 +89,7 @@ var World = (function() {
             var tintValue = 16 - this.player.souls_collected;
             var hexString = tintValue.toString(16);
             hexString = hexString + hexString;
-            var tintColour = '0xff' + hexString + 'ff';
-            //console.log(this.humansKilled + " " + tintColour);
+            var tintColour = '0xff' + hexString + 'ff';            
             this.game_state.groundLayer.tint = tintColour;
             this.game_state.backgroundLayer.tint = tintColour;
         }
