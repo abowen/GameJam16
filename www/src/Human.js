@@ -6,6 +6,7 @@ var Human = (function() {
 
 		this.framesPerSecond = 15;
         
+        
         this.setAnimation();
 	};
 

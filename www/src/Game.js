@@ -5,15 +5,16 @@ BasicGame = {
 };
 
 // create Game function in BasicGame
-BasicGame.Game = function (game) {
-};
+BasicGame.Game = function(game) {};
+BasicGame.YouWin = function(game) {};
+BasicGame.YouLose = function(game) {};
 
 var cursors;
 
 // set Game function prototype
 BasicGame.Game.prototype = {
 
-    init: function () {
+    init: function() {
         this.physics.startSystem(Phaser.Physics.ARCADE);
         // TODO: Clearly emove before publishing
         //this.game.add.plugin(Phaser.Plugin.Debug);
@@ -53,11 +54,11 @@ BasicGame.Game.prototype = {
         // Re-calculate scale mode and update screen size. This only applies if
         // ScaleMode is not set to RESIZE.
         this.scale.refresh();
-        
-        
+
+
     },
 
-    preload: function () {
+    preload: function() {
         this.load.tilemap('level1', 'asset/tileset.json', null, Phaser.Tilemap.TILED_JSON);
         this.load.image('tiles', 'asset/tiles.png');
 
@@ -74,8 +75,9 @@ BasicGame.Game.prototype = {
         this.load.audio('darkExploration', 'asset/music/DarkExploration.mp3');
     },
 
-    create: function () {
+    create: function() {
         this.createMap();
+        this.initialiseGameState();
 
         // Summon graphics
         this.textLayer = this.game.add.group();
@@ -99,7 +101,7 @@ BasicGame.Game.prototype = {
         cursors = this.game.input.keyboard.createCursorKeys();
         this.game.ai = new Ai();
         this.humans = this.game.add.group();
-       
+
         this.game.character = this.character = new Character(this.game, this.world.centerX / 2, this.world.centerY, 'characterOrange');
         this.enemy = new Enemy(this.game, 'Enemy', this.world.centerX + (this.world.centerX / 2), this.world.centerY, 'enemy');
 
@@ -134,38 +136,37 @@ BasicGame.Game.prototype = {
 
         // Music        
         // http://phaser.io/examples/v2/audio/loop
-        this.music = this.game.add.audio('darkExploration');        
+        this.music = this.game.add.audio('darkExploration');
 
         // MP3's take time to decode, we can make a call back if required
-         this.game.sound.setDecodedCallback([ this.music, this.explosionSound ], this.startMusic, this);
-        for (var i=0;i<TOTAL_PLAYER_LIVES;i++)
-        {
+        this.game.sound.setDecodedCallback([this.music, this.explosionSound], this.startMusic, this);
+        for (var i = 0; i < TOTAL_PLAYER_LIVES; i++) {
             var width = 16;
             var padding = 4;
             var xPosition = 16 + (width + padding) * i;
 
             var characterLife = new Phaser.Sprite(
-                        this.game, 
-                        xPosition,
-                        20, 
-                        'characterSingle');
+                this.game,
+                xPosition,
+                20,
+                'characterSingle');
             characterLife.anchor.setTo(0.5, 0.5);
             this.textLayer.add(characterLife);
         }
     },
 
-    startMusic: function(){
+    startMusic: function() {
         this.music.loopFull(0.6);
     },
 
 
-    createMap: function(){
+    createMap: function() {
         this.map = this.add.tilemap('level1');
         this.map.addTilesetImage('tiles', 'tiles');
 
         this.map.setCollisionBetween(15, 16);
         //create layer
-        this.groundLayer = this.map.createLayer('groundLayer');        
+        this.groundLayer = this.map.createLayer('groundLayer');
         this.backgroundLayer = this.map.createLayer('backgroundLayer');
 
         this.map.setCollision([7, 8, 9, 22, 23, 24, 13], true, this.backgroundLayer);
@@ -173,7 +174,7 @@ BasicGame.Game.prototype = {
         console.log('collidets: ' + this.map.collideIndexes);
     },
 
-    gameResized: function (width, height) {
+    gameResized: function(width, height) {
 
         // This could be handy if you need to do any extra processing if the 
         // game resizes. A resize could happen if for example swapping 
@@ -183,42 +184,57 @@ BasicGame.Game.prototype = {
 
     },
 
-    update : function () {
+    initialiseGameState() {
+        this.game.game_state = {
+            init_condition: {
+
+            },
+            win_conditions: {
+                rituals_performed: 3
+            },
+            player: {
+                souls_collected: 0,
+                rituals_performed: 0
+            },
+            enemy: {
+                souls_collected: 0,
+                rituals_performed: 0,
+                difficulty: 5
+            }
+        };
+    },
+
+    update: function() {
         this.physics.arcade.collide(this.map, this.characters);
         this.physics.arcade.collide(this.backgroundLayer, this.characters);
         this.physics.arcade.collide(this.characters, this.humans);
         this.physics.arcade.collide(this.characters, this.enemy);
 
-        if (cursors.up.isDown)
-        {
+        /*  if (this.game.game_state.player.rituals_performed === this.game.game_state.win_conditions.rituals_performed) {
+             
+          }*/
+
+        if (cursors.up.isDown) {
             this.character.moveUp();
-        }
-        else if (cursors.down.isDown)
-        {
+        } else if (cursors.down.isDown) {
             this.character.moveDown();
-        }
-        else if (cursors.left.isDown)
-        {
+        } else if (cursors.left.isDown) {
             this.character.moveLeft();
-        }
-        else if (cursors.right.isDown)
-        {
+        } else if (cursors.right.isDown) {
             this.character.moveRight();
-        }
-        else {
+        } else {
             this.character.animations.stop();
         }
 
         this.updateHumans();
     },
 
-    summonShit : function () {
+    summonShit: function() {
         var summon = new Summon(
-                        this.game, 
-                        this.character.x,
-                        -20,
-                        this.character.x,
-                        this.character.y);
+            this.game,
+            this.character.x, -20,
+            this.character.x,
+            this.character.y);
 
         this.emitter.emitX = summon.x;
         this.emitter.emitY = summon.y;
@@ -236,7 +252,7 @@ BasicGame.Game.prototype = {
     updateHumans: function() {
         this.humans.forEach(function(human) {
             human.update();
-            if(human.y > this.world.height) human.destroy();
+            if (human.y > this.world.height) human.destroy();
 
             this.physics.arcade.overlap(human, this.summonLayer, this.humanHitsSummon, null, this);
         }.bind(this));
@@ -258,12 +274,132 @@ BasicGame.Game.prototype = {
 
             var explosionSpeed = 250;
 
-            this.add.tween(cloneV.scale).to({x: 0.10, y: 10}, explosionSpeed, "Expo.easeOut", true, 0);
-            this.add.tween(cloneH.scale).to({x: 10, y: 0.10}, explosionSpeed, "Expo.easeOut", true, 0);
-            this.add.tween(cloneH).to({alpha: 0}, 250, "Linear", true, 250);
-            this.add.tween(cloneV).to({alpha: 0}, 250, "Linear", true, 250);
+            this.add.tween(cloneV.scale).to({
+                x: 0.10,
+                y: 10
+            }, explosionSpeed, "Expo.easeOut", true, 0);
+            this.add.tween(cloneH.scale).to({
+                x: 10,
+                y: 0.10
+            }, explosionSpeed, "Expo.easeOut", true, 0);
+            this.add.tween(cloneH).to({
+                alpha: 0
+            }, 250, "Linear", true, 250);
+            this.add.tween(cloneV).to({
+                alpha: 0
+            }, 250, "Linear", true, 250);
 
             this.explosionSound.play();
         }
+    }
+};
+
+// create Game function in BasicGame
+BasicGame.YouWin.prototype = {
+    init: function() {
+        // set up input max pointers
+        this.input.maxPointers = 1;
+        // set up stage disable visibility change
+        this.stage.disableVisibilityChange = true;
+        // Set up the scaling method used by the ScaleManager
+        // Valid values for scaleMode are:
+        // * EXACT_FIT
+        // * NO_SCALE
+        // * SHOW_ALL
+        // * RESIZE
+        // See http://docs.phaser.io/Phaser.ScaleManager.html for full document
+        this.scale.scaleMode = Phaser.ScaleManager.USER_SCALE;
+        // If you wish to align your game in the middle of the page then you can
+        // set this value to true. It will place a re-calculated margin-left
+        // pixel value onto the canvas element which is updated on orientation /
+        // resizing events. It doesn't care about any other DOM element that may
+        // be on the page, it literally just sets the margin.
+        this.scale.pageAlignHorizontally = true;
+        this.scale.pageAlignVertically = true;
+        // Force the orientation in landscape or portrait.
+        // * Set first to true to force landscape. 
+        // * Set second to true to force portrait.
+        this.scale.forceOrientation(true, false);
+        // Sets the callback that will be called when the window resize event
+        // occurs, or if set the parent container changes dimensions. Use this 
+        // to handle responsive game layout options. Note that the callback will
+        // only be called if the ScaleManager.scaleMode is set to RESIZE.
+        this.scale.setResizeCallback(this.gameResized, this);
+        // Set screen size automatically based on the scaleMode. This is only
+        // needed if ScaleMode is not set to RESIZE.
+        this.scale.updateLayout(true);
+        // Re-calculate scale mode and update screen size. This only applies if
+        // ScaleMode is not set to RESIZE.
+        this.scale.refresh();
+
+    },
+    preload: function() {
+        this.load.image('background', 'asset/images/you_win.png');
+    },
+    create: function() {
+        // Add logo to the center of the stage
+        this.background = this.add.sprite(
+            this.world.centerX, // (centerX, centerY) is the center coordination
+            this.world.centerY,
+            'background');
+        // Set the anchor to the center of the sprite
+        this.background.anchor.setTo(0.5, 0.5);
+
+    }
+
+};
+
+
+// create Game function in BasicGame
+BasicGame.YouLose.prototype = {
+    init: function() {
+        // set up input max pointers
+        this.input.maxPointers = 1;
+        // set up stage disable visibility change
+        this.stage.disableVisibilityChange = true;
+        // Set up the scaling method used by the ScaleManager
+        // Valid values for scaleMode are:
+        // * EXACT_FIT
+        // * NO_SCALE
+        // * SHOW_ALL
+        // * RESIZE
+        // See http://docs.phaser.io/Phaser.ScaleManager.html for full document
+        this.scale.scaleMode = Phaser.ScaleManager.USER_SCALE;
+        // If you wish to align your game in the middle of the page then you can
+        // set this value to true. It will place a re-calculated margin-left
+        // pixel value onto the canvas element which is updated on orientation /
+        // resizing events. It doesn't care about any other DOM element that may
+        // be on the page, it literally just sets the margin.
+        this.scale.pageAlignHorizontally = true;
+        this.scale.pageAlignVertically = true;
+        // Force the orientation in landscape or portrait.
+        // * Set first to true to force landscape. 
+        // * Set second to true to force portrait.
+        this.scale.forceOrientation(true, false);
+        // Sets the callback that will be called when the window resize event
+        // occurs, or if set the parent container changes dimensions. Use this 
+        // to handle responsive game layout options. Note that the callback will
+        // only be called if the ScaleManager.scaleMode is set to RESIZE.
+        this.scale.setResizeCallback(this.gameResized, this);
+        // Set screen size automatically based on the scaleMode. This is only
+        // needed if ScaleMode is not set to RESIZE.
+        this.scale.updateLayout(true);
+        // Re-calculate scale mode and update screen size. This only applies if
+        // ScaleMode is not set to RESIZE.
+        this.scale.refresh();
+
+    },
+    preload: function() {
+        this.load.image('background', 'asset/images/you_lose.png');
+    },
+    create: function() {
+        // Add logo to the center of the stage
+        this.background = this.add.sprite(
+            this.world.centerX, // (centerX, centerY) is the center coordination
+            this.world.centerY,
+            'background');
+        // Set the anchor to the center of the sprite
+        this.background.anchor.setTo(0.5, 0.5);
+
     }
 };
