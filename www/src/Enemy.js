@@ -36,6 +36,11 @@ var Enemy = (function() {
 
     Enemy.prototype = Object.create(Prefab.prototype);
     Enemy.prototype.constructor = Enemy;
+    
+    Enemy.prototype.stop = function(){
+        this.body.velocity.x = 0;
+        this.body.velocity.y = 0;
+    }
 
     Enemy.prototype.update = function() {
         "use strict";
@@ -44,8 +49,20 @@ var Enemy = (function() {
         // this.game.physics.arcade.collide(this, this.game_state.layers.blocks, this.switch_direction, null, this);
         // this.game.physics.arcade.overlap(this, this.game_state.groups.bombs, this.switch_direction, null, this);
         // this.game.physics.arcade.overlap(this, this.game_state.groups.explosions, this.kill, null, this);
+        
+        var followed_mob = this.game.character;
 
-        this.game.ai.follow(this, this.game.character, 30.0, 30.0);
+
+        var dist = this.game.math.distance(this.body.position.x, 
+            this.body.position.y, 
+            followed_mob.position.x,
+            followed_mob.position.y);
+            
+        if(dist > 100.0){    
+            this.game.ai.follow(this, followed_mob, 30.0, 30.0);
+        } else {
+            this.stop();
+        }
 
         if (this.body.velocity.x < 0) {
             // walking left
