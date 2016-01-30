@@ -8,17 +8,30 @@ var World = (function() {
                 rituals_performed: 3
             };
             
-            this.player: {
+            this.player = {
                 souls_collected: 0,
                 rituals_performed: 0
             };
             
-            this.enemy: {
-                souls_collected: 0,
+            this.enemy = {
+                humans_devoured: 0,
                 rituals_performed: 0,
                 difficulty: 5
             };
-
+        };
+        
+        World.prototype.constructor = World;
+        
+        World.prototype.devourHuman = function (){
+            this.player.humans_devoured += 1;
+        };
+        
+        World.prototype.sacrificeHuman = function (){
+            this.player.souls_collected += 1;
+        };
+        
+        World.prototype.updateScore = function(){
+            
         };
 
         return World;
