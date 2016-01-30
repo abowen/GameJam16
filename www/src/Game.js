@@ -14,15 +14,9 @@ var cursors;
 // set Game function prototype
 BasicGame.Game.prototype = {
 
-<<<<<<< HEAD
-    init: function () {
-        this.physics.startSystem(Phaser.Physics.ARCADE);        
-=======
+
     init: function() {
         this.physics.startSystem(Phaser.Physics.ARCADE);
-        // TODO: Clearly emove before publishing
-        //this.game.add.plugin(Phaser.Plugin.Debug);
->>>>>>> 0964256f37769528aae54ee86729dc0e3a5162f3
 
         // set up input max pointers
         this.input.maxPointers = 1;
