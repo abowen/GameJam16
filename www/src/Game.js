@@ -212,47 +212,29 @@ BasicGame.Game.prototype = {
     },
 
     summonShit : function () {
-        var summon = new Phaser.Sprite(
+        var summon = new Summon(
                         this.game, 
                         this.character.x,
-                        -20, 
-                        'summon');
-        summon.anchor.setTo(0.5, 0.5);
+                        -20,
+                        this.character.x,
+                        this.character.y);
 
         this.emitter.emitX = summon.x;
         this.emitter.emitY = summon.y;
 
         this.summonLayer.add(summon);
 
-        var summonSpeed = 500;
-
-        summon.fallTween = this.game.add.tween(summon);
-        summon.fallTween.to({
-            x: this.character.x,
-            y: this.character.y
-        }, summonSpeed, Phaser.Easing.Quadratic.Out);
-
-        summon.fallTween.start();
-
-        var tweenRotate = this.game.add.tween(summon);
-        tweenRotate.to({
-            angle: 200
-        }, summonSpeed, Phaser.Easing.Linear.None);
-        tweenRotate.start();
-
         this.summonSound.play();
     },
 
     spawnHuman: function() {
-        var human = new Character(this.game, this.game.rnd.between(0, this.world.width), -16, 'characterOrange');
+        var human = new Human(this.game, this.game.rnd.between(0, this.world.width), -16, 'characterOrange');
         this.humans.addChild(human);
     },
 
     updateHumans: function() {
         this.humans.forEach(function(human) {
-            human.y++;
-            human.animations.play('down');
-            human.body.acceleration = {x: 0, y: this.game.rnd.between(0, 50)};
+            human.update();
             if(human.y > this.world.height) human.destroy();
 
             this.physics.arcade.overlap(human, this.summonLayer, this.humanHitsSummon, null, this);
@@ -263,7 +245,6 @@ BasicGame.Game.prototype = {
     humanHitsSummon: function(human, summon) {
 
         if (!summon.fallTween.isRunning) {
-            //console.log("Collision");
             var cloneH = this.add.sprite(summon.x, summon.y, 'summon');
             cloneH.anchor.set(0.5);
 
