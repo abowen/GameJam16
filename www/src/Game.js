@@ -268,10 +268,7 @@ BasicGame.Game.prototype = {
             this.character.x, -20,
             this.character.x,
             this.character.y);
-
-        this.emitter.emitX = summon.x;
-        this.emitter.emitY = summon.y;
-
+        
         this.summonSound.play();
     },
 
