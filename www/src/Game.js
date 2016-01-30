@@ -84,6 +84,7 @@ BasicGame.Game.prototype = {
         this.load.audio('crashSound', 'asset/sfx/summon.wav');
         this.load.audio('explosionSound', 'asset/sfx/explosion.mp3');
         this.load.audio('scream01', 'asset/sfx/scream01.mp3');
+        this.load.audio('scream02', 'asset/sfx/scream02.mp3');
         this.load.audio('darkExploration', 'asset/music/DarkExploration.mp3');
     },
 
@@ -152,6 +153,8 @@ BasicGame.Game.prototype = {
         this.summonSound = this.game.add.audio('explosionSound');
         this.explosionSound = this.game.add.audio('crashSound');
         this.scream01Sound = this.game.add.audio('scream01');
+        this.scream02Sound = this.game.add.audio('scream02');
+        this.screams = [this.scream01Sound, this.scream02Sound];
 
         setInterval(this.spawnHuman.bind(this), 2000);
 
@@ -160,7 +163,7 @@ BasicGame.Game.prototype = {
         this.music = this.game.add.audio('darkExploration');
 
         // MP3's take time to decode, we can make a call back if required
-        this.game.sound.setDecodedCallback([this.music, this.explosionSound, this.scream01Sound], this.startMusic, this);      
+        this.game.sound.setDecodedCallback([this.music, this.explosionSound, this.scream01Sound, this.scream02Sound], this.startMusic, this);      
        
         // Instruction information
         // Summon those fools from dark earth                
@@ -338,7 +341,8 @@ BasicGame.Game.prototype = {
                 alpha: 0
             }, 250, "Linear", true, 250);
 
-            this.scream01Sound.play();
+            var scream = this.screams[Math.floor(Math.random()*this.screams.length)];
+            scream.play();
 
             var ghost = new Ghost(this.game, human.x, human.y);
             human.addFollower(ghost);
