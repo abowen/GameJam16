@@ -3,10 +3,10 @@ var Character = (function(){
         //BasicGame.Prefab.call(this, game, 'Player', {x:x, y:y}, properties);
         Phaser.Sprite.call(this, game, x, y, sprite);
 
-        this.speed = 4;
+        this.speed = 100;
         this.game = game;
 
-        this.game.physics.enable(this);
+        this.game.physics.arcade.enable(this);
         this.anchor.set(0.5);
 
         // animation name, frames, FPS, true? (maybe swap)
@@ -26,25 +26,35 @@ var Character = (function(){
         this.animations.add('left', [9, 10, 11], this.framesPerSecond, true);
     };
 
+    Character.prototype.setVelocity = function(x, y){
+        this.body.velocity.x = x;
+        this.body.velocity.y = y;
+    },
+
     Character.prototype.moveUp = function(){
-        this.y -= this.speed;
+        this.setVelocity(0, -this.speed);
         this.animations.play('up');
     };
     Character.prototype.moveDown = function(){
-        this.y += this.speed;
+        this.setVelocity(0, this.speed);
         this.animations.play('down');
     };
     Character.prototype.moveLeft = function(){
-        this.x -= this.speed;
+        this.setVelocity(-this.speed, 0);
         this.animations.play('left');
     };
     Character.prototype.moveRight = function(){
-        this.x += this.speed;
+        this.setVelocity(this.speed, 0);
         this.animations.play('right');
     };
     Character.prototype.kill = function() {
         this.destroy();
-    }
+    };
+
+    Character.prototype.stop = function(){
+        this.setVelocity(0, 0);
+        this.animations.stop();
+    };
 
     return Character;
 })();

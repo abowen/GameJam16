@@ -7,7 +7,7 @@ var MovingSprite = (function(){
 
         Prefab.call(this, game, 'Player', {x:x, y:y}, properties);
 
-        this.speed = 2;
+        this.speed = 80;
         this.game = game;
 
         this.game.physics.enable(this);
@@ -29,20 +29,25 @@ var MovingSprite = (function(){
         this.animations.add('left', [9, 10, 11], this.framesPerSecond, true);
     };
 
+    MovingSprite.prototype.setVelocity = function(x, y){
+        this.body.velocity.x = x;
+        this.body.velocity.y = y;
+    },
+
     MovingSprite.prototype.moveUp = function(){
-        this.y -= this.speed;
+        this.setVelocity(0, -this.speed);
         this.animations.play('up');
     };
     MovingSprite.prototype.moveDown = function(){
-        this.y += this.speed;
+        this.setVelocity(0, this.speed);
         this.animations.play('down');
     };
     MovingSprite.prototype.moveLeft = function(){
-        this.x -= this.speed;
+        this.setVelocity(-this.speed, 0);
         this.animations.play('left');
     };
     MovingSprite.prototype.moveRight = function(){
-        this.x += this.speed;
+        this.setVelocity(this.speed, 0);
         this.animations.play('right');
     };
 

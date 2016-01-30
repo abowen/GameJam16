@@ -124,15 +124,12 @@ BasicGame.Game.prototype = {
         this.characters = this.game.add.group();
         this.characters.enableBody = true;
         this.characters.z = 3;
-                
-        // Moving objects that are blocked by mountains        
-        this.characters = this.game.add.group();
         
         //http://phaser.io/examples/v2/input/cursor-key-movement
         cursors = this.game.input.keyboard.createCursorKeys();
         this.game.ai = new Ai();
-        
-        this.humans = this.game.add.group();
+
+        this.humans = this.game.add.physicsGroup();
 
   //      this.game.offering_stone = this.offering_stone = new OfferingStone(this.game, this.world.centerX, this.world.centerY, 'offering_stone');
         this.game.character = this.character = new Character(this.game, this.world.centerX / 2, this.world.centerY, 'character');
@@ -236,7 +233,7 @@ BasicGame.Game.prototype = {
         var tiles = this.backgroundLayer.getTiles(0, 0, this.world.width, this.world.height);
         this.game.houseTiles = tiles.filter(function(f){return f.index === 2 || f.index === 3;});
 
-        this.map.setCollision([7, 8, 9, 22, 23, 24, 13], true, this.backgroundLayer);
+        this.map.setCollision([23, 24, 13, 130, 113, 24,108,109,124,125,126,141,142,143], true, this.backgroundLayer);
     },
 
     gameResized: function(width, height) {
@@ -270,9 +267,9 @@ BasicGame.Game.prototype = {
     },
 
     update: function() {
-        this.physics.arcade.collide(this.map, this.characters);
         this.physics.arcade.collide(this.backgroundLayer, this.characters);
-        this.physics.arcade.collide(this.characters, this.humans);
+        this.physics.arcade.collide(this.backgroundLayer, this.game.human);
+        //this.physics.arcade.collide(this.characters, this.humans);
         this.physics.arcade.collide(this.characters, this.enemy);
 
         /*  if (this.game.game_state.player.rituals_performed === this.game.game_state.win_conditions.rituals_performed) {
@@ -288,7 +285,7 @@ BasicGame.Game.prototype = {
         } else if (cursors.right.isDown) {
             this.character.moveRight();
         } else {
-            this.character.animations.stop();
+            this.character.stop();
         }
 
         this.updateHumans();
@@ -329,7 +326,7 @@ BasicGame.Game.prototype = {
         var startTile = this.game.houseTiles[this.game.rnd.between(0, this.game.houseTiles.length - 1)];
         
         var human = new Human(this.game, startTile.worldX + 8, startTile.worldY + 8, 'human');
-        this.humans.addChild(human);
+        //this.humans.addChild(human);
     },
 
     updateHumans: function() {

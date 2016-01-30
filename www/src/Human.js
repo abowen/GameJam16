@@ -1,7 +1,9 @@
 var Human = (function() {
 	function Human(game, x, y, sprite) {
 		MovingSprite.call(this, game, x, y, sprite);
-		this.speed = 1;
+		this.game = game;
+		this.speed = 80;
+		this.game.physics.arcade.enable(this);
 		this.body.allowGravity = false;
 
 		this.framesPerSecond = 10;
