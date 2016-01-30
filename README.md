@@ -2,13 +2,18 @@
 
 See [LICENSE.md](./LICENSE.md) for license terms and conditions.
 
-Collaborators
+## Collaborators
+### Developers
 - Josh Bradley
 - Dominik Raniszewski
 - Andrew Bowen
 - Abul Dider
 
+### Sound
+- Amanda J Lim
+
 ## Links
+- http://globalgamejam.org/2016/games/black-and-white
 - https://gamejamnoobs.slack.com/messages/general/
 - http://globalgamejam.org/
 
