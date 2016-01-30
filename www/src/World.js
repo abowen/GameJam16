@@ -16,7 +16,8 @@ var World = (function() {
         this.enemy = {
             humans_devoured: 0,
             rituals_performed: 0,
-            difficulty: 5
+            difficulty: 5,
+            isEatingHuman : false
         };
 
         this.screenShake = {
@@ -32,7 +33,8 @@ var World = (function() {
 
     World.prototype.devourHuman = function(human) {
         this.player.humans_devoured += 1;
-        this.makeWorldScarier(human);
+        // kill human?
+        this.makeWorldScarier();
     };
 
     World.prototype.cameraShake = function(effect) {
@@ -58,6 +60,7 @@ var World = (function() {
     };              
 
     World.prototype.sacrificeHuman = function(human) {
+    	// kill human?
         this.player.souls_collected += 1;
         this.updateScore();
         this.calculateScreenShake();
