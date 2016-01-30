@@ -64,6 +64,7 @@ BasicGame.Game.prototype = {
         //http://phaser.io/examples/v2/sprites/spritesheet
         this.load.spritesheet('characterOrange', 'asset/characterOrangeLine.png', 16, 16, 12);
         this.load.spritesheet('enemy', 'asset/images/enemy_spritesheet.png', 16, 16, 12);
+        this.load.spritesheet('human', 'asset/human.png', 16, 16, 30);
         this.load.image('summon', 'asset/summonRed.png');
         this.load.image('characterSingle', 'asset/characterSingle.png');
 
@@ -228,7 +229,7 @@ BasicGame.Game.prototype = {
     },
 
     spawnHuman: function() {
-        var human = new Human(this.game, this.game.rnd.between(0, this.world.width), -16, 'characterOrange');
+        var human = new Human(this.game, this.game.rnd.between(0, this.world.width), -16, 'human');
         this.humans.addChild(human);
     },
 
