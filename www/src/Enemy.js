@@ -6,7 +6,7 @@ var Enemy = (function() {
         properties = {
             group: 'enemies',
             spritesheet: 'enemy'
-        },
+        };
         
         Prefab.call(this, game_state, name, {x:x, y:y}, properties);
 

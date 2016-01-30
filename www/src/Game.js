@@ -210,33 +210,17 @@ BasicGame.Game.prototype = {
     },
 
     summonShit : function () {
-        var summon = new Phaser.Sprite(
+        var summon = new Summon(
                         this.game, 
                         this.character.x,
-                        -20, 
-                        'summon');
-        summon.anchor.setTo(0.5, 0.5);
+                        -20,
+                        this.character.x,
+                        this.character.y);
 
         this.emitter.emitX = summon.x;
         this.emitter.emitY = summon.y;
 
         this.summonLayer.add(summon);
-
-        var summonSpeed = 500;
-
-        summon.fallTween = this.game.add.tween(summon);
-        summon.fallTween.to({
-            x: this.character.x,
-            y: this.character.y
-        }, summonSpeed, Phaser.Easing.Quadratic.Out);
-
-        summon.fallTween.start();
-
-        var tweenRotate = this.game.add.tween(summon);
-        tweenRotate.to({
-            angle: 200
-        }, summonSpeed, Phaser.Easing.Linear.None);
-        tweenRotate.start();
 
         this.summonSound.play();
     },
@@ -259,7 +243,6 @@ BasicGame.Game.prototype = {
     humanHitsSummon: function(human, summon) {
 
         if (!summon.fallTween.isRunning) {
-            //console.log("Collision");
             var cloneH = this.add.sprite(summon.x, summon.y, 'summon');
             cloneH.anchor.set(0.5);
 
