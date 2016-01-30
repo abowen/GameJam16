@@ -30,7 +30,7 @@ var World = (function() {
         
         World.prototype.constructor = World;
 
-        World.prototype.screenShake: function(effect) {        	
+        World.prototype.screenShake = function(effect) {        	
 	        var min = -effect;
 	        var max = effect;
 	        this.game.camera.x += Math.floor(Math.random() * (max - min + 1)) + min;
