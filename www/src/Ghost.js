@@ -9,7 +9,7 @@ var Ghost = (function() {
 
         this.game.physics.enable(this);
         this.anchor.set(0.5);
-        this.alpha = 0.5;
+        
 
 
         this.setAnimation();
@@ -21,6 +21,7 @@ var Ghost = (function() {
         this.animations.play("grave");
         setTimeout(function() {
             this.isGraveStone = false;
+            this.alpha = 0.5;
         }.bind(this), 4000);
     };
 
@@ -58,7 +59,7 @@ var Ghost = (function() {
                 var vel_factor = 1.0;
 
                 if (dist > 20.0) {
-                    this.game.ai.follow(this, this.human, 30.0 * vel_factor, 30.0 * vel_factor);
+                    this.game.ai.follow(this, this.game.character, 30.0 * vel_factor, 30.0 * vel_factor);
                 } else {
                     this.stop();
                 }
