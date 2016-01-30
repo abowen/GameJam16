@@ -29,7 +29,8 @@ BasicGame.Game.prototype = {
         // * SHOW_ALL
         // * RESIZE
         // See http://docs.phaser.io/Phaser.ScaleManager.html for full document
-        this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+        this.scale.scaleMode = Phaser.ScaleManager.USER_SCALE;
+        this.scale.setUserScale(2, 2, 0, 0);
         // If you wish to align your game in the middle of the page then you can
         // set this value to true. It will place a re-calculated margin-left
         // pixel value onto the canvas element which is updated on orientation /
