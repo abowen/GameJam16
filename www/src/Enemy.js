@@ -58,8 +58,10 @@ var Enemy = (function() {
             followed_mob.position.x,
             followed_mob.position.y);
             
+        var vel_factor = 1.0;
+        
         if(dist > 20.0){    
-            this.game.ai.follow(this, followed_mob, 30.0, 30.0);
+            this.game.ai.follow(this, followed_mob, 30.0 * vel_factor, 30.0 * vel_factor);
         } else {
             this.stop();
         }
