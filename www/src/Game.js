@@ -204,7 +204,10 @@ BasicGame.Game.prototype = {
         this.map.setCollisionBetween(15, 16);
         //create layer
         this.groundLayer = this.map.createLayer('groundLayer');
-        this.backgroundLayer = this.map.createLayer('backgroundLayer'); 
+        this.backgroundLayer = this.map.createLayer('backgroundLayer');
+
+        var tiles = this.backgroundLayer.getTiles(0, 0, this.world.width, this.world.height);
+        this.game.houseTiles = tiles.filter(function(f){return f.index === 2 || f.index === 3;});
 
         this.map.setCollision([7, 8, 9, 22, 23, 24, 13], true, this.backgroundLayer);
     },
@@ -301,7 +304,9 @@ BasicGame.Game.prototype = {
     },
 
     spawnHuman: function() {
-        var human = new Human(this.game, this.game.rnd.between(0, this.world.width), -6, 'human');
+        var startTile = this.game.houseTiles[this.game.rnd.between(0, this.game.houseTiles.length)];
+        
+        var human = new Human(this.game, startTile.worldX + 8, startTile.worldY + 8, 'human');
         this.humans.addChild(human);
     },
 
@@ -362,11 +367,6 @@ BasicGame.Game.prototype = {
             }            
         }
     },
-
-    devourHuman: function(human, character) {
-        human.destroy();
-        //update score may be?
-    }
 };
 
 // create Game function in BasicGame

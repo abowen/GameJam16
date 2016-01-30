@@ -3,12 +3,13 @@ var Human = (function() {
 		MovingSprite.call(this, game, x, y, sprite);
 		this.speed = 1;
 		this.body.allowGravity = false;
-		this.body.acceleration = {x: 0, y: this.game.rnd.between(-50, 50)};
 
-		this.framesPerSecond = 15;
+		this.framesPerSecond = 10;
         this.followers = [];
         
         this.setAnimation();
+		this.moves = ['moveUp', 'moveDown', 'moveLeft', 'moveRight'];
+		this.lastMove = null;
 	};
 
 	Human.prototype = Object.create(MovingSprite.prototype);
@@ -27,7 +28,12 @@ var Human = (function() {
     };
 
 	Human.prototype.update = function() {
-		this.moveDown();
+		var moveIn = this.lastMove;
+		if (!this.lastMove || Math.random() > 0.98) {
+			moveIn = this.moves[Math.floor(Math.random() * 10) % 4];
+		}
+		this[moveIn]();
+		this.lastMove = moveIn;
 
 		if (this.y > this.game.height) this.destroy();
 	};
