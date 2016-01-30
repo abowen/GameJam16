@@ -108,7 +108,7 @@ var World = (function() {
             this.game_state.game,
             xPosition,
             20,
-            'characterSingle');
+            'scoreIcon');
         scoreIcon.anchor.setTo(0.5, 0.5);
      
         this.game_state.scoreLayer.add(scoreIcon);     

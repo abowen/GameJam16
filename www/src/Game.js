@@ -69,7 +69,8 @@ BasicGame.Game.prototype = {
 
         this.load.image('summon', 'asset/summonRed.png');
         
-        this.load.image('characterSingle', 'asset/images/character_16.png');
+        this.load.image('scoreIcon', 'asset/images/character_16.png');
+        this.load.image('angel', 'asset/images/angel_16.png');
         this.load.image('keyboardLeft', 'asset/images/keyboardLeft.png');
         this.load.image('keyboardUp', 'asset/images/keyboardUp.png');
         this.load.image('keyboardDown', 'asset/images/keyboardDown.png');
@@ -285,7 +286,7 @@ BasicGame.Game.prototype = {
     shitJustGotReal: function() {
         if (this.character.followers.length > 0){
             console.log("88888ooooo--- TUUUUUUURRRRRBOOOOOOOOOOO))))>");
-            
+
             var follower = this.character.followers.pop();
             this.character.sacrificeFollower(follower);
 

@@ -20,9 +20,7 @@ var Ghost = (function() {
         setTimeout(function() {
             this.isGraveStone = false;
             this.alpha = 0.5;
-        }.bind(this), 4000);
-        
-       
+        }.bind(this), 4000);            
     };
 
     Ghost.prototype = Object.create(MovingSprite.prototype);
@@ -34,6 +32,11 @@ var Ghost = (function() {
         } else {
             this.master = character.followers[character.followers.length-1];            
         }        
+    };
+
+    Ghost.prototype.timeToDie = function(character) {
+        // TODO: play sweet sound
+        // TOOD: shoot into spppaaace       
     };
 
     Ghost.prototype.stop = function() {

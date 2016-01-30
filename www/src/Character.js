@@ -40,7 +40,8 @@ var Character = (function() {
     Character.prototype.sacrificeFollower = function(follower) {
         console.log("Slaughter the lamb.");   
         this.speed += this.boostSpeed;
-        follower.kill();              
+        follower.timeToDie(this);
+        follower.kill();     
     };
 
     Character.prototype.setAnimation = function() {
