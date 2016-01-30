@@ -95,8 +95,7 @@ BasicGame.Game.prototype = {
         this.load.audio('scream_10', 'asset/sfx/scream_10.mp3');
         this.load.audio('eating_1', 'asset/sfx/eating_1.mp3');
         this.load.audio('eating_2', 'asset/sfx/eating_2.mp3');
-        this.load.audio('darkExploration', 'asset/music/DarkExploration.mp3');
-        
+        this.load.audio('darkExploration', 'asset/music/DarkExploration.mp3');        
     },
 
     create: function() {

@@ -35,8 +35,15 @@ var Ghost = (function() {
     };
 
     Ghost.prototype.timeToDie = function(character) {
-        // TODO: play sweet sound
-        // TOOD: shoot into spppaaace       
+        // TODO: play sweet sound        
+        var angel = this.game_state.game.add.sprite(this.x, this.y, 'angel');
+        angel.anchor.set(0.5);
+
+        var tween = this.game.add.tween(angel);
+        tween.to({
+            y: -40
+        }, 200, Phaser.Easing.Quadratic.In);
+        tween.start();
     };
 
     Ghost.prototype.stop = function() {
