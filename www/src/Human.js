@@ -1,15 +1,17 @@
 var Human = (function() {
-    function Human(game_state, x, y, sprite) {
+    function Human(game_state, x, y) {
         MovingSprite.call(this, game_state, x, y, 'human', 'humans');
         this.speed = 100;
         this.body.allowGravity = false;
+		this.game = game_state.game;
 
-        this.game_state.game.physics.arcade.enable(this);
+        this.game.physics.arcade.enable(this);
 
         this.framesPerSecond = 10;
 
         this.moves = ['moveUp', 'moveDown', 'moveLeft', 'moveRight'];
-        this.lastMove = null;
+
+		this.lastMove = null;
 
         this.devourHuman = function(human, character) {
             human.destroy();
@@ -51,6 +53,10 @@ var Human = (function() {
                 this.game_state.world_state.sacrificeHuman(this);                
             }
         };
+
+		this.terrainHit = function(human){
+			human.forceDirectionChange = true;
+		};
         
         this.animations.add('down', [0, 1, 2, 3, 4, 5], this.framesPerSecond, true);
         this.animations.add('right', [18, 19, 20, 21, 22, 23], this.framesPerSecond, true);
@@ -64,12 +70,14 @@ var Human = (function() {
 
     Human.prototype.update = function() {
          "use strict";
+		this.game.physics.arcade.collide(this.game_state.humans, this.game_state.backgroundLayer, this.terrainHit);
 		if (this.alive) {
 			this.game_state.game.physics.arcade.overlap(this, this.game_state.summonLayer, this.humanHitsSummon, null, this);
 			this.game_state.game.physics.arcade.overlap(this, this.game_state.enemy, this.devourHuman, null, this);
 			var moveIn = this.lastMove;
 
-			if (!this.lastMove || Math.random() > 0.98) {
+			if (this.forceDirectionChange || !this.lastMove || Math.random() > 0.98) {
+				this.forceDirectionChange = false;
 				moveIn = this.moves[Math.floor(Math.random() * 10) % 4];
 			}
 			this[moveIn]();

@@ -250,7 +250,7 @@ BasicGame.Game.prototype = {
 
     update: function() {
         this.physics.arcade.collide(this.backgroundLayer, this.characters);
-        this.physics.arcade.collide(this.backgroundLayer, this.humans);
+
         this.physics.arcade.collide(this.backgroundLayer, this.enemy);
 
         if (cursors.up.isDown) {
