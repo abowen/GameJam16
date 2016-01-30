@@ -96,6 +96,7 @@ BasicGame.Game.prototype = {
         this.load.audio('scream_9', 'asset/sfx/scream_9.mp3');
         this.load.audio('scream_10', 'asset/sfx/scream_10.mp3');
         this.load.audio('darkExploration', 'asset/music/DarkExploration.mp3');
+        this.load.audio('devour', 'asset/sfx/monster-eating.mp3');
     },
 
     create: function() {
@@ -144,24 +145,24 @@ BasicGame.Game.prototype = {
 
         // http://phaser.io/examples/v2/particles/emitter-width
         // http://phaser.io/examples/v2/particles/firestarter
-        this.summonParticles = this.make.bitmapData(2, 2);
-        this.summonParticles.rect(0, 0, 4, 4, '#ffffff');
+        this.summonParticles = this.make.bitmapData(3, 3);
+        this.summonParticles.rect(0, 0, 3, 3, '#ff0000');
         this.summonParticles.update();
 
         this.emitter = this.add.emitter(0, 0, 128);
         this.emitter.makeParticles(this.summonParticles);
-        this.emitter.gravity = 0;
+        this.emitter.gravity = 100;
         this.emitter.setXSpeed(250, -250);
         this.emitter.setYSpeed(-100, 100);
-        this.emitter.setAlpha(1, 0.2, 500);
-        this.emitter.flow(1000, 30, 2, -1, true);    
+        this.emitter.setAlpha(1, 0.2, 500);           
 
         ////// SOUND EFFECTS
         this.summonSound = this.game.add.audio('explosionSound');
         this.explosionSound = this.game.add.audio('crashSound');
+        this.devourSound = this.game.add.audio('devour');
 
         var screamNames = ['screamWilhelm',
-                            'screamCalzone',
+                            'screamCalzon',
                             'scream_1',
                             'scream_2',
                             'scream_3',
@@ -171,7 +172,7 @@ BasicGame.Game.prototype = {
                             'scream_7',
                             'scream_8',
                             'scream_9',
-                            'scream10'];
+                            'scream_10'];
 
         this.screams = [];
         for (var i=0;i<screamNames.length;i++)
@@ -318,9 +319,6 @@ BasicGame.Game.prototype = {
             this.character.x,
             this.character.y);
 
-        this.emitter.emitX = summon.x;
-        this.emitter.emitY = summon.y;    
-
         this.summonSound.play();
     },
 
@@ -388,6 +386,19 @@ BasicGame.Game.prototype = {
             }            
         }
     },
+        
+    devourHuman: function(human, enemy) {
+        this.emitter.emitX = human.x;
+        this.emitter.emitY = human.y;
+        human.kill();
+        this.devourSound.play();
+        this.getRandomScream().play();
+        this.emitter.flow(500, 30, 2, 100, false);
+    },
+
+    getRandomScream: function() {
+        return this.screams[this.game.rnd.between(0, this.screams.length - 1)];
+    }
 };
 
 // create Game function in BasicGame
