@@ -22,6 +22,7 @@ var Human = (function() {
     
     Human.prototype.addFollower = function(follower){
         this.followers.push(follower);
+        follower.follow(this);
     };
 
 	Human.prototype.update = function() {

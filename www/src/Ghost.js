@@ -30,27 +30,32 @@ var Ghost = (function() {
         this.human = human;
     };
 
+    Ghost.prototype.stop = function() {
+        this.body.velocity.x = 0;
+        this.body.velocity.y = 0;
+    }
+
     Ghost.prototype.setAnimation = function() {
-        this.animations.add('down', [0, 1, 2], this.framesPerSecond, true);
-        this.animations.add('right', [3, 4, 5], this.framesPerSecond, true);
-        this.animations.add('up', [6, 7, 8], this.framesPerSecond, true);
-        this.animations.add('left', [3, 4, 5], this.framesPerSecond, true);
+        this.animations.add('down', [1, 2, 3], this.framesPerSecond, true);
+        this.animations.add('right', [4, 5, 6], this.framesPerSecond, true);
+        this.animations.add('up', [7, 8, 9], this.framesPerSecond, true);
+        this.animations.add('left', [4, 5, 6], this.framesPerSecond, true);
     };
 
     Ghost.prototype.update = function() {
         if (!this.isGraveStone) {
             Phaser.Sprite.prototype.update.call(this);
 
-            if (this.isGraveStone && this.human != undefined) {
+            if (this.human != undefined) {
                 var dist = this.game.math.distance(this.body.position.x,
                     this.body.position.y,
                     this.human.position.x,
-                    this.huma.position.y);
+                    this.human.position.y);
 
                 var vel_factor = 1.0;
 
                 if (dist > 20.0) {
-                    this.game.ai.follow(this, followed_mob, 30.0 * vel_factor, 30.0 * vel_factor);
+                    this.game.ai.follow(this, this.human, 30.0 * vel_factor, 30.0 * vel_factor);
                 } else {
                     this.stop();
                 }
@@ -62,6 +67,9 @@ var Ghost = (function() {
                 this[moveIn]();
                 this.lastMove = moveIn;
             }
-    }};
+        } else {
+            this.stop();
+        }
+    };
     return Ghost;
 })();

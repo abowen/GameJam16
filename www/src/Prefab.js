@@ -12,7 +12,7 @@ var Prefab = (function() {
         this.game[properties.group].addChild(this);
         this.frame = +properties.frame;
     };
-
+    
     Prefab.prototype = Object.create(Phaser.Sprite.prototype);
     Prefab.prototype.constructor = Prefab;
 
