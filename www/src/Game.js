@@ -54,7 +54,8 @@ BasicGame.Game.prototype = {
         // ScaleMode is not set to RESIZE.
         this.scale.refresh();
 
-
+        // TODO: Move this into game state once Dom has finished
+        this.humansKilled = 0;
     },
 
     preload: function() {
@@ -98,9 +99,9 @@ BasicGame.Game.prototype = {
         this.instructionLayer.z = 5;
         this.instructionLayer.destroyChildren = true;
 
-        // Character lives in the top right        
-        this.livesLayer = this.game.add.group();
-        this.livesLayer.z = 4;
+        // People killed rating      
+        this.scoreLayer = this.game.add.group();
+        this.scoreLayer.z = 4;
 
         // Moving objects that are blocked by mountains
         this.characters = this.game.add.group();
@@ -144,7 +145,7 @@ BasicGame.Game.prototype = {
         this.emitter.setXSpeed(250, -250);
         this.emitter.setYSpeed(-100, 100);
         this.emitter.setAlpha(1, 0.2, 500);
-        this.emitter.flow(1000, 30, 2, -1, true);
+        this.emitter.flow(1000, 30, 2, -1, true);    
 
         ////// SOUND EFFECTS
         this.summonSound = this.game.add.audio('explosionSound');
@@ -158,21 +159,7 @@ BasicGame.Game.prototype = {
         this.music = this.game.add.audio('darkExploration');
 
         // MP3's take time to decode, we can make a call back if required
-        this.game.sound.setDecodedCallback([this.music, this.explosionSound, this.scream01], this.startMusic, this);
-        for (var i = 0; i < TOTAL_PLAYER_LIVES; i++) {
-            var width = 16;
-            var padding = 4;
-            var xPosition = 16 + (width + padding) * i;
-
-            var characterLife = new Phaser.Sprite(
-                this.game,
-                xPosition,
-                20,
-                'characterSingle');
-            characterLife.anchor.setTo(0.5, 0.5);
-            this.livesLayer.add(characterLife);
-        }
-        
+        this.game.sound.setDecodedCallback([this.music, this.explosionSound, this.scream01Sound], this.startMusic, this);      
        
         // Instruction information
         // Summon those fools from dark earth                
@@ -201,6 +188,7 @@ BasicGame.Game.prototype = {
     },
 
     startMusic: function() {
+        console.log("MUSIC START PARTY");
         this.music.loopFull(0.6);
     },
 
@@ -212,7 +200,7 @@ BasicGame.Game.prototype = {
         this.map.setCollisionBetween(15, 16);
         //create layer
         this.groundLayer = this.map.createLayer('groundLayer');
-        this.backgroundLayer = this.map.createLayer('backgroundLayer');
+        this.backgroundLayer = this.map.createLayer('backgroundLayer'); 
 
         this.map.setCollision([7, 8, 9, 22, 23, 24, 13], true, this.backgroundLayer);
     },
@@ -270,6 +258,27 @@ BasicGame.Game.prototype = {
         }
 
         this.updateHumans();
+        this.updateScore();
+    },
+
+    updateScore : function() { 
+
+        var requiredDraw = this.humansKilled - this.scoreLayer.length;
+        
+        for (var i = 0;  i < requiredDraw; i++) {
+            var width = 16;
+            var padding = 4;
+            var xPosition = 16 + (width + padding) * this.humansKilled;
+
+            var characterLife = new Phaser.Sprite(
+                this.game,
+                xPosition,
+                20,
+                'characterSingle');
+            characterLife.anchor.setTo(0.5, 0.5);
+         
+            this.scoreLayer.add(characterLife);        
+        }
     },
 
     summonShit: function() {
@@ -333,6 +342,20 @@ BasicGame.Game.prototype = {
 
             var ghost = new Ghost(this.game, human.x, human.y);
             human.addFollower(ghost);
+            
+            // Tint the world
+            if (this.humansKilled < 16)
+            {
+                this.humansKilled++;
+
+                var tintValue = 16 - this.humansKilled;
+                var hexString = tintValue.toString(16);
+                hexString = hexString + hexString;                
+                var tintColour = '0xff' + hexString + 'ff';
+                //console.log(this.humansKilled + " " + tintColour);
+                this.groundLayer.tint = tintColour;
+                this.backgroundLayer.tint = tintColour;     
+            }            
         }
     }
 };
