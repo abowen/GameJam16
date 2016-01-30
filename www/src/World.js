@@ -18,6 +18,13 @@ var World = (function() {
                 rituals_performed: 0,
                 difficulty: 5
             };
+
+            this.screenShake {
+            	effect = 0,
+            	counter = [5,10,15]
+            }
+
+        	this.world.setBounds(-20, -20, this.game.width+20, this.game.height+2);
         };
         
         World.prototype.constructor = World;
@@ -30,8 +37,7 @@ var World = (function() {
             this.player.souls_collected += 1;
         };
         
-        World.prototype.updateScore = function(){
-            
+        World.prototype.updateScore = function(){            
         };
 
         return World;
