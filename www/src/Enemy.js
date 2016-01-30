@@ -58,7 +58,7 @@ var Enemy = (function() {
             followed_mob.position.x,
             followed_mob.position.y);
             
-        if(dist > 100.0){    
+        if(dist > 20.0){    
             this.game.ai.follow(this, followed_mob, 30.0, 30.0);
         } else {
             this.stop();
