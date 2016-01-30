@@ -13,8 +13,6 @@ var cursors;
 
 // set Game function prototype
 BasicGame.Game.prototype = {
-
-
     init: function() {
         this.physics.startSystem(Phaser.Physics.ARCADE);
 
