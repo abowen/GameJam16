@@ -93,6 +93,7 @@ BasicGame.Game.prototype = {
         this.load.audio('scream_9', 'asset/sfx/scream_9.mp3');
         this.load.audio('scream_10', 'asset/sfx/scream_10.mp3');
         this.load.audio('darkExploration', 'asset/music/DarkExploration.mp3');
+        this.load.audio('devour', 'asset/sfx/monster-eating.mp3');
     },
 
     create: function() {
@@ -134,9 +135,18 @@ BasicGame.Game.prototype = {
         this.summonKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
         this.summonKey.onDown.add(this.summonShit, this);
 
+        this.summonParticles = this.make.bitmapData(3, 3);
+        this.summonParticles.rect(0, 0, 3, 3, '#ff0000');
+        this.summonParticles.update();
+
+        this.emitter = this.add.emitter(0, 0, 128);
+        this.emitter.makeParticles(this.summonParticles);
+        this.emitter.gravity = 100;
+        this.emitter.setAlpha(1, 0.2, 500);    
         ////// SOUND EFFECTS
         this.summonSound = this.game.add.audio('explosionSound');
         this.explosionSound = this.game.add.audio('crashSound');
+        this.devourSound = this.game.add.audio('devour');
 
         var screamNames = ['screamWilhelm',
                             'screamCalzon',
@@ -258,10 +268,7 @@ BasicGame.Game.prototype = {
             this.character.x, -20,
             this.character.x,
             this.character.y);
-
-        this.emitter.emitX = summon.x;
-        this.emitter.emitY = summon.y;
-
+        
         this.summonSound.play();
     },
 
