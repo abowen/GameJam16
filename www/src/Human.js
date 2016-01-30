@@ -13,11 +13,12 @@ var Human = (function() {
 
 		this.lastMove = null;
 
-        this.devourHuman = function(human, enemy) {            
-            this.game_state.world_state.devourHuman(human);
+        this.devourHuman = function(human, enemy) {         
+            // TODO: Would rather this in a collision controller
+            this.game_state.world_state.devourHuman(human, enemy);            
+            enemy.devourHuman(human);
 
-            this.makeNastyScreams();
-            this.makeNastyEatingNoises();
+            this.makeNastyScreams();            
             this.makeNastyMess(human);
 
             human.kill();	        	        	        
@@ -97,10 +98,6 @@ var Human = (function() {
         this.game_state.screams[this.game.rnd.between(0, this.game_state.screams.length - 1)].play();        
     };
 
-    Human.prototype.makeNastyEatingNoises = function() {        
-        this.game_state.eating[this.game.rnd.between(0, this.game_state.eating.length - 1)].play();
-    };
-
     Human.prototype.makeNastyMess = function(human) {            
         var bodyPartOneFrame = Math.floor(Math.random() * 2);
         var bodyPartTwoFrame = Math.floor(Math.random() * 2) + 2;
@@ -116,9 +113,7 @@ var Human = (function() {
         var bodyPartOne = this.game_state.game.add.sprite(human.x - bodyPartOneX, human.y - bodyPartOneY, 'humanparts');
         bodyPartOne.frame = bodyPartOneFrame;
         var bodyPartTwo = this.game_state.game.add.sprite(human.x + bodyPartTwoX, human.y + bodyPartTwoX, 'humanparts');
-        bodyPartTwo.frame = bodyPartTwoFrame;
-
-        this.game_state.emitter.flow(500, 30, 2, 100, false);        
+        bodyPartTwo.frame = bodyPartTwoFrame;    
     };
 
     return Human;

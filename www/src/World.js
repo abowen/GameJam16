@@ -24,6 +24,7 @@ var World = (function() {
         this.enemy = {
             humans_devoured: 0,
             difficulty: 5,
+            // TODO: Refactor back into Enemy.js
             isEatingHuman : false
         };
 
@@ -39,9 +40,10 @@ var World = (function() {
     };
 
     World.prototype.devourHuman = function(human) {
-        this.enemy.humans_devoured += 1;        
         console.log("started eating");
-        this.enemy.isEatingHuman = true;
+
+        this.enemy.humans_devoured += 1;                
+        this.enemy.isEatingHuman = true;        
         
 		setTimeout(function() {
 			console.log("stopped eating");

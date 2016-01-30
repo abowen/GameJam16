@@ -44,7 +44,20 @@ var Enemy = (function() {
     Enemy.prototype.stop = function() {
         this.body.velocity.x = 0;
         this.body.velocity.y = 0;
-    }
+    };
+
+    Enemy.prototype.devourHuman = function(human) {
+        this.makeNastyEatingNoises();
+        this.makeNastyMess();
+    };    
+
+    Enemy.prototype.makeNastyMess = function() {  
+        this.game_state.emitter.flow(500, 30, 2, 100, false);
+    };
+    
+    Enemy.prototype.makeNastyEatingNoises = function() {        
+        this.game_state.eating[this.game.rnd.between(0, this.game_state.eating.length - 1)].play();
+    };
 
     Enemy.prototype.update = function() {
         "use strict";
