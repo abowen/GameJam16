@@ -64,11 +64,14 @@ BasicGame.Game.prototype = {
 
         //http://phaser.io/examples/v2/sprites/spritesheet        
         this.load.spritesheet('character', 'asset/images/character_spritesheet_32.png', 32, 32, 12);
-        this.load.spritesheet('enemy', 'asset/images/enemy_spritesheet_32.png', 32, 32, 12);
+        this.load.spritesheet('enemy', 'asset/images/enemy_spritesheet_32.png', 32, 32, 10);
+        this.load.spritesheet('offering_stone', 'asset/images/offering_stone_32.png', 32, 32, 1);
+
         this.load.spritesheet('human', 'asset/human.png', 16, 16, 30);
         this.load.spritesheet('ghost', 'asset/images/ghost_spritesheet_16.png', 16, 16, 10);
 
         this.load.image('summon', 'asset/summonRed.png');
+        
         this.load.image('characterSingle', 'asset/images/character_16.png');
         this.load.image('keyboardLeft', 'asset/images/keyboardLeft.png');
         this.load.image('keyboardUp', 'asset/images/keyboardUp.png');
@@ -84,7 +87,7 @@ BasicGame.Game.prototype = {
         this.load.audio('darkExploration', 'asset/music/DarkExploration.mp3');
     },
 
-    create: function () {
+    create: function() {
         // TODO: Clearly remove before publishing
         this.game.add.plugin(Phaser.Plugin.Debug);
 
@@ -118,10 +121,9 @@ BasicGame.Game.prototype = {
         this.game.ai = new Ai();
         this.humans = this.game.add.group();
 
+  //      this.game.offering_stone = this.offering_stone = new OfferingStone(this.game, this.world.centerX, this.world.centerY, 'offering_stone');
         this.game.character = this.character = new Character(this.game, this.world.centerX / 2, this.world.centerY, 'character');
         this.enemy = new Enemy(this.game, 'Enemy', this.world.centerX + (this.world.centerX / 2), this.world.centerY, 'enemy');
-
-        this.ghosts = this.game.add.group();
 
         this.characters.addChild(this.character);
         this.characters.enableBody = true;
@@ -171,7 +173,8 @@ BasicGame.Game.prototype = {
             characterLife.anchor.setTo(0.5, 0.5);
             this.livesLayer.add(characterLife);
         }
-
+        
+       
         // Instruction information
         // Summon those fools from dark earth                
         this.instructionKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
@@ -181,20 +184,20 @@ BasicGame.Game.prototype = {
         var keyX = 30;        
         // TODO: Replace Y with less value once we have less scaling
         var keyY = GAME_HEIGHT - 75;
-        for (var i=0;i<keys.length;i++) {            
+        for (var i = 0; i < keys.length; i++) {
             var keySprite = this.add.sprite(keyX, keyY, keys[i]);
-            keySprite.scale.setTo(0.75); 
-            keySprite.alpha = 0.5;            
-            keyX += keySprite.width + 10;     
+            keySprite.scale.setTo(0.75);
+            keySprite.alpha = 0.5;
+            keyX += keySprite.width + 10;
             console.log(keyX);
-            
-            keySprite.anchor.set(0, 0);    
-             
+
+            keySprite.anchor.set(0, 0);
+
             this.instructionLayer.addChild(keySprite);
-        }        
+        }
     },
 
-    clearInstructions : function(){
+    clearInstructions: function() {
         this.instructionLayer.destroy();
     },
 
@@ -300,14 +303,13 @@ BasicGame.Game.prototype = {
 
 
     humanHitsSummon: function(human, summon) {
-        if (!summon.fallTween.isRunning) {
+        if (!summon.fallTween.isRunning && human.alive) {
             var cloneH = this.add.sprite(summon.x, summon.y, 'summon');
             cloneH.anchor.set(0.5);
 
             var cloneV = this.add.sprite(summon.x, summon.y, 'summon');
             cloneV.anchor.set(0.5);
 
-            // TODO: Replace with ghost
             human.kill();
             summon.kill();
 
@@ -331,8 +333,7 @@ BasicGame.Game.prototype = {
             this.scream01Sound.play();
 
             var ghost = new Ghost(this.game, human.x, human.y);
-            this.ghosts.addChild(ghost);
-
+            
             // Tint the world
             if (this.humansKilled < 16)
             {
