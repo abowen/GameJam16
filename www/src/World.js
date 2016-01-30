@@ -35,13 +35,12 @@ var World = (function() {
         this.player.humans_devoured += 1;        
         console.log("started eating");
         this.enemy.isEatingHuman = true;
+        
 		setTimeout(function() {
 			console.log("stopped eating");
             this.enemy.isEatingHuman = false;
         }.bind(this), 1000);
-
-        human.destroy();
-
+        
         this.makeWorldScarier();
     };
 
