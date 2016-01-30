@@ -3,7 +3,7 @@ var Character = (function(){
         //BasicGame.Prefab.call(this, game, 'Player', {x:x, y:y}, properties);
         Phaser.Sprite.call(this, game, x, y, sprite);
 
-        this.speed = 2;
+        this.speed = 4;
         this.game = game;
 
         this.game.physics.enable(this);
