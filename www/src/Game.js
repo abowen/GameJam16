@@ -242,15 +242,13 @@ BasicGame.Game.prototype = {
     },
 
     spawnHuman: function() {
-        var human = new Character(this.game, this.game.rnd.between(0, this.world.width), -16, 'characterOrange');
+        var human = new Human(this.game, this.game.rnd.between(0, this.world.width), -16, 'characterOrange');
         this.humans.addChild(human);
     },
 
     updateHumans: function() {
         this.humans.forEach(function(human) {
-            human.y++;
-            human.animations.play('down');
-            human.body.acceleration = {x: 0, y: this.game.rnd.between(0, 50)};
+            human.update();
             if(human.y > this.world.height) human.destroy();
 
             this.physics.arcade.overlap(human, this.summonLayer, this.humanHitsSummon, null, this);
