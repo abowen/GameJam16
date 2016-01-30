@@ -105,12 +105,14 @@ var Human = (function() {
         var bodyPartOneFrame = Math.floor(Math.random() * 2);
         var bodyPartTwoFrame = Math.floor(Math.random() * 2) + 2;
 
+        // TODO: Refactor when not tired
         var bodyPartOneX = Math.floor(Math.random() * 5);
         var bodyPartOneY = Math.floor(Math.random() * 5);
 
         var bodyPartTwoX = Math.floor(Math.random() * 5);
         var bodyPartTwoY = Math.floor(Math.random() * 5);
 
+        // TODO: Tween these bad girls
         var bodyPartOne = this.game_state.game.add.sprite(human.x - bodyPartOneX, human.y - bodyPartOneY, 'humanparts');
         bodyPartOne.frame = bodyPartOneFrame;
         var bodyPartTwo = this.game_state.game.add.sprite(human.x + bodyPartTwoX, human.y + bodyPartTwoX, 'humanparts');
