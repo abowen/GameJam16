@@ -16,25 +16,10 @@ var Human = (function() {
         this.devourHuman = function(human, enemy) {            
             this.game_state.world_state.devourHuman(human);
 
-            // Hardcoding is naughty
-            var bodyPartOneFrame = Math.floor(Math.random() * 2);
-            var bodyPartTwoFrame = Math.floor(Math.random() * 2) + 2;
+            this.makeNastyNoises();
+            this.makeNastyMess(human);
 
-            var bodyPartOneX = Math.floor(Math.random() * 5);
-            var bodyPartOneY = Math.floor(Math.random() * 5);
-
-            var bodyPartTwoX = Math.floor(Math.random() * 5);
-            var bodyPartTwoY = Math.floor(Math.random() * 5);
-
-            var bodyPartOne = this.game_state.game.add.sprite(human.x - bodyPartOneX, human.y - bodyPartOneY, 'humanparts');
-            bodyPartOne.frame = bodyPartOneFrame;
-            var bodyPartTwo = this.game_state.game.add.sprite(human.x + bodyPartTwoX, human.y + bodyPartTwoX, 'humanparts');
-            bodyPartTwo.frame = bodyPartTwoFrame;
-
-            human.kill();
-	        this.game_state.devourSound.play();
-	        this.scream();
-	        this.game_state.emitter.flow(500, 30, 2, 100, false);
+            human.kill();	        	        	        
         };
 
         this.humanHitsSummon = function(human, summon) {
@@ -107,8 +92,27 @@ var Human = (function() {
 		}
     };
 
-    Human.prototype.scream = function() {
+    Human.prototype.makeNastyNoises = function() {
         this.game_state.screams[this.game.rnd.between(0, this.game_state.screams.length - 1)].play();
+        this.game_state.eating[this.game.rnd.between(0, this.game_state.eating.length - 1)].play();
+    };
+
+    Human.prototype.makeNastyMess = function(human) {            
+        var bodyPartOneFrame = Math.floor(Math.random() * 2);
+        var bodyPartTwoFrame = Math.floor(Math.random() * 2) + 2;
+
+        var bodyPartOneX = Math.floor(Math.random() * 5);
+        var bodyPartOneY = Math.floor(Math.random() * 5);
+
+        var bodyPartTwoX = Math.floor(Math.random() * 5);
+        var bodyPartTwoY = Math.floor(Math.random() * 5);
+
+        var bodyPartOne = this.game_state.game.add.sprite(human.x - bodyPartOneX, human.y - bodyPartOneY, 'humanparts');
+        bodyPartOne.frame = bodyPartOneFrame;
+        var bodyPartTwo = this.game_state.game.add.sprite(human.x + bodyPartTwoX, human.y + bodyPartTwoX, 'humanparts');
+        bodyPartTwo.frame = bodyPartTwoFrame;
+
+        this.game_state.emitter.flow(500, 30, 2, 100, false);        
     };
 
     return Human;
