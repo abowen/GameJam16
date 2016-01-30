@@ -126,7 +126,7 @@ BasicGame.Game.prototype = {
 
         // Moving objects that are blocked by mountains        
         this.characters = this.game.add.group();
-        //this.characters.z = 3;
+        
         //http://phaser.io/examples/v2/input/cursor-key-movement
         cursors = this.game.input.keyboard.createCursorKeys();
         this.game.ai = new Ai();
@@ -192,14 +192,13 @@ BasicGame.Game.prototype = {
         // MP3's take time to decode, we can make a call back if required
         this.game.sound.setDecodedCallback([this.music], this.startMusic, this);      
        
-        // Instruction information
-        // Summon those fools from dark earth                
+        // Instruction information        
         this.instructionKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
         this.instructionKey.onDown.add(this.clearInstructions, this);
 
         var keys = ['keyboardLeft', 'keyboardRight', 'keyboardUp', 'keyboardDown', 'keyboardSpacebar', 'keyboardCtrl'];
         var keyX = 30;        
-        // TODO: Replace Y with less value once we have less scaling
+        
         var keyY = GAME_HEIGHT - 75;
         for (var i = 0; i < keys.length; i++) {
             var keySprite = this.add.sprite(keyX, keyY, keys[i]);
