@@ -16,7 +16,8 @@ var Human = (function() {
         this.devourHuman = function(human, enemy) {            
             this.game_state.world_state.devourHuman(human);
 
-            this.makeNastyNoises();
+            this.makeNastyScreams();
+            this.makeNastyEatingNoises();
             this.makeNastyMess(human);
 
             human.kill();	        	        	        
@@ -30,9 +31,8 @@ var Human = (function() {
                 var cloneV = this.game_state.game.add.sprite(summon.x, summon.y, 'summon');
                 cloneV.anchor.set(0.5);
 
-                human.kill();
-                summon.kill();
-
+                this.makeNastyScreams();
+                
                 var explosionSpeed = 250;
 
                 this.game_state.game.add.tween(cloneV.scale).to({
@@ -49,11 +49,12 @@ var Human = (function() {
                 this.game.add.tween(cloneV).to({
                     alpha: 0
                 }, 250, "Linear", true, 250);
-
-                this.scream();
-
+                
                 this.game_state.character.addFollower(new Ghost(this.game_state, human.x, human.y));                
-                this.game_state.world_state.sacrificeHuman(this);                
+                this.game_state.world_state.sacrificeHuman(this);    
+
+                human.kill();
+                summon.kill();            
             }
         };
 
@@ -92,8 +93,11 @@ var Human = (function() {
 		}
     };
 
-    Human.prototype.makeNastyNoises = function() {
-        this.game_state.screams[this.game.rnd.between(0, this.game_state.screams.length - 1)].play();
+    Human.prototype.makeNastyScreams = function() {
+        this.game_state.screams[this.game.rnd.between(0, this.game_state.screams.length - 1)].play();        
+    };
+
+    Human.prototype.makeNastyEatingNoises = function() {        
         this.game_state.eating[this.game.rnd.between(0, this.game_state.eating.length - 1)].play();
     };
 

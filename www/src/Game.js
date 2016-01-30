@@ -177,7 +177,7 @@ BasicGame.Game.prototype = {
             this.screams.push(screamSound);
         }
 
-        setInterval(this.spawnHuman.bind(this), 2000);
+        setInterval(this.spawnHuman.bind(this), 500);
 
         ////// MUSIC
         // http://phaser.io/examples/v2/audio/loop
