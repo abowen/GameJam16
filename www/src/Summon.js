@@ -31,7 +31,20 @@ var Summon = (function(){
         this.tweenRotate.start();
 
         setTimeout(function(){
-            this.kill();
+            this.killTween = this.game.add.tween(this)
+            this.killTween.to({
+                width:0,
+                height:0
+            }, summonSpeed, Phaser.Easing.Quadratic.Out);
+
+
+            this.killTween.onComplete.add(function(){
+                this.kill();
+            }, this);
+
+            this.killTween.start();
+
+
         }.bind(this), this.timer);
     };
 
