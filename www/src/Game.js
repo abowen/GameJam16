@@ -80,21 +80,23 @@ BasicGame.Game.prototype = {
         //http://phaser.io/examples/v2/audio/sound-complete
         this.load.audio('crashSound', 'asset/sfx/summon.wav');
         this.load.audio('explosionSound', 'asset/sfx/explosion.mp3');
-        this.load.audio('screamWilhelm', 'asset/sfx/screamWilhelm.mp3');
-        this.load.audio('screamCalzon', 'asset/sfx/screamCalzon.mp3');
-        this.load.audio('scream_1', 'asset/sfx/scream_1.mp3');
-        this.load.audio('scream_2', 'asset/sfx/scream_2.mp3');
-        this.load.audio('scream_3', 'asset/sfx/scream_3.mp3');
-        this.load.audio('scream_4', 'asset/sfx/scream_4.mp3');
-        this.load.audio('scream_5', 'asset/sfx/scream_5.mp3');
-        this.load.audio('scream_6', 'asset/sfx/scream_6.mp3');
-        this.load.audio('scream_7', 'asset/sfx/scream_7.mp3');
-        this.load.audio('scream_8', 'asset/sfx/scream_8.mp3');
-        this.load.audio('scream_9', 'asset/sfx/scream_9.mp3');
-        this.load.audio('scream_10', 'asset/sfx/scream_10.mp3');
 
-        this.load.audio('angel_1', 'asset/sfx/angel_1.mp3');
-        this.load.audio('angel_2', 'asset/sfx/angel_2.mp3');
+        var screamNames = ['screamWilhelm',
+                            'screamCalzon',
+                            'scream_1',
+                            'scream_2',
+                            'scream_3',
+                            'scream_4',
+                            'scream_5',
+                            'scream_6',
+                            'scream_7',
+                            'scream_8',
+                            'scream_9',
+                            'scream_10'];
+        this.screamSoundGroup = new SoundGroup(this, screamNames);
+
+        var angelNames = ['angel_1', 'angel_2'];
+        this.angelSoundGroup = new SoundGroup(this, angelNames);
 
         var eatingNames = ['eating_1', 'eating_2'];
         this.eatingSoundGroup = new SoundGroup(this, eatingNames);
@@ -158,34 +160,9 @@ BasicGame.Game.prototype = {
         this.summonSound = this.game.add.audio('explosionSound');
         this.explosionSound = this.game.add.audio('crashSound');
 
+        this.screamSoundGroup.create();
+        this.angelSoundGroup.create();
         this.eatingSoundGroup.create();
-
-        var angelNames = ['angel_1', 'angel_2'];
-        this.angelSounds = [];
-        for (var i=0;i<angelNames.length;i++)
-        {
-            var sound = this.game.add.audio(angelNames[i]);
-            this.angelSounds.push(sound);
-        }
-        
-        var screamNames = ['screamWilhelm',
-                            'screamCalzon',
-                            'scream_1',
-                            'scream_2',
-                            'scream_3',
-                            'scream_4',
-                            'scream_5',
-                            'scream_6',
-                            'scream_7',
-                            'scream_8',
-                            'scream_9',
-                            'scream_10'];
-        this.screams = [];
-        for (var i=0;i<screamNames.length;i++)
-        {
-            var screamSound = this.game.add.audio(screamNames[i]);
-            this.screams.push(screamSound);
-        }
 
         setInterval(this.spawnHuman.bind(this), 500);
 

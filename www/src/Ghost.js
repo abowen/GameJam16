@@ -48,7 +48,7 @@ var Ghost = (function() {
     };
 
     Ghost.prototype.makeHeavenlyNoises = function() {        
-        this.game_state.angelSounds[this.game.rnd.between(0, this.game_state.angelSounds.length - 1)].play();
+        this.game_state.angelSoundGroup.playRandomSound();
     };
 
     Ghost.prototype.stop = function() {

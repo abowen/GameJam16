@@ -95,7 +95,7 @@ var Human = (function() {
     };
 
     Human.prototype.makeNastyScreams = function() {
-        this.game_state.screams[this.game.rnd.between(0, this.game_state.screams.length - 1)].play();        
+        this.game_state.screamSoundGroup.playRandomSound();        
     };
 
     Human.prototype.makeNastyMess = function(human, enemy) {            
