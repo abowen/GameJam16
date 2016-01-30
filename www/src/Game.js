@@ -172,7 +172,7 @@ BasicGame.Game.prototype = {
                             'scream_7',
                             'scream_8',
                             'scream_9',
-                            'scream10'];
+                            'scream_10'];
 
         this.screams = [];
         for (var i=0;i<screamNames.length;i++)
