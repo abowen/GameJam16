@@ -179,8 +179,7 @@ BasicGame.Game.prototype = {
         for (var i=0;i<keys.length;i++) {            
             var keySprite = this.add.sprite(keyX, keyY, keys[i]);
             keySprite.scale.setTo(0.75); 
-            keySprite.alpha = 0.5;
-            console.log(keySprite);
+            keySprite.alpha = 0.5;            
             keyX += keySprite.width + 10;     
             console.log(keyX);
             
