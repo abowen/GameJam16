@@ -2,7 +2,7 @@ var Character = (function() {
     function Character(game_state, x, y, sprite) {
         //BasicGame.Prefab.call(this, game, 'Player', {x:x, y:y}, properties);
         Phaser.Sprite.call(this, game_state.game, x, y, sprite);
-        this.speed = 4;
+        this.speed = 7;
         this.speed = 200;
         this.game_state = game_state;
         game_state.game.physics.arcade.enable(this);

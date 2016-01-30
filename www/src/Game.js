@@ -53,9 +53,6 @@ BasicGame.Game.prototype = {
         // Re-calculate scale mode and update screen size. This only applies if
         // ScaleMode is not set to RESIZE.
         this.scale.refresh();
-
-        // TODO: Move this into game state once Dom has finished
-        this.humansKilled = 0;
     },
 
     preload: function() {
@@ -253,10 +250,6 @@ BasicGame.Game.prototype = {
 
         this.physics.arcade.collide(this.backgroundLayer, this.enemy);
 
-        /*  if (this.game.game_state.player.rituals_performed === this.game.game_state.win_conditions.rituals_performed) {
-             
-          }*/
-
         if (cursors.up.isDown) {
             this.character.moveUp();
         } else if (cursors.down.isDown) {
@@ -268,6 +261,13 @@ BasicGame.Game.prototype = {
         } else {
             this.character.stop();
         }    
+
+        var screenShakeEffect = this.world_state.screenShake.effect;
+        if (screenShakeEffect > 0)
+        {
+            console.log('!@#! screen shaking and partying !@#!')
+            this.world_state.cameraShake(screenShakeEffect);
+        }
     },
 
     summonShit: function() {
