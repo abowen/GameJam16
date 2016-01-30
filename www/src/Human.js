@@ -2,7 +2,8 @@ var Human = (function() {
 	function Human(game, x, y, sprite) {
 		MovingSprite.call(this, game, x, y, sprite);
 		this.speed = 1;
-		this.body.acceleration = {x: 0, y: this.game.rnd.between(0, 50)};
+		this.body.allowGravity = false;
+		this.body.acceleration = {x: 0, y: this.game.rnd.between(-50, 50)};
 
 		this.framesPerSecond = 15;
         this.followers = [];
@@ -28,9 +29,7 @@ var Human = (function() {
 	Human.prototype.update = function() {
 		this.moveDown();
 
-		if (this.y > this.game.height) {
-			this.kill();
-		}
+		if (this.y > this.game.height) this.destroy();
 	};
 
 	return Human;

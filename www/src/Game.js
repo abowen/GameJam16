@@ -119,6 +119,7 @@ BasicGame.Game.prototype = {
         //http://phaser.io/examples/v2/input/cursor-key-movement
         cursors = this.game.input.keyboard.createCursorKeys();
         this.game.ai = new Ai();
+        
         this.humans = this.game.add.group();
 
   //      this.game.offering_stone = this.offering_stone = new OfferingStone(this.game, this.world.centerX, this.world.centerY, 'offering_stone');
@@ -303,9 +304,8 @@ BasicGame.Game.prototype = {
 
     updateHumans: function() {
         this.humans.forEach(function(human) {
-            if (human.y > this.world.height) human.destroy();
-
             this.physics.arcade.overlap(human, this.summonLayer, this.humanHitsSummon, null, this);
+            this.physics.arcade.overlap(human, this.character, this.devourHuman, null, this);
         }.bind(this));
     },
 
@@ -357,6 +357,11 @@ BasicGame.Game.prototype = {
                 this.backgroundLayer.tint = tintColour;     
             }            
         }
+    },
+
+    devourHuman: function(human, character) {
+        human.destroy();
+        //update score may be?
     }
 };
 
