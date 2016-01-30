@@ -2,7 +2,7 @@ var Ghost = (function() {
     function Ghost(game, x, y) {
         MovingSprite.call(this, game, x, y, 'ghost', 'ghosts');
 
-        this.speed = 0.5;
+        this.speed = 1.5;
         this.game = game;
         this.timer = 1000;
         this.framesPerSecond = 3;
@@ -56,7 +56,7 @@ var Ghost = (function() {
                     this.human.position.x,
                     this.human.position.y);
 
-                var vel_factor = 1.0;
+                var vel_factor = this.speed;
 
                 if (dist > 20.0) {
                     this.game.ai.follow(this, this.game.character, 30.0 * vel_factor, 30.0 * vel_factor);
