@@ -28,8 +28,14 @@ var Ghost = (function() {
     Ghost.prototype = Object.create(MovingSprite.prototype);
     Ghost.prototype.constructor = Ghost;
 
-    Ghost.prototype.follow = function(human) {
-        this.human = human;
+    Ghost.prototype.follow = function(character) {
+        if (character.followers.length == 0) {
+            this.master = character;
+        } else {
+            this.master = character.followers[character.followers.length-1];            
+        }
+        console.log('follow:');
+        console.log(this.master);
     };
 
     Ghost.prototype.stop = function() {
@@ -50,16 +56,16 @@ var Ghost = (function() {
         if (!this.isGraveStone) {
             Phaser.Sprite.prototype.update.call(this);
 
-            if (this.human != undefined) {
+            if (this.master != undefined) {
                 var dist = this.game.math.distance(this.body.position.x,
                     this.body.position.y,
-                    this.human.position.x,
-                    this.human.position.y);
+                    this.master.position.x,
+                    this.master.position.y);
 
                 var vel_factor = this.speed;
 
                 if (dist > 20.0) {
-                    this.game.ai.follow(this, this.human, 30.0 * vel_factor, 30.0 * vel_factor);
+                    this.game.ai.follow(this, this.master, 30.0 * vel_factor, 30.0 * vel_factor);
                 } else {
                     this.stop();
                 }

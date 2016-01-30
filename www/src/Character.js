@@ -29,8 +29,9 @@ var Character = (function() {
     Character.prototype.constructor = Character;
 
     Character.prototype.addFollower = function(follower) {
-        this.followers.push(follower);
+        // This order is important
         follower.follow(this);
+        this.followers.push(follower);        
         this.speed *= 0.8;
     };
 
