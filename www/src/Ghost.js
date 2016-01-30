@@ -35,7 +35,8 @@ var Ghost = (function() {
     };
 
     Ghost.prototype.timeToDie = function(character) {
-        // TODO: play sweet sound        
+        this.makeHeavenlyNoises();
+        
         var angel = this.game_state.game.add.sprite(this.x, this.y, 'angel');
         angel.anchor.set(0.5);
 
@@ -43,7 +44,11 @@ var Ghost = (function() {
         tween.to({
             y: -40
         }, 200, Phaser.Easing.Quadratic.In);
-        tween.start();
+        tween.start();    
+    };
+
+    Ghost.prototype.makeHeavenlyNoises = function() {        
+        this.game_state.angelSounds[this.game.rnd.between(0, this.game_state.angelSounds.length - 1)].play();
     };
 
     Ghost.prototype.stop = function() {

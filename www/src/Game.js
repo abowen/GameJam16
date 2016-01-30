@@ -63,13 +63,12 @@ BasicGame.Game.prototype = {
         this.load.spritesheet('character', 'asset/images/character_spritesheet_32.png', 32, 32, 12);
         this.load.spritesheet('enemy', 'asset/images/enemy_spritesheet_64.png', 64, 64, 10);
         this.load.spritesheet('offering_stone', 'asset/images/offering_stone_32.png', 32, 32, 8);
-        this.load.spritesheet('human', 'asset/human.png', 16, 16, 30);
+        this.load.spritesheet('human', 'asset/images/human_spritesheet_16.png', 16, 16, 30);
         this.load.spritesheet('humanparts', 'asset/images/humanparts_spritesheet_8.png', 8, 8, 4);
         this.load.spritesheet('ghost', 'asset/images/ghost_spritesheet_16.png', 16, 16, 10);
 
-        this.load.image('summon', 'asset/summonRed.png');
-        
         this.load.image('scoreIcon', 'asset/images/character_16.png');
+        this.load.image('summon', 'asset/images/summon_32.png');                
         this.load.image('angel', 'asset/images/angel_16.png');
         this.load.image('keyboardLeft', 'asset/images/keyboardLeft.png');
         this.load.image('keyboardUp', 'asset/images/keyboardUp.png');
@@ -95,7 +94,10 @@ BasicGame.Game.prototype = {
         this.load.audio('scream_10', 'asset/sfx/scream_10.mp3');
         this.load.audio('eating_1', 'asset/sfx/eating_1.mp3');
         this.load.audio('eating_2', 'asset/sfx/eating_2.mp3');
-        this.load.audio('darkExploration', 'asset/music/DarkExploration.mp3');        
+        this.load.audio('angel_1', 'asset/sfx/angel_1.mp3');
+        this.load.audio('angel_2', 'asset/sfx/angel_2.mp3');
+
+        this.load.audio('gameMusic', 'asset/music/DarkExploration.mp3');        
     },
 
     create: function() {
@@ -154,12 +156,21 @@ BasicGame.Game.prototype = {
         this.summonSound = this.game.add.audio('explosionSound');
         this.explosionSound = this.game.add.audio('crashSound');
 
+        // TODO: Refactor into create function + expose get random func
         var eatingNames = ['eating_1', 'eating_2'];
         this.eating = [];
         for (var i=0;i<eatingNames.length;i++)
         {
-            var eatingSound = this.game.add.audio(eatingNames[i]);
-            this.eating.push(eatingSound);
+            var sound = this.game.add.audio(eatingNames[i]);
+            this.eating.push(sound);
+        }
+
+        var angelNames = ['angel_1', 'angel_2'];
+        this.angelSounds = [];
+        for (var i=0;i<angelNames.length;i++)
+        {
+            var sound = this.game.add.audio(angelNames[i]);
+            this.angelSounds.push(sound);
         }
         
         var screamNames = ['screamWilhelm',
@@ -185,7 +196,7 @@ BasicGame.Game.prototype = {
 
         ////// MUSIC
         // http://phaser.io/examples/v2/audio/loop
-        this.music = this.game.add.audio('darkExploration');
+        this.music = this.game.add.audio('gameMusic');        
 
         // MP3's take time to decode, we can make a call back if required
         this.game.sound.setDecodedCallback([this.music], this.startMusic, this);      
@@ -215,6 +226,11 @@ BasicGame.Game.prototype = {
     startMusic: function() {
         console.log("MUSIC START PARTY");
         this.music.loopFull(0.6);
+    },
+
+    stopMusic: function() {
+        console.log("MUSIC ENDED");
+        this.music.stop();
     },
 
 
@@ -304,6 +320,9 @@ BasicGame.Game.prototype = {
     
     gameOver: function (win) {
         "use strict";
+
+        this.stopMusic();
+
         if(win) {
             this.game.state.start("YouWin", true, false, null, "YouWin");
         } else {
@@ -409,6 +428,8 @@ BasicGame.YouLose.prototype = {
     },
     preload: function() {
         this.load.image('background', 'asset/images/you_lose.png');
+
+        this.load.audio('loseMusic', 'asset/music/CreepyGhostPiano.mp3');
     },
     create: function() {
         // Add logo to the center of the stage
@@ -419,5 +440,12 @@ BasicGame.YouLose.prototype = {
         // Set the anchor to the center of the sprite
         this.background.anchor.setTo(0.5, 0.5);
 
+        this.music = this.game.add.audio('loseMusic');
+
+        this.game.sound.setDecodedCallback([this.music], this.startMusic, this);          
+    },
+
+    startMusic: function() {
+        this.music.play();
     }
 };
