@@ -21,9 +21,9 @@ var World = (function() {
             difficulty: 5
         };
 
-        this.screenShake {
-            effect = 0,
-                counter = [5, 10, 15]
+        this.screenShake = {
+            effect: 0,
+            counter: [5, 10, 15]
         }
 
         var max = this.screenShake.counter.max();
