@@ -29,7 +29,7 @@ var World = (function() {
         this.game_state = game_state;
 
         var max = this.screenShake.counter.max();        
-        //this.world.setBounds(-max, -max, this.game.width + max, this.game.height + 2);
+        this.game_state.game.world.setBounds(-max, -max, this.game_state.game.width + max, this.game_state.game.height + 2);
     };
 
     World.prototype.devourHuman = function(human) {
@@ -37,11 +37,11 @@ var World = (function() {
         this.killHuman(human);
     };
 
-    World.prototype.screenShake = function(effect) {
+    World.prototype.cameraShake = function(effect) {
         var min = -effect;
         var max = effect;
-        this.game.camera.x += Math.floor(Math.random() * (max - min + 1)) + min;
-        this.game.camera.y += Math.floor(Math.random() * (max - min + 1)) + min;
+        this.game_state.game.camera.x += Math.floor(Math.random() * (max - min + 1)) + min;
+        this.game_state.game.camera.y += Math.floor(Math.random() * (max - min + 1)) + min;
     };
 
     World.prototype.calculateScreenShake = function() {
@@ -60,11 +60,12 @@ var World = (function() {
             this.screenShake.effect = 0;
             console.log('!@#! screen shake party down !@#!')
         }.bind(this), screenShakeTimer);
-    };
+    };              
 
     World.prototype.sacrificeHuman = function(human) {
         this.player.souls_collected += 1;
         this.updateScore();
+        this.calculateScreenShake();
         this.killHuman(human);
     };
 
