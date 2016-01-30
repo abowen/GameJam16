@@ -6,8 +6,7 @@ var Character = (function(){
         this.speed = 5;
         this.game = game;
 
-        this.game.physics.arcade.enable(this);
-        this.enableBody = true;
+        this.game.physics.enable(this);
         this.anchor.set(0.5);
 
         // animation name, frames, FPS, true? (maybe swap)
@@ -16,6 +15,7 @@ var Character = (function(){
         this.animations.add('right', [3, 4, 5], framesPerSecond, true);
         this.animations.add('up', [6, 7, 8], framesPerSecond, true);
         this.animations.add('left', [9, 10, 11], framesPerSecond, true);
+        this.body.collideWorldBounds = true;
     };
 
     Character.prototype = Object.create(Phaser.Sprite.prototype);
