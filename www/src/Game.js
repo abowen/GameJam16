@@ -333,6 +333,7 @@ BasicGame.Game.prototype = {
             this.scream01Sound.play();
 
             var ghost = new Ghost(this.game, human.x, human.y);
+            human.addFollower(ghost);
             
             // Tint the world
             if (this.humansKilled < 16)
@@ -347,6 +348,7 @@ BasicGame.Game.prototype = {
                 this.groundLayer.tint = tintColour;
                 this.backgroundLayer.tint = tintColour;     
             }            
+
         }
     }
 };
