@@ -30,4 +30,5 @@ See [LICENSE.md](./LICENSE.md) for license terms and conditions.
 - https://archive.org/details/WilhelmScreamSample
 - http://freesound.org/people/adriancalzon/sounds/219858/ 
 - http://freesound.org/people/aglinder/sounds/264484/
-
+- http://freesound.org/people/MaxDemianAGL/sounds/131051/
+- http://freesound.org/people/amliebsch/sounds/324960/

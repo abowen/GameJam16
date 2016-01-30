@@ -7,9 +7,11 @@ var Character = (function() {
         this.game_state = game_state;
         game_state.game.physics.arcade.enable(this);
         this.anchor.set(0.5);
-        // animation name, frames, FPS, true? (maybe swap)
+        
         this.framesPerSecond = 10;
         this.body.collideWorldBounds = true;
+
+        this.speed = 200;
         this.followers = []
         this.setAnimation();
 
@@ -23,15 +25,36 @@ var Character = (function() {
             this.followers = [];
             this.speed = 200;
         };
+        this.boostSpeed = 10;
     };
 
     Character.prototype = Object.create(Phaser.Sprite.prototype);
     Character.prototype.constructor = Character;
 
     Character.prototype.addFollower = function(follower) {
-        this.followers.push(follower);
+        // This order is important
+        this.speed -= this.boostSpeed;  
         follower.follow(this);
-        this.speed *= 0.8;
+        this.followers.push(follower);                    
+    };
+
+    Character.prototype.sacrificeFollower = function(follower) {
+        console.log("Slaughter the lamb.");   
+        this.speed += this.boostSpeed;
+        follower.spawnAngel(this);
+        follower.kill();     
+    };
+
+
+    Character.prototype.runRitual = function(character, offeringStone) {            
+        // TODO: Reimplement
+        //offeringStone.body.velocity.x = 0;
+        //offeringStone.body.velocity.y = 0;
+        
+        this.followers.forEach(function(follower) {
+            this.sacrificeFollower(follower);
+        }, this);
+        this.followers = [];            
     };
     
     Character.prototype.performRitual = function() {

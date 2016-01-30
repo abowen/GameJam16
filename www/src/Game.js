@@ -61,15 +61,15 @@ BasicGame.Game.prototype = {
 
         //http://phaser.io/examples/v2/sprites/spritesheet        
         this.load.spritesheet('character', 'asset/images/character_spritesheet_32.png', 32, 32, 12);
-        this.load.spritesheet('enemy', 'asset/images/enemy_spritesheet_32.png', 32, 32, 10);
+        this.load.spritesheet('enemy', 'asset/images/enemy_spritesheet_64.png', 64, 64, 10);
         this.load.spritesheet('offering_stone', 'asset/images/offering_stone_32.png', 32, 32, 8);
-        this.load.spritesheet('human', 'asset/human.png', 16, 16, 30);
+        this.load.spritesheet('human', 'asset/images/human_spritesheet_16.png', 16, 16, 30);
         this.load.spritesheet('humanparts', 'asset/images/humanparts_spritesheet_8.png', 8, 8, 4);
         this.load.spritesheet('ghost', 'asset/images/ghost_spritesheet_16.png', 16, 16, 10);
 
-        this.load.image('summon', 'asset/summonRed.png');
-        
-        this.load.image('characterSingle', 'asset/images/character_16.png');
+        this.load.image('scoreIcon', 'asset/images/character_16.png');
+        this.load.image('summon', 'asset/images/summon_32.png');                
+        this.load.image('angel', 'asset/images/angel_16.png');
         this.load.image('keyboardLeft', 'asset/images/keyboardLeft.png');
         this.load.image('keyboardUp', 'asset/images/keyboardUp.png');
         this.load.image('keyboardDown', 'asset/images/keyboardDown.png');
@@ -79,24 +79,30 @@ BasicGame.Game.prototype = {
         this.load.image('powerup', 'asset/images/powerup.png')
 
         //http://phaser.io/examples/v2/audio/sound-complete
-        this.load.audio('crashSound', 'asset/sfx/summon.wav');
-        this.load.audio('explosionSound', 'asset/sfx/explosion.mp3');
-        this.load.audio('screamWilhelm', 'asset/sfx/screamWilhelm.mp3');
-        this.load.audio('screamCalzon', 'asset/sfx/screamCalzon.mp3');
-        this.load.audio('scream_1', 'asset/sfx/scream_1.mp3');
-        this.load.audio('scream_2', 'asset/sfx/scream_2.mp3');
-        this.load.audio('scream_3', 'asset/sfx/scream_3.mp3');
-        this.load.audio('scream_4', 'asset/sfx/scream_4.mp3');
-        this.load.audio('scream_5', 'asset/sfx/scream_5.mp3');
-        this.load.audio('scream_6', 'asset/sfx/scream_6.mp3');
-        this.load.audio('scream_7', 'asset/sfx/scream_7.mp3');
-        this.load.audio('scream_8', 'asset/sfx/scream_8.mp3');
-        this.load.audio('scream_9', 'asset/sfx/scream_9.mp3');
-        this.load.audio('scream_10', 'asset/sfx/scream_10.mp3');
-        this.load.audio('eating_1', 'asset/sfx/eating_1.mp3');
-        this.load.audio('eating_2', 'asset/sfx/eating_2.mp3');
-        this.load.audio('darkExploration', 'asset/music/DarkExploration.mp3');
-        
+        var screamNames = ['screamWilhelm',
+                            'screamCalzon',
+                            'scream_1',
+                            'scream_2',
+                            'scream_3',
+                            'scream_4',
+                            'scream_5',
+                            'scream_6',
+                            'scream_7',
+                            'scream_8',
+                            'scream_9',
+                            'scream_10'];
+        this.screamSoundGroup = new SoundGroup(this, screamNames);
+
+        var angelNames = ['angel_1', 'angel_2'];
+        this.angelSoundGroup = new SoundGroup(this, angelNames);
+
+        var eatingNames = ['eating_1', 'eating_2'];
+        this.eatingSoundGroup = new SoundGroup(this, eatingNames);
+
+        var summonNames = ['summon_1', 'summon_2'];
+        this.summonSoundGroup = new SoundGroup(this, summonNames);
+
+        this.load.audio('gameMusic', 'asset/music/DarkExploration.mp3');        
     },
 
     create: function() {
@@ -138,11 +144,20 @@ BasicGame.Game.prototype = {
         this.game.physics.arcade.enable(this.characters);
 
         // Summon those fools from dark earth                
-        this.summonKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-        this.summonKey.onDown.add(this.summonShit, this);
+        //this.summonKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+        //this.summonKey.onDown.add(this.summonShit, this);
 
+        // Yes it did
+        // TODO: Replace with actual ritual stone logic
+        this.runRitualKey = this.game.input.keyboard.addKey(Phaser.Keyboard.CONTROL);
+        this.runRitualKey.onDown.add(this.runRitual, this);
+
+        this.sacrificeFollowerKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+        this.sacrificeFollowerKey.onDown.add(this.sacrificeFollower, this);
+
+        ////// GORE EFFECTS
         this.bloodParticles = this.make.bitmapData(3, 3);
-        this.bloodParticles.rect(0, 0, 4, 4, '#ff0000');
+        this.bloodParticles.rect(0, 0, 4, 4, COLOR_BLOOD_RED);
         this.bloodParticles.update();
 
         this.emitter = this.add.emitter(0, 0, 128);
@@ -151,41 +166,16 @@ BasicGame.Game.prototype = {
         this.emitter.setAlpha(1, 0.2, 500);    
 
         ////// SOUND EFFECTS
-        this.summonSound = this.game.add.audio('explosionSound');
-        this.explosionSound = this.game.add.audio('crashSound');
-
-        var eatingNames = ['eating_1', 'eating_2'];
-        this.eating = [];
-        for (var i=0;i<eatingNames.length;i++)
-        {
-            var eatingSound = this.game.add.audio(eatingNames[i]);
-            this.eating.push(eatingSound);
-        }
-        
-        var screamNames = ['screamWilhelm',
-                            'screamCalzon',
-                            'scream_1',
-                            'scream_2',
-                            'scream_3',
-                            'scream_4',
-                            'scream_5',
-                            'scream_6',
-                            'scream_7',
-                            'scream_8',
-                            'scream_9',
-                            'scream_10'];
-        this.screams = [];
-        for (var i=0;i<screamNames.length;i++)
-        {
-            var screamSound = this.game.add.audio(screamNames[i]);
-            this.screams.push(screamSound);
-        }
+        this.screamSoundGroup.create();
+        this.angelSoundGroup.create();
+        this.eatingSoundGroup.create();
+        this.summonSoundGroup.create();
 
         setInterval(this.spawnHuman.bind(this), 500);
 
         ////// MUSIC
         // http://phaser.io/examples/v2/audio/loop
-        this.music = this.game.add.audio('darkExploration');
+        this.music = this.game.add.audio('gameMusic');        
 
         // MP3's take time to decode, we can make a call back if required
         this.game.sound.setDecodedCallback([this.music], this.startMusic, this);      
@@ -202,11 +192,8 @@ BasicGame.Game.prototype = {
             var keySprite = this.add.sprite(keyX, keyY, keys[i]);
             keySprite.scale.setTo(0.75);
             keySprite.alpha = 0.5;
-            keyX += keySprite.width + 10;
-            console.log(keyX);
-
+            keyX += keySprite.width + 10;            
             keySprite.anchor.set(0, 0);
-
             this.instructionLayer.addChild(keySprite);
         }
     },
@@ -218,6 +205,11 @@ BasicGame.Game.prototype = {
     startMusic: function() {
         console.log("MUSIC START PARTY");
         this.music.loopFull(0.6);
+    },
+
+    stopMusic: function() {
+        console.log("MUSIC ENDED");
+        this.music.stop();
     },
 
 
@@ -252,7 +244,6 @@ BasicGame.Game.prototype = {
 
     update: function() {
         this.physics.arcade.collide(this.backgroundLayer, this.characters);
-
         this.physics.arcade.collide(this.backgroundLayer, this.enemy);
 
         if (cursors.up.isDown) {
@@ -267,6 +258,7 @@ BasicGame.Game.prototype = {
             this.character.stop();
         }    
 
+        // TODO: All values and logic could belong in world.
         var screenShakeEffect = this.world_state.screenShake.effect;
         if (screenShakeEffect > 0)
         {
@@ -275,14 +267,36 @@ BasicGame.Game.prototype = {
         }
     },
 
-    summonShit: function() {
+    summonShit: function(human) {
         var summon = new Summon(
             this,
-            this.character.x, -20,
-            this.character.x,
-            this.character.y);
-        
-        this.summonSound.play();
+            human.x, -20,
+            human.x,
+            human.y);
+    },
+
+    // Perform a ritual
+    runRitual: function() {
+        if (this.character.followers.length > 4){
+            console.log("It's happening");
+
+            this.character.runRitual();
+            this.world_state.runRitual(this.character);
+                                
+            // TODO: Slow down humans & ogre for a temporary amount
+            // TODO: Reduce size of ogre            
+        }
+    },
+
+    // Sacrifice a follower to go faster
+    sacrificeFollower: function() {
+        if (this.character.followers.length > 0){
+            console.log("88888ooooo--- TUUUUUUURRRRRBOOOOOOOOOOO))))>");
+
+            var follower = this.character.followers.pop();
+            this.character.sacrificeFollower(follower);
+            this.world_state.sacrificeFollower(follower);       
+        }
     },
 
     spawnHuman: function() {
@@ -294,10 +308,13 @@ BasicGame.Game.prototype = {
     
     gameOver: function (win) {
         "use strict";
+        
+        this.stopMusic();
         if(win) {
             this.game.state.start("YouWin", true, false, null, "YouWin");
         } else {
             this.game.state.start("YouLose", true, false, null, "YouLose");
+            
         }
     }
 };
@@ -399,6 +416,8 @@ BasicGame.YouLose.prototype = {
     },
     preload: function() {
         this.load.image('background', 'asset/images/you_lose.png');
+
+        this.load.audio('loseMusic', 'asset/music/CreepyGhostPiano.mp3');
     },
     create: function() {
         // Add logo to the center of the stage
@@ -409,5 +428,12 @@ BasicGame.YouLose.prototype = {
         // Set the anchor to the center of the sprite
         this.background.anchor.setTo(0.5, 0.5);
 
+        this.music = this.game.add.audio('loseMusic');
+
+        this.game.sound.setDecodedCallback([this.music], this.startMusic, this);          
+    },
+
+    startMusic: function() {
+        this.music.play();
     }
 };
