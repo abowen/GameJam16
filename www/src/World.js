@@ -88,6 +88,7 @@ var World = (function() {
     World.prototype.sacrificeHuman = function(human) {
     	// kill human?
         this.player.souls_collected += 1;
+        //this.addScreenShake(1,50);
         
         this.calculateScreenShake();        
         this.refresh();

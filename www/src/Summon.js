@@ -46,6 +46,8 @@ var Summon = (function(){
 
 
         }.bind(this), this.timer);
+
+        this.game_state.summonSoundGroup.playRandomSound();
     };
 
     Summon.prototype = Object.create(Phaser.Sprite.prototype);

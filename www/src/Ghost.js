@@ -44,7 +44,11 @@ var Ghost = (function() {
         tween.to({
             y: -40
         }, 200, Phaser.Easing.Quadratic.In);
-        tween.start();    
+        tween.start();
+
+        tween.onComplete.add(function(){
+            this.kill();
+        }, this);
     };
 
     Ghost.prototype.makeHeavenlyNoises = function() {        

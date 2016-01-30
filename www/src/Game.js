@@ -78,9 +78,6 @@ BasicGame.Game.prototype = {
         this.load.image('keyboardSpacebar', 'asset/images/keyboardSpacebar.png');
 
         //http://phaser.io/examples/v2/audio/sound-complete
-        this.load.audio('crashSound', 'asset/sfx/summon.wav');
-        this.load.audio('explosionSound', 'asset/sfx/explosion.mp3');
-
         var screamNames = ['screamWilhelm',
                             'screamCalzon',
                             'scream_1',
@@ -100,6 +97,9 @@ BasicGame.Game.prototype = {
 
         var eatingNames = ['eating_1', 'eating_2'];
         this.eatingSoundGroup = new SoundGroup(this, eatingNames);
+
+        var summonNames = ['summon_1', 'summon_2'];
+        this.summonSoundGroup = new SoundGroup(this, summonNames);
 
         this.load.audio('gameMusic', 'asset/music/DarkExploration.mp3');        
     },
@@ -157,12 +157,10 @@ BasicGame.Game.prototype = {
         this.emitter.setAlpha(1, 0.2, 500);    
 
         ////// SOUND EFFECTS
-        this.summonSound = this.game.add.audio('explosionSound');
-        this.explosionSound = this.game.add.audio('crashSound');
-
         this.screamSoundGroup.create();
         this.angelSoundGroup.create();
         this.eatingSoundGroup.create();
+        this.summonSoundGroup.create();
 
         setInterval(this.spawnHuman.bind(this), 500);
 
@@ -266,8 +264,6 @@ BasicGame.Game.prototype = {
             this.character.x, -20,
             this.character.x,
             this.character.y);
-        
-        this.summonSound.play();
     },
 
     shitJustGotReal: function() {
