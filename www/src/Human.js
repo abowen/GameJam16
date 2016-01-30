@@ -35,7 +35,7 @@ var Human = (function() {
 		this[moveIn]();
 		this.lastMove = moveIn;
 
-		if (this.y > this.game.height) this.destroy();
+		if (this.y > this.game.height || this.y < 0 || this.x > this.game.height || this.x < 0) this.destroy();
 	};
 
 	return Human;
