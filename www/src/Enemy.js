@@ -56,7 +56,7 @@ var Enemy = (function() {
     };
     
     Enemy.prototype.makeNastyEatingNoises = function() {        
-        this.game_state.eating[this.game.rnd.between(0, this.game_state.eating.length - 1)].play();
+        this.game_state.eatingSoundGroup.playRandomSound();
     };
 
     Enemy.prototype.giggleWhileEating = function() {        

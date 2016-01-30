@@ -92,10 +92,12 @@ BasicGame.Game.prototype = {
         this.load.audio('scream_8', 'asset/sfx/scream_8.mp3');
         this.load.audio('scream_9', 'asset/sfx/scream_9.mp3');
         this.load.audio('scream_10', 'asset/sfx/scream_10.mp3');
-        this.load.audio('eating_1', 'asset/sfx/eating_1.mp3');
-        this.load.audio('eating_2', 'asset/sfx/eating_2.mp3');
+
         this.load.audio('angel_1', 'asset/sfx/angel_1.mp3');
         this.load.audio('angel_2', 'asset/sfx/angel_2.mp3');
+
+        var eatingNames = ['eating_1', 'eating_2'];
+        this.eatingSoundGroup = new SoundGroup(this, eatingNames);
 
         this.load.audio('gameMusic', 'asset/music/DarkExploration.mp3');        
     },
@@ -156,14 +158,7 @@ BasicGame.Game.prototype = {
         this.summonSound = this.game.add.audio('explosionSound');
         this.explosionSound = this.game.add.audio('crashSound');
 
-        // TODO: Refactor into create function + expose get random func
-        var eatingNames = ['eating_1', 'eating_2'];
-        this.eating = [];
-        for (var i=0;i<eatingNames.length;i++)
-        {
-            var sound = this.game.add.audio(eatingNames[i]);
-            this.eating.push(sound);
-        }
+        this.eatingSoundGroup.create();
 
         var angelNames = ['angel_1', 'angel_2'];
         this.angelSounds = [];

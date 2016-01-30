@@ -151,7 +151,7 @@ var World = (function() {
             tintColour = '0xff' + hexString + 'ff';
         }
         
-        console.log('tint : ' + tintColour)
+        //console.log('tint : ' + tintColour)
         this.game_state.groundLayer.tint = tintColour;
         this.game_state.backgroundLayer.tint = tintColour;        
     }
