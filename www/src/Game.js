@@ -62,13 +62,13 @@ BasicGame.Game.prototype = {
         this.load.image('tiles', 'asset/tiles.png');
 
         //http://phaser.io/examples/v2/sprites/spritesheet
-        this.load.spritesheet('characterOrange', 'asset/characterBigLine.png', 32, 32, 12);
-        this.load.spritesheet('enemy', 'asset/images/enemy_spritesheet.png', 16, 16, 12);
+        this.load.spritesheet('character', 'asset/images/character_spritesheet_32.png', 32, 32, 12);
+        this.load.spritesheet('enemy', 'asset/images/enemy_spritesheet_32.png', 32, 32, 12);
         this.load.spritesheet('human', 'asset/human.png', 16, 16, 30);
         this.load.spritesheet('ghost', 'asset/ghost.png', 16, 16, 30);
-        this.load.image('summon', 'asset/summonRed.png');
-        this.load.image('characterSingle', 'asset/characterSingle.png');
 
+        this.load.image('summon', 'asset/summonRed.png');
+        this.load.image('characterSingle', 'asset/images/character_16.png');
         this.load.image('keyboardLeft', 'asset/images/keyboardLeft.png');
         this.load.image('keyboardUp', 'asset/images/keyboardUp.png');
         this.load.image('keyboardDown', 'asset/images/keyboardDown.png');
@@ -117,7 +117,7 @@ BasicGame.Game.prototype = {
         this.game.ai = new Ai();
         this.humans = this.game.add.group();
 
-        this.game.character = this.character = new Character(this.game, this.world.centerX / 2, this.world.centerY, 'characterOrange');
+        this.game.character = this.character = new Character(this.game, this.world.centerX / 2, this.world.centerY, 'character');
         this.enemy = new Enemy(this.game, 'Enemy', this.world.centerX + (this.world.centerX / 2), this.world.centerY, 'enemy');
 
         this.ghosts = this.game.add.group();
