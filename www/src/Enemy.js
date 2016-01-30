@@ -26,7 +26,7 @@ var Enemy = (function() {
 
         this.stopped_frames = [1, 4, 4, 0, 1];
 
-        this.game.physics.arcade.enable(this);
+        this.game_state.game.physics.arcade.enable(this);
         if (this.axis === "x") {
             this.body.velocity.x = this.direction * this.walking_speed;
         } else {
@@ -51,6 +51,8 @@ var Enemy = (function() {
         // this.game.physics.arcade.overlap(this, this.game_state.groups.explosions, this.kill, null, this);
         
         var followed_mob = this.game.character;
+        
+        
 
 
         var dist = this.game.math.distance(this.body.position.x, 
@@ -61,7 +63,7 @@ var Enemy = (function() {
         var vel_factor = 1.0;
         
         if(dist > 20.0){    
-            this.game.ai.follow(this, followed_mob, 30.0 * vel_factor, 30.0 * vel_factor);
+            this.game_state.ai.follow(this, followed_mob, 30.0 * vel_factor, 30.0 * vel_factor);
         } else {
             this.stop();
         }

@@ -1,17 +1,17 @@
 var MovingSprite = (function(){
-    function MovingSprite(game, x, y, sprite, group){
+    function MovingSprite(game_state, x, y, sprite, group){
 
         properties = {
             group: group,
             spritesheet: sprite
         };
 
-        Prefab.call(this, game, 'Player', {x:x, y:y}, properties);
+        Prefab.call(this, game_state, 'Player', {x:x, y:y}, properties);
 
         this.speed = 2;
-        this.game = game;
+        game = game_state.game;
 
-        this.game.physics.enable(this);
+        game.physics.enable(this);
         this.anchor.set(0.5);
 
         // animation name, frames, FPS, true? (maybe swap)

@@ -124,8 +124,8 @@ BasicGame.Game.prototype = {
         this.humans = this.game.add.group();
 
   //      this.game.offering_stone = this.offering_stone = new OfferingStone(this.game, this.world.centerX, this.world.centerY, 'offering_stone');
-        this.game.character = this.character = new Character(this.game, this.world.centerX / 2, this.world.centerY, 'character');
-        this.enemy = new Enemy(this.game, 'Enemy', this.world.centerX + (this.world.centerX / 2), this.world.centerY, 'enemy');
+        this.character = new Character(this, this.world.centerX / 2, this.world.centerY, 'character');
+  //      this.enemy = new Enemy(this, 'Enemy', this.world.centerX + (this.world.centerX / 2), this.world.centerY, 'enemy');
 
         this.characters.addChild(this.character);
         this.characters.enableBody = true;
@@ -261,7 +261,6 @@ BasicGame.Game.prototype = {
             this.character.animations.stop();
         }
 
-        this.updateHumans();
         this.updateScore();
     },
 
@@ -287,7 +286,7 @@ BasicGame.Game.prototype = {
 
     summonShit: function() {
         var summon = new Summon(
-            this.game,
+            this,
             this.character.x, -20,
             this.character.x,
             this.character.y);
@@ -295,78 +294,15 @@ BasicGame.Game.prototype = {
         this.emitter.emitX = summon.x;
         this.emitter.emitY = summon.y;
 
-        this.summonLayer.add(summon);
+        this.game.summonLayer.add(summon);
 
         this.summonSound.play();
     },
 
     spawnHuman: function() {
-        var human = new Human(this.game, this.game.rnd.between(0, this.world.width), -16, 'human');
+        var human = new Human(this, this.game.rnd.between(0, this.world.width), -16, 'human');
         this.humans.addChild(human);
-    },
-
-    updateHumans: function() {
-        this.humans.forEach(function(human) {
-            this.physics.arcade.overlap(human, this.summonLayer, this.humanHitsSummon, null, this);
-            this.physics.arcade.overlap(human, this.enemy, this.devourHuman, null, this);
-        }.bind(this));
-    },
-
-
-    humanHitsSummon: function(human, summon) {
-        if (!summon.fallTween.isRunning && human.alive) {
-            var cloneH = this.add.sprite(summon.x, summon.y, 'summon');
-            cloneH.anchor.set(0.5);
-
-            var cloneV = this.add.sprite(summon.x, summon.y, 'summon');
-            cloneV.anchor.set(0.5);
-
-            human.kill();
-            summon.kill();
-
-            var explosionSpeed = 250;
-
-            this.add.tween(cloneV.scale).to({
-                x: 0.10,
-                y: 10
-            }, explosionSpeed, "Expo.easeOut", true, 0);
-            this.add.tween(cloneH.scale).to({
-                x: 10,
-                y: 0.10
-            }, explosionSpeed, "Expo.easeOut", true, 0);
-            this.add.tween(cloneH).to({
-                alpha: 0
-            }, 250, "Linear", true, 250);
-            this.add.tween(cloneV).to({
-                alpha: 0
-            }, 250, "Linear", true, 250);
-
-            var scream = this.screams[Math.floor(Math.random()*this.screams.length)];
-            scream.play();
-
-            var ghost = new Ghost(this.game, human.x, human.y);
-            human.addFollower(ghost);
-            
-            // Tint the world
-            if (this.humansKilled < 16)
-            {
-                this.humansKilled++;
-
-                var tintValue = 16 - this.humansKilled;
-                var hexString = tintValue.toString(16);
-                hexString = hexString + hexString;                
-                var tintColour = '0xff' + hexString + 'ff';
-                //console.log(this.humansKilled + " " + tintColour);
-                this.groundLayer.tint = tintColour;
-                this.backgroundLayer.tint = tintColour;     
-            }            
-        }
-    },
-
-    devourHuman: function(human, character) {
-        human.destroy();
-        //update score may be?
-    }
+    }  
 };
 
 // create Game function in BasicGame

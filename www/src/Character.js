@@ -1,10 +1,9 @@
 var Character = (function(){
-    function Character(game, x, y, sprite){
+    function Character(game_state, x, y, sprite){
         //BasicGame.Prefab.call(this, game, 'Player', {x:x, y:y}, properties);
-        Phaser.Sprite.call(this, game, x, y, sprite);
+        Phaser.Sprite.call(this, game_state.game, x, y, sprite);
 
         this.speed = 2;
-        this.game = game;
 
         this.game.physics.enable(this);
         this.anchor.set(0.5);
