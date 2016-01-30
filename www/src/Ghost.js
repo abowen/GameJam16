@@ -7,7 +7,7 @@ var Ghost = (function(){
 
         Prefab.call(this, game, name, {x:x, y:y}, properties);
 
-        this.speed = 5;
+        this.speed = 2;
         this.game = game;
         this.timer = 1000;
 
@@ -24,10 +24,10 @@ var Ghost = (function(){
     Ghost.prototype.constructor = Ghost;
 
     Ghost.prototype.setAnimation = function() {
-        this.animations.add('down', [0, 1, 2, 3, 4, 5], this.framesPerSecond, true);
-        this.animations.add('right', [18, 19, 20, 21, 22, 23], this.framesPerSecond, true);
-        this.animations.add('up', [12, 13, 14, 15, 16, 17], this.framesPerSecond, true);
-        this.animations.add('left', [6, 7, 8, 9, 10, 11], this.framesPerSecond, true);
+        this.animations.add('down', [0, 1, 2], this.framesPerSecond, true);
+        this.animations.add('right', [3, 4, 5], this.framesPerSecond, true);
+        this.animations.add('up', [6, 7, 8], this.framesPerSecond, true);
+        this.animations.add('left', [3, 4, 5], this.framesPerSecond, true);
     };
 
     Ghost.prototype.update = function(){
@@ -37,6 +37,7 @@ var Ghost = (function(){
             moveIn = this.moves[Math.floor(Math.random() * 10) % 4];
         }
         this[moveIn]();
+        this.lastMove = moveIn;
     };
 
     Ghost.prototype.moveUp = function(){
@@ -48,10 +49,12 @@ var Ghost = (function(){
         this.animations.play('down');
     };
     Ghost.prototype.moveLeft = function(){
+        this.scale.setTo(-1, 1);
         this.x -= this.speed;
         this.animations.play('left');
     };
     Ghost.prototype.moveRight = function(){
+        this.scale.setTo(1, 1);
         this.x += this.speed;
         this.animations.play('right');
     };
