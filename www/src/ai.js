@@ -7,15 +7,14 @@ var Ai = (function() {
     
     Ai.prototype.follow = function(characterA, characterB, speedX, speedY) {
         
-        if(!characterA.body || !characterB.body){
-            var i = 0;
+        if(characterA.body && characterB.body){
+       
+            var directionX = Math.sign(characterB.body.position.x - characterA.body.position.x);
+            var directionY = Math.sign(characterB.body.position.y - characterA.body.position.y);
+            
+            characterA.body.velocity.x = speedX * directionX;
+            characterA.body.velocity.y = speedY * directionY;
         }
-        
-        var directionX = Math.sign(characterB.body.position.x - characterA.body.position.x);
-        var directionY = Math.sign(characterB.body.position.y - characterA.body.position.y);
-        
-        characterA.body.velocity.x = speedX * directionX;
-        characterA.body.velocity.y = speedY * directionY;
     };
     
     return Ai;

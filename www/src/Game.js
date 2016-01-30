@@ -308,7 +308,7 @@ BasicGame.Game.prototype = {
     updateHumans: function() {
         this.humans.forEach(function(human) {
             this.physics.arcade.overlap(human, this.summonLayer, this.humanHitsSummon, null, this);
-            this.physics.arcade.overlap(human, this.character, this.devourHuman, null, this);
+            this.physics.arcade.overlap(human, this.enemy, this.devourHuman, null, this);
         }.bind(this));
     },
 
