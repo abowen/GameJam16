@@ -54,7 +54,8 @@ BasicGame.Game.prototype = {
         // ScaleMode is not set to RESIZE.
         this.scale.refresh();
 
-
+        // TODO: Move this into game state once Dom has finished
+        this.humansKilled = 0;
     },
 
     preload: function() {
@@ -142,7 +143,7 @@ BasicGame.Game.prototype = {
         this.emitter.setXSpeed(250, -250);
         this.emitter.setYSpeed(-100, 100);
         this.emitter.setAlpha(1, 0.2, 500);
-        this.emitter.flow(1000, 30, 2, -1, true);
+        this.emitter.flow(1000, 30, 2, -1, true);    
 
         ////// SOUND EFFECTS
         this.summonSound = this.game.add.audio('explosionSound');
@@ -209,7 +210,7 @@ BasicGame.Game.prototype = {
         this.map.setCollisionBetween(15, 16);
         //create layer
         this.groundLayer = this.map.createLayer('groundLayer');
-        this.backgroundLayer = this.map.createLayer('backgroundLayer');
+        this.backgroundLayer = this.map.createLayer('backgroundLayer'); 
 
         this.map.setCollision([7, 8, 9, 22, 23, 24, 13], true, this.backgroundLayer);
     },
@@ -331,6 +332,20 @@ BasicGame.Game.prototype = {
 
             var ghost = new Ghost(this.game, human.x, human.y);
             this.ghosts.addChild(ghost);
+
+            // Tint the world
+            if (this.humansKilled < 16)
+            {
+                this.humansKilled++;
+
+                var tintValue = 16 - this.humansKilled;
+                var hexString = tintValue.toString(16);
+                hexString = hexString + hexString;                
+                var tintColour = '0xff' + hexString + 'ff';
+                //console.log(this.humansKilled + " " + tintColour);
+                this.groundLayer.tint = tintColour;
+                this.backgroundLayer.tint = tintColour;     
+            }            
         }
     }
 };
