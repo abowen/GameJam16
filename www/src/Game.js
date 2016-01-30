@@ -92,8 +92,10 @@ BasicGame.Game.prototype = {
         this.load.audio('scream_8', 'asset/sfx/scream_8.mp3');
         this.load.audio('scream_9', 'asset/sfx/scream_9.mp3');
         this.load.audio('scream_10', 'asset/sfx/scream_10.mp3');
+        this.load.audio('eating_1', 'asset/sfx/eating_1.mp3');
+        this.load.audio('eating_2', 'asset/sfx/eating_2.mp3');
         this.load.audio('darkExploration', 'asset/music/DarkExploration.mp3');
-        this.load.audio('devour', 'asset/sfx/monster-eating.mp3');
+        
     },
 
     create: function() {
@@ -146,8 +148,15 @@ BasicGame.Game.prototype = {
         ////// SOUND EFFECTS
         this.summonSound = this.game.add.audio('explosionSound');
         this.explosionSound = this.game.add.audio('crashSound');
-        this.devourSound = this.game.add.audio('devour');
 
+        var eatingNames = ['eating_1', 'eating_2'];
+        this.eating = [];
+        for (var i=0;i<eatingNames.length;i++)
+        {
+            var eatingSound = this.game.add.audio(eatingNames[i]);
+            this.eating.push(eatingSound);
+        }
+        
         var screamNames = ['screamWilhelm',
                             'screamCalzon',
                             'scream_1',
@@ -160,7 +169,6 @@ BasicGame.Game.prototype = {
                             'scream_8',
                             'scream_9',
                             'scream_10'];
-
         this.screams = [];
         for (var i=0;i<screamNames.length;i++)
         {
