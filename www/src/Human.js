@@ -19,9 +19,9 @@ var Human = (function() {
             enemy.devourHuman(human);
 
             this.makeNastyScreams();            
-            this.makeNastyMess(human);
+            this.makeNastyMess(human, enemy);
 
-            human.kill();	        	        	        
+            human.kill();
         };
 
         this.humanHitsSummon = function(human, summon) {
@@ -98,22 +98,39 @@ var Human = (function() {
         this.game_state.screams[this.game.rnd.between(0, this.game_state.screams.length - 1)].play();        
     };
 
-    Human.prototype.makeNastyMess = function(human) {            
+    Human.prototype.makeNastyMess = function(human, enemy) {            
         var bodyPartOneFrame = Math.floor(Math.random() * 2);
         var bodyPartTwoFrame = Math.floor(Math.random() * 2) + 2;
 
         // TODO: Refactor when not tired
-        var bodyPartOneX = Math.floor(Math.random() * 5);
+        var bodyPartOneX = Math.floor(Math.random() * 20);
         var bodyPartOneY = Math.floor(Math.random() * 5);
 
-        var bodyPartTwoX = Math.floor(Math.random() * 5);
+        var bodyPartTwoX = Math.floor(Math.random() * 20);
         var bodyPartTwoY = Math.floor(Math.random() * 5);
 
         // TODO: Tween these bad girls
-        var bodyPartOne = this.game_state.game.add.sprite(human.x - bodyPartOneX, human.y - bodyPartOneY, 'humanparts');
+        var bodyPartOne = this.game_state.game.add.sprite(enemy.x, enemy.y, 'humanparts');
         bodyPartOne.frame = bodyPartOneFrame;
-        var bodyPartTwo = this.game_state.game.add.sprite(human.x + bodyPartTwoX, human.y + bodyPartTwoX, 'humanparts');
-        bodyPartTwo.frame = bodyPartTwoFrame;    
+        bodyPartOne.visible = false;
+        var bodyPartTwo = this.game_state.game.add.sprite(enemy.x, enemy.y, 'humanparts');
+        bodyPartTwo.frame = bodyPartTwoFrame;
+        bodyPartTwo.visible = false;
+
+        var bodyPartOneTween = this.game.add.tween(bodyPartOne);
+        var bodyPartTwoTween = this.game.add.tween(bodyPartTwo);
+        bodyPartOne.visible = bodyPartTwo.visible = true;
+        bodyPartOneTween.to({
+            x: enemy.x - bodyPartOneX,
+            y: enemy.y - bodyPartOneY
+        }, 500, Phaser.Easing.Bounce.Out);
+        bodyPartTwoTween.to({
+            x: enemy.x + bodyPartTwoX,
+            y: enemy.y + bodyPartTwoX
+        }, 500, Phaser.Easing.Bounce.Out);
+
+        bodyPartOneTween.start();
+        bodyPartTwoTween.start();
     };
 
     return Human;
