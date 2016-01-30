@@ -99,11 +99,13 @@ BasicGame.Game.prototype = {
     },
 
     create: function() {
-        // TODO: Clearly remove before publishing
+        // TODO: Clearly remove before publishing        
         this.game.add.plugin(Phaser.Plugin.Debug);
 
         this.createMap();
         this.initialiseGameState();
+
+        // http://phaser.io/examples/v2/groups/group-as-layer
 
         // Keyboard controls
         this.instructionLayer = this.game.add.group();
@@ -118,12 +120,7 @@ BasicGame.Game.prototype = {
         this.characters = this.game.add.group();
         this.characters.enableBody = true;
         this.characters.z = 3;
-
-        // http://phaser.io/examples/v2/groups/group-as-layer
-        // Summon graphics
-        this.summonLayer = this.game.add.physicsGroup();
-        this.summonLayer.z = 1;
-
+                
         // Moving objects that are blocked by mountains        
         this.characters = this.game.add.group();
         
@@ -322,9 +319,7 @@ BasicGame.Game.prototype = {
             this.character.y);
 
         this.emitter.emitX = summon.x;
-        this.emitter.emitY = summon.y;
-
-        this.summonLayer.add(summon);
+        this.emitter.emitY = summon.y;    
 
         this.summonSound.play();
     },
@@ -338,7 +333,7 @@ BasicGame.Game.prototype = {
 
     updateHumans: function() {
         this.humans.forEach(function(human) {
-            this.physics.arcade.overlap(human, this.summonLayer, this.humanHitsSummon, null, this);
+            this.physics.arcade.overlap(human, this.game.summonLayer, this.humanHitsSummon, null, this);
             this.physics.arcade.overlap(human, this.enemy, this.devourHuman, null, this);
         }.bind(this));
     },
