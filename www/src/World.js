@@ -1,5 +1,5 @@
 var World = (function() {
-    function World(game_state) {
+        function World(game_state) {
         this.init_condition = {
 
         };
@@ -12,7 +12,7 @@ var World = (function() {
         
         this.lose_conditions = {
             enemy : {
-                humans_devoured: 10                
+                humans_devoured: 15
             }
         };
 
@@ -83,6 +83,7 @@ var World = (function() {
         }.bind(this), 1000);
         
         this.refresh();
+        this.updateScore();
     };
 
     World.prototype.sacrificeHuman = function(human) {
@@ -116,6 +117,15 @@ var World = (function() {
     World.prototype.refresh = function() {
         this.updateScore();        
         this.makeWorldScarierOrCooler();
+    };
+    
+    World.prototype.runRitual = function(human) {
+    	// kill human?
+        this.player.souls_collected = 0;
+        this.player.rituals_performed += 1;
+        this.game_state.powerUp.addPower();
+        //this.updateScore();
+
     };
 
     World.prototype.updateScore = function() {    	    	          

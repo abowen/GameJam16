@@ -19,7 +19,7 @@ var Human = (function() {
             this.game_state.world_state.devourHuman(human, enemy);            
             enemy.devourHuman(human);
 
-            this.makeNastyScreams();            
+            this.makeNastyScreams();
             this.makeNastyMess(human, enemy);
 
             human.kill();
@@ -41,7 +41,6 @@ var Human = (function() {
                 cloneV.anchor.set(0.5);
 
                 this.makeNastyScreams();
-                
                 var explosionSpeed = 250;
 
                 this.game_state.game.add.tween(cloneV.scale).to({
@@ -111,6 +110,8 @@ var Human = (function() {
     Human.prototype.makeNastyScreams = function() {
         this.game_state.screamSoundGroup.playRandomSound();        
     };
+
+ 
 
     Human.prototype.makeNastyMess = function(human, enemy) {            
         var bodyPartOneFrame = Math.floor(Math.random() * 2);

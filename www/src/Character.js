@@ -1,9 +1,10 @@
 var Character = (function() {
     function Character(game_state, x, y, sprite) {
         //BasicGame.Prefab.call(this, game, 'Player', {x:x, y:y}, properties);
+        Phaser.Sprite.call(this, game_state.game, x, y, sprite);
+        this.speed = 7;
+        this.speed = 200;
         this.game_state = game_state;
-
-        Phaser.Sprite.call(this, game_state.game, x, y, sprite);        
         game_state.game.physics.arcade.enable(this);
         this.anchor.set(0.5);
         
@@ -11,10 +12,20 @@ var Character = (function() {
         this.body.collideWorldBounds = true;
 
         this.speed = 200;
-        this.boostSpeed = 10;
-        
         this.followers = []
         this.setAnimation();
+
+        this.performRitual = function(character, offeringStone) {            
+            offeringStone.body.velocity.x = 0;
+            offeringStone.body.velocity.y = 0;
+            
+            this.followers.forEach(function(follower) {
+                follower.kill();
+            }, this);;
+            this.followers = [];
+            this.speed = 200;
+        };
+        this.boostSpeed = 10;
     };
 
     Character.prototype = Object.create(Phaser.Sprite.prototype);
@@ -45,6 +56,14 @@ var Character = (function() {
         }, this);
         this.followers = [];            
     };
+    
+    Character.prototype.performRitual = function() {
+        this.followers.forEach(function(follower) {
+            follower.kill();
+        }, this);
+        followers.clear();
+        this.speed = 4;
+    };
 
     Character.prototype.setAnimation = function() {
         this.animations.add('down', [0, 1, 2], this.framesPerSecond, true);
@@ -53,15 +72,17 @@ var Character = (function() {
         this.animations.add('left', [9, 10, 11], this.framesPerSecond, true);
     };
 
-    Character.prototype.setVelocity = function(x, y) {
-            this.body.velocity.x = x;
-            this.body.velocity.y = y;
-        },
+    Character.prototype.setVelocity = function(x, y){
+        this.body.velocity.x = x;
+        this.body.velocity.y = y;
 
-        Character.prototype.moveUp = function() {
-            this.setVelocity(0, -this.speed);
-            this.animations.play('up');
-        };
+        //this.powerUp.setVelocity(x, y);
+    },
+
+    Character.prototype.moveUp = function() {
+        this.setVelocity(0, -this.speed);
+        this.animations.play('up');
+    };
     Character.prototype.moveDown = function() {
         this.setVelocity(0, this.speed);
         this.animations.play('down');
@@ -84,8 +105,7 @@ var Character = (function() {
     };
 
     Character.prototype.update = function() {
-        // TODO: Reimplement
-        // this.game_state.game.physics.arcade.collide(this, this.game_state.offeringStone, this.performRitual, null, this);
+        this.game_state.game.physics.arcade.collide(this, this.game_state.offeringStone, this.performRitual, null, this);
     };
 
     return Character;

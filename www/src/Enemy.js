@@ -77,7 +77,13 @@ var Enemy = (function() {
     Enemy.prototype.update = function() {
         "use strict";
 
-        var new_position;
+        if (this.game_state.world_state.enemy.isEatingHuman){
+            this.gotTheGiggles();
+        }
+        else {
+
+            var new_position;
+        }
 
         if (this.game_state.world_state.enemy.isEatingHuman){
             this.giggleWhileEating();
@@ -118,7 +124,7 @@ var Enemy = (function() {
 
             if (dist > 20.0) {
                 this.game.ai.follow(this, followed_mob, this.base_speed * vel_factor, this.base_speed * vel_factor);
-            } else {                
+            } else {
                 this.stop();
             }
 
@@ -137,7 +143,7 @@ var Enemy = (function() {
             } else if (this.body.velocity.y > 0) {
                 // walking down
                 this.animations.play("down");
-            }     
+            }        
 
             this.scale.setTo(scaleX, scaleY);
         }    
@@ -150,8 +156,22 @@ var Enemy = (function() {
         new_position = (this.axis === "x") ? this.x : this.y;        
 
         if (Math.abs(new_position - this.previous_position) >= this.walking_distance) {
-            this.switch_direction();
+                this.switch_direction();
         }
+    };
+
+    Enemy.prototype.gotTheGiggles = function() {        
+        this.body.velocity.x = 0;
+        this.body.velocity.y = 0;
+        var max = 2;
+        var min = 1;
+        // TODO: Make him bigger
+
+        // TODO: Make him wobble
+
+        //var movement = Math.floor(Math.random() * (max - min + 1)) + min;
+        //console.log('Got the giggles');
+        //this.body.velocity.x        
     };
 
     Enemy.prototype.switch_direction = function() {
