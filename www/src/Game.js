@@ -285,7 +285,17 @@ BasicGame.Game.prototype = {
         var startTile = this.game.houseTiles[this.game.rnd.between(0, this.game.houseTiles.length - 1)];
         var human = new Human(this, startTile.worldX + 8, startTile.worldY + 8, 'human');
         this.humans.addChild(human);
-    }  
+    },
+    
+    
+    gameOver: function (win) {
+        "use strict";
+        if(win) {
+            this.game.state.start("YouWin", true, false, null, "YouWin");
+        } else {
+            this.game.state.start("YouLose", true, false, null, "YouLose");
+        }
+    }
 };
 
 // create Game function in BasicGame
