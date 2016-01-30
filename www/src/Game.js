@@ -65,6 +65,7 @@ BasicGame.Game.prototype = {
         this.load.spritesheet('characterOrange', 'asset/characterOrangeLine.png', 16, 16, 12);
         this.load.spritesheet('enemy', 'asset/images/enemy_spritesheet.png', 16, 16, 12);
         this.load.spritesheet('human', 'asset/human.png', 16, 16, 30);
+        this.load.spritesheet('ghost', 'asset/ghost.png', 16, 16, 30);
         this.load.image('summon', 'asset/summonRed.png');
         this.load.image('characterSingle', 'asset/characterSingle.png');
 
@@ -103,6 +104,7 @@ BasicGame.Game.prototype = {
         this.game.character = this.character = new Character(this.game, this.world.centerX / 2, this.world.centerY, 'characterOrange');
         this.enemy = new Enemy(this.game, 'Enemy', this.world.centerX + (this.world.centerX / 2), this.world.centerY, 'enemy');
 
+        this.ghosts = this.game.add.group();
 
         this.characters.addChild(this.character);
         this.characters.enableBody = true;
@@ -169,8 +171,6 @@ BasicGame.Game.prototype = {
         this.backgroundLayer = this.map.createLayer('backgroundLayer');
 
         this.map.setCollision([7, 8, 9, 22, 23, 24, 13], true, this.backgroundLayer);
-
-        console.log('collidets: ' + this.map.collideIndexes);
     },
 
     gameResized: function (width, height) {
@@ -244,7 +244,6 @@ BasicGame.Game.prototype = {
 
 
     humanHitsSummon: function(human, summon) {
-
         if (!summon.fallTween.isRunning) {
             var cloneH = this.add.sprite(summon.x, summon.y, 'summon');
             cloneH.anchor.set(0.5);
@@ -264,6 +263,9 @@ BasicGame.Game.prototype = {
             this.add.tween(cloneV).to({alpha: 0}, 250, "Linear", true, 250);
 
             this.explosionSound.play();
+
+            var ghost = new Ghost(this.game, human.x, human.y);
+            this.ghosts.addChild(ghost);
         }
     }
 };
