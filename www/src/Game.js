@@ -222,7 +222,7 @@ BasicGame.Game.prototype = {
 
     },
 
-    initialiseGameState() {
+    initialiseGameState: function() {
         this.game.game_state = {
             init_condition: {
 
