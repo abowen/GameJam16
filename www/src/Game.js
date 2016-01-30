@@ -99,9 +99,9 @@ BasicGame.Game.prototype = {
         this.instructionLayer.z = 5;
         this.instructionLayer.destroyChildren = true;
 
-        // Character lives in the top right        
-        this.livesLayer = this.game.add.group();
-        this.livesLayer.z = 4;
+        // People killed rating      
+        this.scoreLayer = this.game.add.group();
+        this.scoreLayer.z = 4;
 
         // Moving objects that are blocked by mountains
         this.characters = this.game.add.group();
@@ -159,22 +159,7 @@ BasicGame.Game.prototype = {
         this.music = this.game.add.audio('darkExploration');
 
         // MP3's take time to decode, we can make a call back if required
-        this.game.sound.setDecodedCallback([this.music, this.explosionSound, this.scream01Sound], this.startMusic, this);
-
-        for (var i = 0; i < TOTAL_PLAYER_LIVES; i++) {
-            var width = 16;
-            var padding = 4;
-            var xPosition = 16 + (width + padding) * i;
-
-            var characterLife = new Phaser.Sprite(
-                this.game,
-                xPosition,
-                20,
-                'characterSingle');
-            characterLife.anchor.setTo(0.5, 0.5);
-            this.livesLayer.add(characterLife);
-        }
-        
+        this.game.sound.setDecodedCallback([this.music, this.explosionSound, this.scream01Sound], this.startMusic, this);      
        
         // Instruction information
         // Summon those fools from dark earth                
@@ -273,6 +258,27 @@ BasicGame.Game.prototype = {
         }
 
         this.updateHumans();
+        this.updateScore();
+    },
+
+    updateScore : function() { 
+
+        var requiredDraw = this.humansKilled - this.scoreLayer.length;
+        
+        for (var i = 0;  i < requiredDraw; i++) {
+            var width = 16;
+            var padding = 4;
+            var xPosition = 16 + (width + padding) * this.humansKilled;
+
+            var characterLife = new Phaser.Sprite(
+                this.game,
+                xPosition,
+                20,
+                'characterSingle');
+            characterLife.anchor.setTo(0.5, 0.5);
+         
+            this.scoreLayer.add(characterLife);        
+        }
     },
 
     summonShit: function() {

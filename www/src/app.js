@@ -1,7 +1,8 @@
 // CONSTANTS
 var GAME_HEIGHT = 640;
 var GAME_WIDTH = 640;
-var TOTAL_PLAYER_LIVES = 5;
+// TODO: Move to Dom's gamestate
+var MAXIMUM_KILLS = 15;
 
 
 (function () {
