@@ -2,13 +2,11 @@ var Character = (function(){
     function Character(game_state, x, y, sprite){
         //BasicGame.Prefab.call(this, game, 'Player', {x:x, y:y}, properties);
         Phaser.Sprite.call(this, game_state.game, x, y, sprite);
-
         this.speed = 4;
         this.speed = 100;
 
-        this.game_state.game.physics.arcade.enable(this);
+        game_state.game.physics.arcade.enable(this);
         this.anchor.set(0.5);
-
         // animation name, frames, FPS, true? (maybe swap)
         this.framesPerSecond = 10;        
         this.body.collideWorldBounds = true;
