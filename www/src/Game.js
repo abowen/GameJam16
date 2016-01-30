@@ -137,14 +137,15 @@ BasicGame.Game.prototype = {
         this.summonKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
         this.summonKey.onDown.add(this.summonShit, this);
 
-        this.summonParticles = this.make.bitmapData(3, 3);
-        this.summonParticles.rect(0, 0, 3, 3, '#ff0000');
-        this.summonParticles.update();
+        this.bloodParticles = this.make.bitmapData(3, 3);
+        this.bloodParticles.rect(0, 0, 4, 4, '#ff0000');
+        this.bloodParticles.update();
 
         this.emitter = this.add.emitter(0, 0, 128);
-        this.emitter.makeParticles(this.summonParticles);
+        this.emitter.makeParticles(this.bloodParticles);
         this.emitter.gravity = 100;
         this.emitter.setAlpha(1, 0.2, 500);    
+
         ////// SOUND EFFECTS
         this.summonSound = this.game.add.audio('explosionSound');
         this.explosionSound = this.game.add.audio('crashSound');
