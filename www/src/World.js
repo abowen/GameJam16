@@ -12,7 +12,7 @@ var World = (function() {
         
         this.lose_conditions = {
             enemy : {
-                humans_devoured: 1
+                humans_devoured: 10
             }
         };
 
