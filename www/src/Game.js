@@ -159,7 +159,8 @@ BasicGame.Game.prototype = {
         this.music = this.game.add.audio('darkExploration');
 
         // MP3's take time to decode, we can make a call back if required
-        this.game.sound.setDecodedCallback([this.music, this.explosionSound, this.scream01], this.startMusic, this);
+        this.game.sound.setDecodedCallback([this.music, this.explosionSound, this.scream01Sound], this.startMusic, this);
+
         for (var i = 0; i < TOTAL_PLAYER_LIVES; i++) {
             var width = 16;
             var padding = 4;
@@ -202,6 +203,7 @@ BasicGame.Game.prototype = {
     },
 
     startMusic: function() {
+        console.log("MUSIC START PARTY");
         this.music.loopFull(0.6);
     },
 
@@ -348,7 +350,6 @@ BasicGame.Game.prototype = {
                 this.groundLayer.tint = tintColour;
                 this.backgroundLayer.tint = tintColour;     
             }            
-
         }
     }
 };
