@@ -117,6 +117,18 @@ var Enemy = (function() {
         if (Math.abs(new_position - this.previous_position) >= this.walking_distance) {
             this.switch_direction();
         }
+
+        this.gotTheGiggles();
+    };
+
+    Enemy.prototype.gotTheGiggles = function() {
+        if (this.game_state.world_state.enemy.isEatingHuman){
+            var max = 2;
+            var min = 1;
+            //var movement = Math.floor(Math.random() * (max - min + 1)) + min;
+            //console.log('Got the giggles');
+            //this.body.velocity.x
+        }
     };
 
     Enemy.prototype.switch_direction = function() {
