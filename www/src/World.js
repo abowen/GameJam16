@@ -36,6 +36,25 @@ var World = (function() {
 	        this.game.camera.x += Math.floor(Math.random() * (max - min + 1)) + min;
 	        this.game.camera.y += Math.floor(Math.random() * (max - min + 1)) + min;
     	};
+
+    	World.prototype.calculateScreenShake = function() {        
+	        var isItTimeToScreenShakePartyYet = this.screenShake.counter.indexOf(this.player.souls_collected) == 0;        
+
+	        if (isItTimeToScreenShakePartyYet) {   
+	            console.log('!@#! screen shake party up !@#!')         
+	            this.screenShake.effect = this.screenShake.counter.shift();                                    
+	        } 
+	        else {
+	            console.log('!@#! screen shake baby party !@#!')         
+	            this.screenShake.effect = 1;
+	        }
+
+	        var screenShakeTimer = isItTimeToScreenShakePartyYet ? 2000 : 250;
+	        setTimeout(function() {
+	                this.screenShake.effect = 0;
+	                console.log('!@#! screen shake party down !@#!')                
+	            }.bind(this), screenShakeTimer);
+	    };
         
         World.prototype.devourHuman = function (){
             this.player.humans_devoured += 1;
