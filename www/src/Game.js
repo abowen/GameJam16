@@ -56,6 +56,7 @@ BasicGame.Game.prototype = {
 
         // TODO: Move this into game state once Dom has finished
         this.humansKilled = 0;
+        this.humansKilledByOgre = 0;
     },
 
     preload: function() {
@@ -386,11 +387,13 @@ BasicGame.Game.prototype = {
                 //console.log(this.humansKilled + " " + tintColour);
                 this.groundLayer.tint = tintColour;
                 this.backgroundLayer.tint = tintColour;     
-            }            
+            }
         }
     },
         
     devourHuman: function(human, enemy) {
+        this.humansKilledByOgre++;
+        if(this.humansKilledByOgre > this.humansKilled && this.humansKilled > 0) this.humansKilled--;
         this.emitter.emitX = human.x;
         this.emitter.emitY = human.y;
         human.kill();
