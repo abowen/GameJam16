@@ -26,8 +26,8 @@ var World = (function() {
             counter: [5, 10, 15]
         }
 
-        var max = this.screenShake.counter.max();
-        this.world.setBounds(-max, -max, this.game.width + max, this.game.height + 2);
+        var max = this.screenShake.counter.max();        
+        //this.world.setBounds(-max, -max, this.game.width + max, this.game.height + 2);
     };
 
     World.prototype.devourHuman = function(human) {
