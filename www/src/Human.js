@@ -14,7 +14,8 @@ var Human = (function() {
 		this.lastMove = null;
 
         this.devourHuman = function(human, character) {
-            human.destroy();
+            
+            this.game_state.world_state.devourHuman(human);
             //update score may be?
         };
 
