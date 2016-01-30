@@ -284,11 +284,14 @@ BasicGame.Game.prototype = {
 
     shitJustGotReal: function() {
         if (this.character.followers.length > 0){
-            this.character.turboBoost();
+            console.log("88888ooooo--- TUUUUUUURRRRRBOOOOOOOOOOO))))>");
+            
+            var follower = this.character.followers.pop();
+            this.character.sacrificeFollower(follower);
+
             // TODO: Slow down humans
             // TODO: Make world blue
-            // TODO: Reduce size of ogre
-            // TODO: Play sweet turbo sound            
+            // TODO: Reduce size of ogre            
         }
     },
 
