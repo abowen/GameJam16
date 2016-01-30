@@ -61,13 +61,13 @@ BasicGame.Game.prototype = {
         this.load.tilemap('level1', 'asset/tileset.json', null, Phaser.Tilemap.TILED_JSON);
         this.load.image('tiles', 'asset/tiles.png');
 
-        //http://phaser.io/examples/v2/sprites/spritesheet
+        //http://phaser.io/examples/v2/sprites/spritesheet        
         this.load.spritesheet('character', 'asset/images/character_spritesheet_32.png', 32, 32, 12);
         this.load.spritesheet('enemy', 'asset/images/enemy_spritesheet_32.png', 32, 32, 10);
         this.load.spritesheet('offering_stone', 'asset/images/offering_stone_32.png', 32, 32, 1);
 
         this.load.spritesheet('human', 'asset/human.png', 16, 16, 30);
-        this.load.spritesheet('ghost', 'asset/ghost.png', 16, 16, 30);
+        this.load.spritesheet('ghost', 'asset/images/ghost_spritesheet_16.png', 16, 16, 10);
 
         this.load.image('summon', 'asset/summonRed.png');
         
@@ -180,9 +180,9 @@ BasicGame.Game.prototype = {
         this.instructionKey.onDown.add(this.clearInstructions, this);
 
         var keys = ['keyboardLeft', 'keyboardRight', 'keyboardUp', 'keyboardDown', 'keyboardSpacebar', 'keyboardCtrl'];
-        var keyX = 50;
+        var keyX = 30;        
         // TODO: Replace Y with less value once we have less scaling
-        var keyY = GAME_HEIGHT - 250;
+        var keyY = GAME_HEIGHT - 75;
         for (var i = 0; i < keys.length; i++) {
             var keySprite = this.add.sprite(keyX, keyY, keys[i]);
             keySprite.scale.setTo(0.75);
@@ -227,7 +227,7 @@ BasicGame.Game.prototype = {
 
     },
 
-    initialiseGameState() {
+    initialiseGameState: function() {
         this.game.game_state = {
             init_condition: {
 
@@ -294,7 +294,6 @@ BasicGame.Game.prototype = {
 
     updateHumans: function() {
         this.humans.forEach(function(human) {
-            human.update();
             if (human.y > this.world.height) human.destroy();
 
             this.physics.arcade.overlap(human, this.summonLayer, this.humanHitsSummon, null, this);

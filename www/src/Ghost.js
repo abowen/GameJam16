@@ -1,11 +1,6 @@
 var Ghost = (function(){
     function Ghost(game, x, y){
-        properties = {
-            group: 'ghosts',
-            spritesheet: 'ghost'
-        };
-
-        Prefab.call(this, game, name, {x:x, y:y}, properties);
+        MovingSprite.call(this, game, x, y, 'ghost', 'ghosts');
 
         this.speed = 0.5;
         this.game = game;
@@ -22,7 +17,7 @@ var Ghost = (function(){
         this.lastMove = null;
     };
 
-    Ghost.prototype = Object.create(Phaser.Sprite.prototype);
+    Ghost.prototype = Object.create(MovingSprite.prototype);
     Ghost.prototype.constructor = Ghost;
 
     Ghost.prototype.setAnimation = function() {
@@ -40,25 +35,6 @@ var Ghost = (function(){
         }
         this[moveIn]();
         this.lastMove = moveIn;
-    };
-
-    Ghost.prototype.moveUp = function(){
-        this.y -= this.speed;
-        this.animations.play('up');
-    };
-    Ghost.prototype.moveDown = function(){
-        this.y += this.speed;
-        this.animations.play('down');
-    };
-    Ghost.prototype.moveLeft = function(){
-        this.scale.setTo(-1, 1);
-        this.x -= this.speed;
-        this.animations.play('left');
-    };
-    Ghost.prototype.moveRight = function(){
-        this.scale.setTo(1, 1);
-        this.x += this.speed;
-        this.animations.play('right');
     };
 
 

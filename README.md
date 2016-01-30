@@ -21,3 +21,4 @@ See [LICENSE.md](./LICENSE.md) for license terms and conditions.
 - http://opengameart.org/content/rpg-sprite-8-direction-human-male-16x16
 - http://opengameart.org/content/keyboard-keys-0
 - https://archive.org/details/WilhelmScreamSample
+- http://www.favicon.cc/?action=icon&file_id=754367

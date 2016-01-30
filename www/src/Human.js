@@ -1,6 +1,6 @@
 var Human = (function() {
 	function Human(game, x, y, sprite) {
-		Character.call(this, game, x, y, sprite);
+		MovingSprite.call(this, game, x, y, sprite);
 		this.speed = 1;
 		this.body.acceleration = {x: 0, y: this.game.rnd.between(0, 50)};
 
@@ -10,7 +10,7 @@ var Human = (function() {
         this.setAnimation();
 	};
 
-	Human.prototype = Object.create(Character.prototype);
+	Human.prototype = Object.create(MovingSprite.prototype);
 	Human.prototype.constructor = Human;
 
 	Human.prototype.setAnimation = function() {
@@ -21,7 +21,11 @@ var Human = (function() {
 	};
 
 	Human.prototype.update = function() {
-		this.moveDown();        
+		this.moveDown();
+
+		if (this.y > this.game.height) {
+			this.kill();
+		}
 	};
 
 	return Human;
