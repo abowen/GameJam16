@@ -53,17 +53,21 @@ var World = (function() {
     World.prototype.calculateScreenShake = function() {
         var isItTimeToScreenShakePartyYet = this.screenShake.counter.indexOf(this.player.souls_collected) == 0;
 
-        if (isItTimeToScreenShakePartyYet) {            
-            this.screenShake.effect = this.screenShake.counter.shift();
-        } else {            
-            this.screenShake.effect = 1;
-        }
+        var effect = isItTimeToScreenShakePartyYet ? this.screenShake.counter.shift() : 1;
+        var timer = isItTimeToScreenShakePartyYet ? 2000 : 250;
 
-        var screenShakeTimer = isItTimeToScreenShakePartyYet ? 2000 : 250;
-        setTimeout(function() {
-            this.screenShake.effect = 0;            
-        }.bind(this), screenShakeTimer);
-    };              
+        this.addScreenShake(effect, timer)
+    };    
+
+    World.prototype.addScreenShake = function(effect, timer) {
+        if (this.screenShake.effect < effect) {
+            this.screenShake.effect = effect;
+
+            setTimeout(function() {
+                this.screenShake.effect = 0;            
+            }.bind(this), timer);    
+        }
+    };
 
     World.prototype.devourHuman = function(human) {
         console.log("started eating");
