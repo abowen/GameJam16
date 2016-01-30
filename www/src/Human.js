@@ -32,6 +32,7 @@ var Human = (function() {
 
                 human.kill();
                 summon.kill();
+				this.game_state.powerUp.addPower();
 
                 var explosionSpeed = 250;
 

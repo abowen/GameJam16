@@ -22,7 +22,7 @@ var Character = (function() {
             }, this);;
             this.followers = [];
             this.speed = 200;
-        }
+        };
     };
 
     Character.prototype = Object.create(Phaser.Sprite.prototype);
@@ -33,6 +33,14 @@ var Character = (function() {
         follower.follow(this);
         this.speed *= 0.8;
     };
+    
+    Character.prototype.performRitual = function() {
+        this.followers.forEach(function(follower) {
+            follower.kill();
+        }, this);
+        followers.clear();
+        this.speed = 4;
+    };
 
     Character.prototype.setAnimation = function() {
         this.animations.add('down', [0, 1, 2], this.framesPerSecond, true);
@@ -41,15 +49,17 @@ var Character = (function() {
         this.animations.add('left', [9, 10, 11], this.framesPerSecond, true);
     };
 
-    Character.prototype.setVelocity = function(x, y) {
-            this.body.velocity.x = x;
-            this.body.velocity.y = y;
-        },
+    Character.prototype.setVelocity = function(x, y){
+        this.body.velocity.x = x;
+        this.body.velocity.y = y;
 
-        Character.prototype.moveUp = function() {
-            this.setVelocity(0, -this.speed);
-            this.animations.play('up');
-        };
+        //this.powerUp.setVelocity(x, y);
+    },
+
+    Character.prototype.moveUp = function() {
+        this.setVelocity(0, -this.speed);
+        this.animations.play('up');
+    };
     Character.prototype.moveDown = function() {
         this.setVelocity(0, this.speed);
         this.animations.play('down');

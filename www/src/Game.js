@@ -76,6 +76,7 @@ BasicGame.Game.prototype = {
         this.load.image('keyboardRight', 'asset/images/keyboardRight.png');
         this.load.image('keyboardCtrl', 'asset/images/keyboardCtrl.png');
         this.load.image('keyboardSpacebar', 'asset/images/keyboardSpacebar.png');
+        this.load.image('powerup', 'asset/images/powerup.png')
 
         //http://phaser.io/examples/v2/audio/sound-complete
         this.load.audio('crashSound', 'asset/sfx/summon.wav');
@@ -105,6 +106,7 @@ BasicGame.Game.prototype = {
         this.createMap();
         this.initialiseGameState();
 
+
         this.summonLayer = this.game.add.physicsGroup();
 
         // Keyboard controls
@@ -120,6 +122,8 @@ BasicGame.Game.prototype = {
         this.characters = this.game.add.group();
         this.characters.enableBody = true;
         this.characters.z = 3;
+
+        this.powerUp = new PowerUp(this, 10, 16);
 
         //http://phaser.io/examples/v2/input/cursor-key-movement
         cursors = this.game.input.keyboard.createCursorKeys();
