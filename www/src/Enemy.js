@@ -59,15 +59,34 @@ var Enemy = (function() {
         this.game_state.eating[this.game.rnd.between(0, this.game_state.eating.length - 1)].play();
     };
 
+    Enemy.prototype.giggleWhileEating = function() {        
+        // Make him wobble on the spot because he is a fatty
+        var max = 1;
+        var min = -1;
+        
+        var movement = Math.floor(Math.random() * (max - min + 1)) + min;
+        //console.log('Got the giggles : ' + movement);
+
+        this.body.velocity.x = 0;
+        this.body.velocity.y = 0;
+        
+        this.body.x += movement;
+        this.body.y += movement;
+        
+        // TODO: Make him bigger            
+    };    
+
     Enemy.prototype.update = function() {
         "use strict";
 
+        var new_position;
+
         if (this.game_state.world_state.enemy.isEatingHuman){
-            this.gotTheGiggles();
+            this.giggleWhileEating();
         }
         else {
 
-            var new_position;
+            
             //this.game.physics.arcade.collide(this, this.game.groups.humans, this.switch_direction, null, this);
             // this.game.physics.arcade.collide(this, this.game_state.layers.blocks, this.switch_direction, null, this);
             // this.game.physics.arcade.overlap(this, this.game_state.groups.bombs, this.switch_direction, null, this);
@@ -104,7 +123,7 @@ var Enemy = (function() {
 
             if (dist > 20.0) {
                 this.game.ai.follow(this, followed_mob, this.base_speed * vel_factor, this.base_speed * vel_factor);
-            } else {
+            } else {                
                 this.stop();
             }
 
@@ -128,33 +147,20 @@ var Enemy = (function() {
         }    
 
         if (this.body.velocity.x === 0 && this.body.velocity.y === 0) {
-                // stop current animation
-                this.animations.stop();
-                //this.frame = this.stopped_frames[this.body.facing];
+                // stop current animation                
+                this.animations.stop();                
             }
 
-        new_position = (this.axis === "x") ? this.x : this.y;
+        new_position = (this.axis === "x") ? this.x : this.y;        
+
         if (Math.abs(new_position - this.previous_position) >= this.walking_distance) {
-                this.switch_direction();
+            this.switch_direction();
         }
-    };
-
-    Enemy.prototype.gotTheGiggles = function() {        
-        this.body.velocity.x = 0;
-        this.body.velocity.y = 0;
-        var max = 2;
-        var min = 1;
-        // TODO: Make him bigger
-
-        // TODO: Make him wobble
-
-        //var movement = Math.floor(Math.random() * (max - min + 1)) + min;
-        //console.log('Got the giggles');
-        //this.body.velocity.x        
     };
 
     Enemy.prototype.switch_direction = function() {
         "use strict";
+
         if (this.axis === "x") {
             this.previous_position = this.x;
             this.body.velocity.x *= -1;
