@@ -1,15 +1,19 @@
 var Enemy = (function() {
     function Enemy(game_state, name, x, y, properties) {
         "use strict";
-        
+
         // TODO: to be managed by the level state
         properties = {
             group: 'enemies',
             spritesheet: 'enemy'
         };
-        
-        Prefab.call(this, game_state, name, {x:x, y:y}, properties);
 
+        Prefab.call(this, game_state, name, {
+            x: x,
+            y: y
+        }, properties);
+
+        this.base_speed = 60.0;
         this.anchor.setTo(0.5);
         this.game = game_state.game;
         this.walking_speed = +properties.walking_speed;
@@ -17,7 +21,7 @@ var Enemy = (function() {
         this.direction = +properties.direction;
         this.axis = properties.axis;
 
-        this.previous_position = (this.axis === "x") ? this.x : this.y;        
+        this.previous_position = (this.axis === "x") ? this.x : this.y;
 
         this.game.physics.arcade.enable(this);
         if (this.axis === "x") {
@@ -25,7 +29,7 @@ var Enemy = (function() {
         } else {
             this.body.velocity.y = this.direction * this.walking_speed;
         }
-        
+
         this.animations.add("down", [1, 2, 3], 10, true);
         this.animations.add("left", [4, 5, 6, 7], 10, true);
         this.animations.add("right", [4, 5, 6, 7], 10, true);
@@ -36,8 +40,8 @@ var Enemy = (function() {
 
     Enemy.prototype = Object.create(Prefab.prototype);
     Enemy.prototype.constructor = Enemy;
-    
-    Enemy.prototype.stop = function(){
+
+    Enemy.prototype.stop = function() {
         this.body.velocity.x = 0;
         this.body.velocity.y = 0;
     }
@@ -50,22 +54,37 @@ var Enemy = (function() {
         // this.game.physics.arcade.overlap(this, this.game_state.groups.bombs, this.switch_direction, null, this);
         // this.game.physics.arcade.overlap(this, this.game_state.groups.explosions, this.kill, null, this);
         var followed_mob = {};
-        if(this.game_state.humans && this.game_state.humans.children.length > 0) {
-            followed_mob = this.game_state.humans.children[0];
+        var dist = 0.0;
+        if (this.game_state.humans && this.game_state.humans.children.length > 0) {
+
+            var closest_human = {};
+            var dist_min = 99999;
+            this.game_state.humans.forEach(function(human) {
+                var current_dist = this.game.math.distance(this.body.position.x,
+                    this.body.position.y,
+                    human.position.x,
+                    human.position.y);
+                
+                if(dist < dist_min){
+                    dist = dist_min;
+                    current_dist = dist_min;
+                    closest_human = human;
+                }
+            }, this);
+
+            followed_mob = closest_human;
         } else {
             followed_mob = this.game_state.character;
+            dist = this.game.math.distance(this.body.position.x,
+                this.body.position.y,
+                followed_mob.position.x,
+                followed_mob.position.y);
         }
-        
-        
-        var dist = this.game.math.distance(this.body.position.x, 
-            this.body.position.y, 
-            followed_mob.position.x,
-            followed_mob.position.y);
-            
+
         var vel_factor = 1.0;
-        
-        if(dist > 20.0){    
-            this.game.ai.follow(this, followed_mob, 30.0 * vel_factor, 30.0 * vel_factor);
+
+        if (dist > 20.0) {
+            this.game.ai.follow(this, followed_mob, this.base_speed * vel_factor, this.base_speed * vel_factor);
         } else {
             this.stop();
         }
