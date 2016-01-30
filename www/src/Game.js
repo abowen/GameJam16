@@ -291,7 +291,6 @@ BasicGame.Game.prototype = {
 
     updateHumans: function() {
         this.humans.forEach(function(human) {
-            human.update();
             if (human.y > this.world.height) human.destroy();
 
             this.physics.arcade.overlap(human, this.summonLayer, this.humanHitsSummon, null, this);
