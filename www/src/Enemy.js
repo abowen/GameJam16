@@ -49,8 +49,14 @@ var Enemy = (function() {
         // this.game.physics.arcade.collide(this, this.game_state.layers.blocks, this.switch_direction, null, this);
         // this.game.physics.arcade.overlap(this, this.game_state.groups.bombs, this.switch_direction, null, this);
         // this.game.physics.arcade.overlap(this, this.game_state.groups.explosions, this.kill, null, this);
+        var followed_mob = {};
+        if(this.game_state.humans && this.game_state.humans.children.length > 0) {
+            followed_mob = this.game_state.humans.children[0];
+        } else {
+            followed_mob = this.game_state.character;
+        }
         
-        var followed_mob = this.game_state.character;
+        
         var dist = this.game.math.distance(this.body.position.x, 
             this.body.position.y, 
             followed_mob.position.x,

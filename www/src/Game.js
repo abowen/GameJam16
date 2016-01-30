@@ -245,7 +245,7 @@ BasicGame.Game.prototype = {
     },
 
     initialiseGameState: function() {
-       this.world_state = new World();
+       this.world_state = new World(this);
     },
 
     update: function() {
@@ -267,29 +267,7 @@ BasicGame.Game.prototype = {
             this.character.moveRight();
         } else {
             this.character.stop();
-        }
-
-        this.updateScore();
-    },
-
-    updateScore : function() { 
-
-        var requiredDraw = this.humansKilled - this.scoreLayer.length;
-        
-        for (var i = 0;  i < requiredDraw; i++) {
-            var width = 16;
-            var padding = 4;
-            var xPosition = 16 + (width + padding) * this.humansKilled;
-
-            var characterLife = new Phaser.Sprite(
-                this.game,
-                xPosition,
-                20,
-                'characterSingle');
-            characterLife.anchor.setTo(0.5, 0.5);
-         
-            this.scoreLayer.add(characterLife);        
-        }
+        }    
     },
 
     summonShit: function() {

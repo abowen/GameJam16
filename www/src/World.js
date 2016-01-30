@@ -1,5 +1,5 @@
 var World = (function() {
-    function World() {
+    function World(game_state) {
         this.init_condition = {
 
         };
@@ -25,6 +25,8 @@ var World = (function() {
             effect: 0,
             counter: [5, 10, 15]
         }
+
+        this.game_state = game_state;
 
         var max = this.screenShake.counter.max();        
         //this.world.setBounds(-max, -max, this.game.width + max, this.game.height + 2);
@@ -62,10 +64,26 @@ var World = (function() {
 
     World.prototype.sacrificeHuman = function(human) {
         this.player.souls_collected += 1;
+        this.updateScore();
         this.killHuman(human);
     };
 
-    World.prototype.updateScore = function() {};
+    World.prototype.updateScore = function() {
+    	console.log("updateScore");
+    	              
+        var width = 16;
+        var padding = 4;
+        var xPosition = 16 + (width + padding) * this.player.souls_collected + 1;
+
+        var scoreIcon = new Phaser.Sprite(
+            this.game_state.game,
+            xPosition,
+            20,
+            'characterSingle');
+        scoreIcon.anchor.setTo(0.5, 0.5);
+     
+        this.game_state.scoreLayer.add(scoreIcon);                
+    };
 
     World.prototype.killHuman = function(human) {
         // Tint the world
