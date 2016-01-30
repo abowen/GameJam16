@@ -54,8 +54,10 @@ BasicGame.Game.prototype = {
     },
 
     preload: function() {
-        this.load.tilemap('level1', 'asset/tileset.json', null, Phaser.Tilemap.TILED_JSON);
+        this.load.tilemap('tileset', 'asset/tileset.json', null, Phaser.Tilemap.TILED_JSON);
+        this.load.tilemap('tileset_multi', 'asset/tileset_multi.json', null, Phaser.Tilemap.TILED_JSON);
         this.load.image('tiles', 'asset/tiles.png');
+        this.load.image('tilesdarkgreen', 'asset/tilesdarkgreen.png');
 
         //http://phaser.io/examples/v2/sprites/spritesheet        
         this.load.spritesheet('character', 'asset/images/character_spritesheet_32.png', 32, 32, 12);
@@ -123,6 +125,7 @@ BasicGame.Game.prototype = {
         this.scoreLayer.z = 4;
 
         // Moving objects that are blocked by mountains
+        this.bodyParts = this.game.add.group();
         this.characters = this.game.add.group();
         this.characters.enableBody = true;
         this.characters.z = 3;
@@ -211,17 +214,23 @@ BasicGame.Game.prototype = {
     },
 
 
-    createMap: function() {
-        this.map = this.add.tilemap('level1');
+    createMap: function(level) {
+        level = level || 'L1';
+        this.map = this.add.tilemap('tileset');
         this.map.addTilesetImage('tiles', 'tiles');
+        this.map.addTilesetImage('tilesdarkgreen', 'tilesdarkgreen');
 
         this.map.setCollisionBetween(15, 16);
         //create layer
-        this.groundLayer = this.map.createLayer('groundLayer');
-        this.backgroundLayer = this.map.createLayer('backgroundLayer');
+        this.groundLayer && this.groundLayer.destroy();
+        this.groundLayer = this.map.createLayer('groundLayer_' + level);
 
+        this.backgroundLayer && this.backgroundLayer.destroy();
+        this.backgroundLayer = this.map.createLayer('backgroundLayer_' + level);
+        this.backgroundLayer.sendToBack();
+        this.groundLayer.sendToBack();
         var tiles = this.backgroundLayer.getTiles(0, 0, this.world.width, this.world.height);
-        this.game.houseTiles = tiles.filter(function(f){return f.index === 2 || f.index === 3;});
+        this.game.houseTiles = tiles.filter(function(f){return f.index === 2 || f.index === 3 || f.index === 155 || f.index === 156;});
 
         this.map.setCollision([5,6,7,8,9,10,22,23, 24, 25, 26, 27, 39,40,41,42, 13, 130, 113, 24,108,109, 110, 117,118, 119,125,126,127,134, 144,142,143, 151], true, this.backgroundLayer);
     },
@@ -242,7 +251,7 @@ BasicGame.Game.prototype = {
 
     update: function() {
         this.physics.arcade.collide(this.backgroundLayer, this.characters);
-        this.physics.arcade.collide(this.backgroundLayer, this.enemy);
+        this.physics.arcade.collide(this.backgroundLayer, this.enemies);
 
         if (cursors.up.isDown) {
             this.character.moveUp();

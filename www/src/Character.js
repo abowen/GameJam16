@@ -31,6 +31,11 @@ var Character = (function() {
     Character.prototype = Object.create(Phaser.Sprite.prototype);
     Character.prototype.constructor = Character;
 
+    Character.prototype.reset = function(){
+        this.speed = 200;
+        this.followers = [];
+    };
+
     Character.prototype.addFollower = function(follower) {
         // This order is important
         this.speed -= this.boostSpeed;  
