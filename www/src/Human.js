@@ -4,6 +4,7 @@ var Human = (function() {
         this.speed = 100;
         this.body.allowGravity = false;
 		this.game = game_state.game;
+        this.isSummoned = false;
 
         this.game.physics.arcade.enable(this);
 
@@ -24,7 +25,14 @@ var Human = (function() {
             human.kill();
         };
 
+        this.summonShit = function(human, character) {
+            console.log('SummonShit');
+            this.game_state.summonShit(human);
+            human.isSummoned = true;
+        };
+
         this.humanHitsSummon = function(human, summon) {
+            console.log('humanHitsSummon');
             if (!summon.fallTween.isRunning && human.alive) {
                 var cloneH = this.game_state.game.add.sprite(summon.x, summon.y, 'summon');
                 cloneH.anchor.set(0.5);
@@ -76,9 +84,11 @@ var Human = (function() {
     Human.prototype.update = function() {
          "use strict";
 		this.game.physics.arcade.collide(this.game_state.humans, this.game_state.backgroundLayer, this.terrainHit);
-		if (this.alive) {
-			this.game_state.game.physics.arcade.overlap(this, this.game_state.summonLayer, this.humanHitsSummon, null, this);
-			this.game_state.game.physics.arcade.overlap(this, this.game_state.enemy, this.devourHuman, null, this);
+		if (this.alive && !this.isSummoned) {
+			this.game_state.game.physics.arcade.overlap(this, this.game_state.character, this.summonShit, null, this);
+            this.game_state.game.physics.arcade.overlap(this, this.game_state.enemy, this.devourHuman, null, this);
+			
+
 			var moveIn = this.lastMove;
 
 			if (this.forceDirectionChange || !this.lastMove || Math.random() > 0.98) {
@@ -89,9 +99,13 @@ var Human = (function() {
 			this.lastMove = moveIn;
 			if (this.y > this.game_state.game.height || this.y < 0 || this.x > this.game_state.game.height || this.x < 0) this.destroy();
 
+            // Trying to work out why this one is here
 			this.game_state.emitter.emitX = this.game_state.enemy.x;
 	        this.game_state.emitter.emitY = this.game_state.enemy.y;
-		}
+		} else if (this.isSummoned) {
+            this.game_state.game.physics.arcade.overlap(this, this.game_state.summonLayer, this.humanHitsSummon, null, this);
+            this.setVelocity(0,0);
+        }
     };
 
     Human.prototype.makeNastyScreams = function() {

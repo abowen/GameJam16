@@ -140,16 +140,18 @@ BasicGame.Game.prototype = {
         this.game.physics.arcade.enable(this.characters);
 
         // Summon those fools from dark earth                
-        this.summonKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-        this.summonKey.onDown.add(this.summonShit, this);
+        //this.summonKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+        //this.summonKey.onDown.add(this.summonShit, this);
 
         // Yes it did
-        this.shitJustGotRealKey = this.game.input.keyboard.addKey(Phaser.Keyboard.CONTROL);
-        this.shitJustGotRealKey.onDown.add(this.shitJustGotReal, this);
+        // TODO: Replace with actual ritual stone logic
+        this.runRitualKey = this.game.input.keyboard.addKey(Phaser.Keyboard.CONTROL);
+        this.runRitualKey.onDown.add(this.runRitual, this);
 
-        this.everyManForHimselfKey = this.game.input.keyboard.addKey(Phaser.Keyboard.Z);
-        this.everyManForHimselfKey.onDown.add(this.everyManForHimself, this);
+        this.sacrificeFollowerKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+        this.sacrificeFollowerKey.onDown.add(this.sacrificeFollower, this);
 
+        ////// GORE EFFECTS
         this.bloodParticles = this.make.bitmapData(3, 3);
         this.bloodParticles.rect(0, 0, 4, 4, COLOR_BLOOD_RED);
         this.bloodParticles.update();
@@ -238,7 +240,6 @@ BasicGame.Game.prototype = {
 
     update: function() {
         this.physics.arcade.collide(this.backgroundLayer, this.characters);
-
         this.physics.arcade.collide(this.backgroundLayer, this.enemy);
 
         if (cursors.up.isDown) {
@@ -253,6 +254,7 @@ BasicGame.Game.prototype = {
             this.character.stop();
         }    
 
+        // TODO: All values and logic could belong in world.
         var screenShakeEffect = this.world_state.screenShake.effect;
         if (screenShakeEffect > 0)
         {
@@ -261,16 +263,16 @@ BasicGame.Game.prototype = {
         }
     },
 
-    summonShit: function() {
+    summonShit: function(human) {
         var summon = new Summon(
             this,
-            this.character.x, -20,
-            this.character.x,
-            this.character.y);
+            human.x, -20,
+            human.x,
+            human.y);
     },
 
     // Perform a ritual
-    shitJustGotReal: function() {
+    runRitual: function() {
         if (this.character.followers.length > 4){
             console.log("It's happening");
 
@@ -283,7 +285,7 @@ BasicGame.Game.prototype = {
     },
 
     // Sacrifice a follower to go faster
-    everyManForHimself: function() {
+    sacrificeFollower: function() {
         if (this.character.followers.length > 0){
             console.log("88888ooooo--- TUUUUUUURRRRRBOOOOOOOOOOO))))>");
 
