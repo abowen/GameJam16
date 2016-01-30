@@ -63,14 +63,15 @@ var Human = (function() {
             //                     this.backgroundLayer.tint = tintColour;
             //                 }
             //             }
+        };
+        
+        this.animations.add('down', [0, 1, 2, 3, 4, 5], this.framesPerSecond, true);
+        this.animations.add('right', [18, 19, 20, 21, 22, 23], this.framesPerSecond, true);
+        this.animations.add('up', [12, 13, 14, 15, 16, 17], this.framesPerSecond, true);
+        this.animations.add('left', [6, 7, 8, 9, 10, 11], this.framesPerSecond, true);
 
-            this.animations.add('down', [0, 1, 2, 3, 4, 5], this.framesPerSecond, true);
-            this.animations.add('right', [18, 19, 20, 21, 22, 23], this.framesPerSecond, true);
-            this.animations.add('up', [12, 13, 14, 15, 16, 17], this.framesPerSecond, true);
-            this.animations.add('left', [6, 7, 8, 9, 10, 11], this.framesPerSecond, true);
-
-        }
     };
+
 
     Human.prototype = Object.create(MovingSprite.prototype);
     Human.prototype.constructor = Human;

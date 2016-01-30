@@ -323,8 +323,6 @@ BasicGame.Game.prototype = {
         this.emitter.emitX = summon.x;
         this.emitter.emitY = summon.y;
 
-        this.game.summonLayer.add(summon);
-
         this.summonSound.play();
     },
 
