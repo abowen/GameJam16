@@ -117,6 +117,9 @@ BasicGame.Game.prototype = {
         this.scoreLayer = this.game.add.group();
         this.scoreLayer.z = 4;
 
+        // Doing this to ensure it appears before others
+        this.game.summonLayer = this.game.add.group();
+
         // Moving objects that are blocked by mountains
         this.characters = this.game.add.group();
         this.characters.enableBody = true;
