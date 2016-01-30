@@ -329,9 +329,8 @@ BasicGame.Game.prototype = {
     },
 
     spawnHuman: function() {
-        var human = new Human(this, this.game.rnd.between(0, this.world.width), -16, 'human');
-        
-        var human = new Human(this.game, startTile.worldX + 8, startTile.worldY + 8, 'human');
+        var startTile = this.game.houseTiles[this.game.rnd.between(0, this.game.houseTiles.length - 1)];
+        var human = new Human(this, startTile.worldX + 8, startTile.worldY + 8, 'human');
         this.humans.addChild(human);
     }  
 };

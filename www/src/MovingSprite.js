@@ -15,19 +15,10 @@ var MovingSprite = (function(){
 
         // animation name, frames, FPS, true? (maybe swap)
         this.framesPerSecond = 10;
-
-        this.setAnimation();
     };
 
     MovingSprite.prototype = Object.create(Phaser.Sprite.prototype);
     MovingSprite.prototype.constructor = MovingSprite;
-
-    MovingSprite.prototype.setAnimation = function() {
-        this.animations.add('down', [0, 1, 2], this.framesPerSecond, true);
-        this.animations.add('right', [3, 4, 5], this.framesPerSecond, true);
-        this.animations.add('up', [6, 7, 8], this.framesPerSecond, true);
-        this.animations.add('left', [9, 10, 11], this.framesPerSecond, true);
-    };
 
     MovingSprite.prototype.moveUp = function(){
         this.y -= this.speed;
