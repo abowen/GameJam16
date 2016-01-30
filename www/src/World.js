@@ -97,9 +97,7 @@ var World = (function() {
         this.makeWorldScarier(human);
     };
 
-    World.prototype.updateScore = function() {
-    	console.log("updateScore");
-    	              
+    World.prototype.updateScore = function() {    	    	          
         var width = 16;
         var padding = 4;
         var xPosition = 16 + (width + padding) * this.player.souls_collected + 1;
@@ -115,6 +113,7 @@ var World = (function() {
         
         
         if(this.lose_conditions.enemy.humans_devoured == this.enemy.humans_devoured) {
+
             this.game_state.gameOver(false);
         }           
     };
