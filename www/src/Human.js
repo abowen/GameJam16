@@ -103,11 +103,11 @@ var Human = (function() {
         var bodyPartTwoFrame = Math.floor(Math.random() * 2) + 2;
 
         // TODO: Refactor when not tired
-        var bodyPartOneX = Math.floor(Math.random() * 20);
-        var bodyPartOneY = Math.floor(Math.random() * 5);
+        var bodyPartOneX = Math.floor(Math.random() * 40);
+        var bodyPartOneY = Math.floor(Math.random() * 20);
 
-        var bodyPartTwoX = Math.floor(Math.random() * 20);
-        var bodyPartTwoY = Math.floor(Math.random() * 5);
+        var bodyPartTwoX = Math.floor(Math.random() * 50);
+        var bodyPartTwoY = Math.floor(Math.random() * 25);
 
         // TODO: Tween these bad girls
         var bodyPartOne = this.game_state.game.add.sprite(enemy.x, enemy.y, 'humanparts');
