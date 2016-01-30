@@ -7,12 +7,14 @@ var Ghost = (function(){
 
         Prefab.call(this, game, name, {x:x, y:y}, properties);
 
-        this.speed = 2;
+        this.speed = 0.5;
         this.game = game;
         this.timer = 1000;
+        this.framesPerSecond = 3;
 
         this.game.physics.enable(this);
         this.anchor.set(0.5);
+        this.alpha = 0.5;
 
         this.setAnimation();
 
@@ -33,7 +35,7 @@ var Ghost = (function(){
     Ghost.prototype.update = function(){
         Phaser.Sprite.prototype.update.call(this);
         var moveIn = this.lastMove;
-        if (!this.lastMove || Math.random() > 0.9) {
+        if (!this.lastMove || Math.random() > 0.98) {
             moveIn = this.moves[Math.floor(Math.random() * 10) % 4];
         }
         this[moveIn]();
