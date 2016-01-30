@@ -29,7 +29,7 @@ BasicGame.Game.prototype = {
         // * SHOW_ALL
         // * RESIZE
         // See http://docs.phaser.io/Phaser.ScaleManager.html for full document
-        this.scale.scaleMode = Phaser.ScaleManager.USER_SCALE;
+        this.scale.scaleMode = Phaser.ScaleManager.NO_SCALE;
         this.scale.setUserScale(2, 2, 0, 0);
         // If you wish to align your game in the middle of the page then you can
         // set this value to true. It will place a re-calculated margin-left
@@ -62,13 +62,13 @@ BasicGame.Game.prototype = {
         this.load.image('tiles', 'asset/tiles.png');
 
         //http://phaser.io/examples/v2/sprites/spritesheet
-        this.load.spritesheet('characterOrange', 'asset/characterBigLine.png', 32, 32, 12);
-        this.load.spritesheet('enemy', 'asset/images/enemy_spritesheet.png', 16, 16, 12);
+        this.load.spritesheet('character', 'asset/images/character_spritesheet_32.png', 32, 32, 12);
+        this.load.spritesheet('enemy', 'asset/images/enemy_spritesheet_32.png', 32, 32, 12);
         this.load.spritesheet('human', 'asset/human.png', 16, 16, 30);
         this.load.spritesheet('ghost', 'asset/ghost.png', 16, 16, 30);
-        this.load.image('summon', 'asset/summonRed.png');
-        this.load.image('characterSingle', 'asset/characterSingle.png');
 
+        this.load.image('summon', 'asset/summonRed.png');
+        this.load.image('characterSingle', 'asset/images/character_16.png');
         this.load.image('keyboardLeft', 'asset/images/keyboardLeft.png');
         this.load.image('keyboardUp', 'asset/images/keyboardUp.png');
         this.load.image('keyboardDown', 'asset/images/keyboardDown.png');
@@ -79,6 +79,7 @@ BasicGame.Game.prototype = {
         //http://phaser.io/examples/v2/audio/sound-complete
         this.load.audio('crashSound', 'asset/sfx/summon.wav');
         this.load.audio('explosionSound', 'asset/sfx/explosion.mp3');
+        this.load.audio('scream01', 'asset/sfx/scream01.mp3');
         this.load.audio('darkExploration', 'asset/music/DarkExploration.mp3');
     },
 
@@ -116,7 +117,7 @@ BasicGame.Game.prototype = {
         this.game.ai = new Ai();
         this.humans = this.game.add.group();
 
-        this.game.character = this.character = new Character(this.game, this.world.centerX / 2, this.world.centerY, 'characterOrange');
+        this.game.character = this.character = new Character(this.game, this.world.centerX / 2, this.world.centerY, 'character');
         this.enemy = new Enemy(this.game, 'Enemy', this.world.centerX + (this.world.centerX / 2), this.world.centerY, 'enemy');
 
         this.ghosts = this.game.add.group();
@@ -143,18 +144,19 @@ BasicGame.Game.prototype = {
         this.emitter.setAlpha(1, 0.2, 500);
         this.emitter.flow(1000, 30, 2, -1, true);
 
-        // Sound Effects
+        ////// SOUND EFFECTS
         this.summonSound = this.game.add.audio('explosionSound');
         this.explosionSound = this.game.add.audio('crashSound');
+        this.scream01Sound = this.game.add.audio('scream01');
 
         setInterval(this.spawnHuman.bind(this), 2000);
 
-        // Music        
+        ////// MUSIC
         // http://phaser.io/examples/v2/audio/loop
         this.music = this.game.add.audio('darkExploration');
 
         // MP3's take time to decode, we can make a call back if required
-        this.game.sound.setDecodedCallback([this.music, this.explosionSound], this.startMusic, this);
+        this.game.sound.setDecodedCallback([this.music, this.explosionSound, this.scream01], this.startMusic, this);
         for (var i = 0; i < TOTAL_PLAYER_LIVES; i++) {
             var width = 16;
             var padding = 4;
@@ -326,7 +328,7 @@ BasicGame.Game.prototype = {
                 alpha: 0
             }, 250, "Linear", true, 250);
 
-            this.explosionSound.play();
+            this.scream01Sound.play();
 
             var ghost = new Ghost(this.game, human.x, human.y);
             this.ghosts.addChild(ghost);
