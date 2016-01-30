@@ -9,6 +9,8 @@ var Ghost = (function() {
 
         this.game.physics.enable(this);
         this.anchor.set(0.5);
+        
+        this.setAnimation();
 
         this.moves = ['moveUp', 'moveDown', 'moveLeft', 'moveRight'];
         this.game.physics.arcade.enable(this);
@@ -20,7 +22,7 @@ var Ghost = (function() {
             this.alpha = 0.5;
         }.bind(this), 4000);
         
-        this.setAnimation();
+       
     };
 
     Ghost.prototype = Object.create(MovingSprite.prototype);
