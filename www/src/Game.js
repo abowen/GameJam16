@@ -65,7 +65,7 @@ BasicGame.Game.prototype = {
         this.load.spritesheet('character', 'asset/images/character_spritesheet_32.png', 32, 32, 12);
         this.load.spritesheet('enemy', 'asset/images/enemy_spritesheet_32.png', 32, 32, 12);
         this.load.spritesheet('human', 'asset/human.png', 16, 16, 30);
-        this.load.spritesheet('ghost', 'asset/ghost.png', 16, 16, 30);
+        this.load.spritesheet('ghost', 'asset/ghost2.png', 16, 16, 30);
 
         this.load.image('summon', 'asset/summonRed.png');
         this.load.image('characterSingle', 'asset/images/character_16.png');

@@ -15,6 +15,11 @@ var Ghost = (function(){
 
         this.moves = ['moveUp','moveDown','moveLeft','moveRight'];
         this.lastMove = null;
+        this.isGraveStone = true;
+
+        setTimeout(function(){
+            this.isGraveStone = false;
+        }.bind(this), 4000);
     };
 
     Ghost.prototype = Object.create(MovingSprite.prototype);
@@ -28,13 +33,15 @@ var Ghost = (function(){
     };
 
     Ghost.prototype.update = function(){
-        Phaser.Sprite.prototype.update.call(this);
-        var moveIn = this.lastMove;
-        if (!this.lastMove || Math.random() > 0.98) {
-            moveIn = this.moves[Math.floor(Math.random() * 10) % 4];
+        if (!this.isGraveStone) {
+            Phaser.Sprite.prototype.update.call(this);
+            var moveIn = this.lastMove;
+            if (!this.lastMove || Math.random() > 0.98) {
+                moveIn = this.moves[Math.floor(Math.random() * 10) % 4];
+            }
+            this[moveIn]();
+            this.lastMove = moveIn;
         }
-        this[moveIn]();
-        this.lastMove = moveIn;
     };
 
 
