@@ -9,7 +9,7 @@ var Ghost = (function() {
 
         this.game.physics.enable(this);
         this.anchor.set(0.5);
-        this.alpha = 0.5;
+        
 
 
         this.setAnimation();
@@ -21,6 +21,7 @@ var Ghost = (function() {
         this.animations.play("grave");
         setTimeout(function() {
             this.isGraveStone = false;
+            this.alpha = 0.5;
         }.bind(this), 4000);
     };
 
