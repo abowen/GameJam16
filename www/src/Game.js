@@ -79,6 +79,7 @@ BasicGame.Game.prototype = {
         //http://phaser.io/examples/v2/audio/sound-complete
         this.load.audio('crashSound', 'asset/sfx/summon.wav');
         this.load.audio('explosionSound', 'asset/sfx/explosion.mp3');
+        this.load.audio('scream01', 'asset/sfx/scream01.mp3');
         this.load.audio('darkExploration', 'asset/music/DarkExploration.mp3');
     },
 
@@ -143,18 +144,19 @@ BasicGame.Game.prototype = {
         this.emitter.setAlpha(1, 0.2, 500);
         this.emitter.flow(1000, 30, 2, -1, true);
 
-        // Sound Effects
+        ////// SOUND EFFECTS
         this.summonSound = this.game.add.audio('explosionSound');
         this.explosionSound = this.game.add.audio('crashSound');
+        this.scream01Sound = this.game.add.audio('scream01');
 
         setInterval(this.spawnHuman.bind(this), 2000);
 
-        // Music        
+        ////// MUSIC
         // http://phaser.io/examples/v2/audio/loop
         this.music = this.game.add.audio('darkExploration');
 
         // MP3's take time to decode, we can make a call back if required
-        this.game.sound.setDecodedCallback([this.music, this.explosionSound], this.startMusic, this);
+        this.game.sound.setDecodedCallback([this.music, this.explosionSound, this.scream01], this.startMusic, this);
         for (var i = 0; i < TOTAL_PLAYER_LIVES; i++) {
             var width = 16;
             var padding = 4;
@@ -326,7 +328,7 @@ BasicGame.Game.prototype = {
                 alpha: 0
             }, 250, "Linear", true, 250);
 
-            this.explosionSound.play();
+            this.scream01Sound.play();
 
             var ghost = new Ghost(this.game, human.x, human.y);
             this.ghosts.addChild(ghost);
