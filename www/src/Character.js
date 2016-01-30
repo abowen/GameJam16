@@ -41,6 +41,9 @@ var Character = (function(){
         this.x += this.speed;
         this.animations.play('right');
     };
+    Character.prototype.kill = function() {
+        this.destroy();
+    }
 
     return Character;
 })();
