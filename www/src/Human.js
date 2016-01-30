@@ -3,14 +3,11 @@ var Human = (function() {
         MovingSprite.call(this, game_state, x, y, sprite);
         this.speed = 1;
         this.body.allowGravity = false;
-        this.body.acceleration = {
-            x: 0,
-            y: this.game_state.game.rnd.between(-50, 50)
-        };
+
 
         this.game_state.game.physics.arcade.enable(this);
 
-        this.framesPerSecond = 15;
+		this.framesPerSecond = 10;
 
         this.setAnimation();
         
@@ -85,10 +82,17 @@ var Human = (function() {
     };
 
     Human.prototype.update = function() {
-        this.moveDown();
-        this.game_state.game.physics.arcade.overlap(this, this.game_state.summonLayer, this.humanHitsSummon, null, this);
+    
+    	this.game_state.game.physics.arcade.overlap(this, this.game_state.summonLayer, this.humanHitsSummon, null, this);
         this.game_state.game.physics.arcade.overlap(this, this.game_state.enemy, this.devourHuman, null, this);
-        if (this.y > this.game_state.game.height) this.destroy();
+       
+    
+       	if (!this.lastMove || Math.random() > 0.98) {
+			moveIn = this.moves[Math.floor(Math.random() * 10) % 4];
+		}
+		this[moveIn]();
+		this.lastMove = moveIn;
+		if (this.y > this.game.height || this.y < 0 || this.x > this.game.height || this.x < 0) this.destroy();
     };
 
     return Human;

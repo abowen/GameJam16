@@ -1,6 +1,5 @@
 var MovingSprite = (function(){
     function MovingSprite(game_state, x, y, sprite, group){
-
         properties = {
             group: group,
             spritesheet: sprite
