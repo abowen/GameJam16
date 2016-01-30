@@ -26,10 +26,10 @@ var Ghost = (function(){
     Ghost.prototype.constructor = Ghost;
 
     Ghost.prototype.setAnimation = function() {
-        this.animations.add('down', [0, 1, 2], this.framesPerSecond, true);
-        this.animations.add('right', [3, 4, 5], this.framesPerSecond, true);
-        this.animations.add('up', [6, 7, 8], this.framesPerSecond, true);
-        this.animations.add('left', [3, 4, 5], this.framesPerSecond, true);
+        this.animations.add('down', [1, 2, 3], this.framesPerSecond, true);
+        this.animations.add('right', [4, 5, 6], this.framesPerSecond, true);
+        this.animations.add('up', [7, 8, 9], this.framesPerSecond, true);
+        this.animations.add('left', [4, 5, 6], this.framesPerSecond, true);
     };
 
     Ghost.prototype.update = function(){
