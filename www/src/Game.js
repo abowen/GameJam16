@@ -162,7 +162,7 @@ BasicGame.Game.prototype = {
         this.explosionSound = this.game.add.audio('crashSound');
 
         var screamNames = ['screamWilhelm',
-                            'screamCalzone',
+                            'screamCalzon',
                             'scream_1',
                             'scream_2',
                             'scream_3',
