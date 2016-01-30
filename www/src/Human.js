@@ -49,9 +49,7 @@ var Human = (function() {
                 this.game.add.tween(cloneV).to({
                     alpha: 0
                 }, 250, "Linear", true, 250);
-
-                this.scream();
-
+                
                 this.game_state.character.addFollower(new Ghost(this.game_state, human.x, human.y));                
                 this.game_state.world_state.sacrificeHuman(this);                
             }
