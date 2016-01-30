@@ -83,8 +83,18 @@ BasicGame.Game.prototype = {
         //http://phaser.io/examples/v2/audio/sound-complete
         this.load.audio('crashSound', 'asset/sfx/summon.wav');
         this.load.audio('explosionSound', 'asset/sfx/explosion.mp3');
-        this.load.audio('scream01', 'asset/sfx/scream01.mp3');
-        this.load.audio('scream02', 'asset/sfx/scream02.mp3');
+        this.load.audio('screamWilhelm', 'asset/sfx/screamWilhelm.mp3');
+        this.load.audio('screamCalzon', 'asset/sfx/screamCalzon.mp3');
+        this.load.audio('scream_1', 'asset/sfx/scream_1.mp3');
+        this.load.audio('scream_2', 'asset/sfx/scream_2.mp3');
+        this.load.audio('scream_3', 'asset/sfx/scream_3.mp3');
+        this.load.audio('scream_4', 'asset/sfx/scream_4.mp3');
+        this.load.audio('scream_5', 'asset/sfx/scream_5.mp3');
+        this.load.audio('scream_6', 'asset/sfx/scream_6.mp3');
+        this.load.audio('scream_7', 'asset/sfx/scream_7.mp3');
+        this.load.audio('scream_8', 'asset/sfx/scream_8.mp3');
+        this.load.audio('scream_9', 'asset/sfx/scream_9.mp3');
+        this.load.audio('scream_10', 'asset/sfx/scream_10.mp3');
         this.load.audio('darkExploration', 'asset/music/DarkExploration.mp3');
     },
 
@@ -152,9 +162,26 @@ BasicGame.Game.prototype = {
         ////// SOUND EFFECTS
         this.summonSound = this.game.add.audio('explosionSound');
         this.explosionSound = this.game.add.audio('crashSound');
-        this.scream01Sound = this.game.add.audio('scream01');
-        this.scream02Sound = this.game.add.audio('scream02');
-        this.screams = [this.scream01Sound, this.scream02Sound];
+
+        var screamNames = ['screamWilhelm',
+                            'screamCalzone',
+                            'scream_1',
+                            'scream_2',
+                            'scream_3',
+                            'scream_4',
+                            'scream_5',
+                            'scream_6',
+                            'scream_7',
+                            'scream_8',
+                            'scream_9',
+                            'scream10'];
+
+        this.screams = [];
+        for (var i=0;i<screamNames.length;i++)
+        {
+            var screamSound = this.game.add.audio(screamNames[i]);
+            this.screams.push(screamSound);
+        }
 
         setInterval(this.spawnHuman.bind(this), 2000);
 
@@ -163,7 +190,7 @@ BasicGame.Game.prototype = {
         this.music = this.game.add.audio('darkExploration');
 
         // MP3's take time to decode, we can make a call back if required
-        this.game.sound.setDecodedCallback([this.music, this.explosionSound, this.scream01Sound, this.scream02Sound], this.startMusic, this);      
+        this.game.sound.setDecodedCallback([this.music], this.startMusic, this);      
        
         // Instruction information
         // Summon those fools from dark earth                
