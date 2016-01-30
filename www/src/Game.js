@@ -14,9 +14,7 @@ var cursors;
 BasicGame.Game.prototype = {
 
     init: function () {
-        this.physics.startSystem(Phaser.Physics.ARCADE);
-        // TODO: Clearly emove before publishing
-        //this.game.add.plugin(Phaser.Plugin.Debug);
+        this.physics.startSystem(Phaser.Physics.ARCADE);        
 
         // set up input max pointers
         this.input.maxPointers = 1;
@@ -82,6 +80,9 @@ BasicGame.Game.prototype = {
     },
 
     create: function () {
+        // TODO: Clearly emove before publishing
+        this.game.add.plugin(Phaser.Plugin.Debug);
+
         this.createMap();
 
         // Keyboard controls
@@ -89,17 +90,15 @@ BasicGame.Game.prototype = {
         this.instructionLayer.z = 5;
         this.instructionLayer.destroyChildren = true;
 
-        // Summon graphics
-        this.textLayer = this.game.add.group();
-        this.textLayer.z = 4;
+        // Character lives in the top right        
+        this.livesLayer = this.game.add.group();
+        this.livesLayer.z = 4;
 
         // Moving objects that are blocked by mountains
         this.characters = this.game.add.group();
         this.characters.enableBody = true;
         this.characters.z = 3;
-        // Create the cloud layer, just below the text
-        this.cloudLayer = this.game.add.group();
-        this.cloudLayer.z = 1;
+
         // http://phaser.io/examples/v2/groups/group-as-layer
         // Summon graphics
         this.summonLayer = this.game.add.physicsGroup();
@@ -163,7 +162,7 @@ BasicGame.Game.prototype = {
                         20, 
                         'characterSingle');
             characterLife.anchor.setTo(0.5, 0.5);
-            this.textLayer.add(characterLife);
+            this.livesLayer.add(characterLife);
         }
 
         // Instruction information
