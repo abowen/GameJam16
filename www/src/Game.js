@@ -87,7 +87,7 @@ BasicGame.Game.prototype = {
         this.cloudLayer.z = 1;
         // http://phaser.io/examples/v2/groups/group-as-layer
         // Summon graphics
-        this.summonLayer = this.game.add.group();
+        this.summonLayer = this.game.add.physicsGroup();
         this.summonLayer.z = 1;
 
         // Moving objects that are blocked by mountains        
@@ -249,6 +249,31 @@ BasicGame.Game.prototype = {
             human.animations.play('down');
             human.body.acceleration = {x: 0, y: this.game.rnd.between(0, 50)};
             if(human.y > this.world.height) human.destroy();
+
+            this.physics.arcade.overlap(human, this.summonLayer, this.humanHitsSummon, null, this);
         }.bind(this));
+    },
+
+
+    humanHitsSummon: function(human, summon) {
+        //console.log("Collision");
+        var cloneH = this.add.sprite(summon.x, summon.y, 'summon');        
+        cloneH.anchor.set(0.5);
+
+        var cloneV = this.add.sprite(summon.x, summon.y, 'summon');        
+        cloneV.anchor.set(0.5);
+
+        // TODO: Replace with ghost
+        human.kill();        
+        summon.kill();
+
+        var explosionSpeed = 250;
+
+        this.add.tween(cloneV.scale).to( { x: 0.10, y: 10 }, explosionSpeed, "Expo.easeOut", true, 0);
+        this.add.tween(cloneH.scale).to( { x: 10, y: 0.10 }, explosionSpeed, "Expo.easeOut", true, 0);
+        this.add.tween(cloneH).to( { alpha: 0 }, 250, "Linear", true, 250);
+        this.add.tween(cloneV).to( { alpha: 0 }, 250, "Linear", true, 250);
+
+        // TODO: Add sound of death
     }
 };
