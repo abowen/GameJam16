@@ -370,7 +370,7 @@ BasicGame.Game.prototype = {
                 alpha: 0
             }, 250, "Linear", true, 250);
 
-            var scream = this.screams[Math.floor(Math.random()*this.screams.length)];
+            var scream = this.getRandomScream();
             scream.play();
 
             var ghost = new Ghost(this.game, human.x, human.y);
