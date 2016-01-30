@@ -14,10 +14,9 @@ var cursors;
 // set Game function prototype
 BasicGame.Game.prototype = {
 
+
     init: function() {
         this.physics.startSystem(Phaser.Physics.ARCADE);
-        // TODO: Clearly emove before publishing
-        //this.game.add.plugin(Phaser.Plugin.Debug);
 
         // set up input max pointers
         this.input.maxPointers = 1;
@@ -66,6 +65,7 @@ BasicGame.Game.prototype = {
         this.load.spritesheet('characterOrange', 'asset/characterBigLine.png', 32, 32, 12);
         this.load.spritesheet('enemy', 'asset/images/enemy_spritesheet.png', 16, 16, 12);
         this.load.spritesheet('human', 'asset/human.png', 16, 16, 30);
+        this.load.spritesheet('ghost', 'asset/ghost.png', 16, 16, 30);
         this.load.image('summon', 'asset/summonRed.png');
         this.load.image('characterSingle', 'asset/characterSingle.png');
 
@@ -82,7 +82,10 @@ BasicGame.Game.prototype = {
         this.load.audio('darkExploration', 'asset/music/DarkExploration.mp3');
     },
 
-    create: function() {
+    create: function () {
+        // TODO: Clearly remove before publishing
+        this.game.add.plugin(Phaser.Plugin.Debug);
+
         this.createMap();
         this.initialiseGameState();
 
@@ -91,17 +94,15 @@ BasicGame.Game.prototype = {
         this.instructionLayer.z = 5;
         this.instructionLayer.destroyChildren = true;
 
-        // Summon graphics
-        this.textLayer = this.game.add.group();
-        this.textLayer.z = 4;
+        // Character lives in the top right        
+        this.livesLayer = this.game.add.group();
+        this.livesLayer.z = 4;
 
         // Moving objects that are blocked by mountains
         this.characters = this.game.add.group();
         this.characters.enableBody = true;
         this.characters.z = 3;
-        // Create the cloud layer, just below the text
-        this.cloudLayer = this.game.add.group();
-        this.cloudLayer.z = 1;
+
         // http://phaser.io/examples/v2/groups/group-as-layer
         // Summon graphics
         this.summonLayer = this.game.add.physicsGroup();
@@ -118,6 +119,7 @@ BasicGame.Game.prototype = {
         this.game.character = this.character = new Character(this.game, this.world.centerX / 2, this.world.centerY, 'characterOrange');
         this.enemy = new Enemy(this.game, 'Enemy', this.world.centerX + (this.world.centerX / 2), this.world.centerY, 'enemy');
 
+        this.ghosts = this.game.add.group();
 
         this.characters.addChild(this.character);
         this.characters.enableBody = true;
@@ -164,7 +166,7 @@ BasicGame.Game.prototype = {
                 20,
                 'characterSingle');
             characterLife.anchor.setTo(0.5, 0.5);
-            this.textLayer.add(characterLife);
+            this.livesLayer.add(characterLife);
         }
 
         // Instruction information
@@ -179,8 +181,7 @@ BasicGame.Game.prototype = {
         for (var i=0;i<keys.length;i++) {            
             var keySprite = this.add.sprite(keyX, keyY, keys[i]);
             keySprite.scale.setTo(0.75); 
-            keySprite.alpha = 0.5;
-            console.log(keySprite);
+            keySprite.alpha = 0.5;            
             keyX += keySprite.width + 10;     
             console.log(keyX);
             
@@ -209,8 +210,6 @@ BasicGame.Game.prototype = {
         this.backgroundLayer = this.map.createLayer('backgroundLayer');
 
         this.map.setCollision([7, 8, 9, 22, 23, 24, 13], true, this.backgroundLayer);
-
-        console.log('collidets: ' + this.map.collideIndexes);
     },
 
     gameResized: function(width, height) {
@@ -299,7 +298,6 @@ BasicGame.Game.prototype = {
 
 
     humanHitsSummon: function(human, summon) {
-
         if (!summon.fallTween.isRunning) {
             var cloneH = this.add.sprite(summon.x, summon.y, 'summon');
             cloneH.anchor.set(0.5);
@@ -329,6 +327,9 @@ BasicGame.Game.prototype = {
             }, 250, "Linear", true, 250);
 
             this.explosionSound.play();
+
+            var ghost = new Ghost(this.game, human.x, human.y);
+            this.ghosts.addChild(ghost);
         }
     }
 };
