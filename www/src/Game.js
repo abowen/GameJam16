@@ -56,7 +56,6 @@ BasicGame.Game.prototype = {
     },
 
     preload: function () {
-        console.log('start of preload')
         this.load.tilemap('level1', 'asset/tileset.json', null, Phaser.Tilemap.TILED_JSON);
         this.load.image('tiles', 'asset/tiles.png');
 
@@ -73,7 +72,6 @@ BasicGame.Game.prototype = {
     },
 
     create: function () {
-        console.log('start of create')
         this.createMap();
 
         // Summon graphics
@@ -102,7 +100,6 @@ BasicGame.Game.prototype = {
         this.character = new Character(this.game, this.world.centerX / 2, this.world.centerY, 'characterOrange');
         this.enemy = new Enemy(this.game, 'Enemy', this.world.centerX + (this.world.centerX / 2), this.world.centerY, 'enemy');
 
-        this.character.body.collideWorldBounds = true;
 
         this.characters.addChild(this.character);
         this.characters.enableBody = true;
@@ -163,11 +160,14 @@ BasicGame.Game.prototype = {
         this.map = this.add.tilemap('level1');
         this.map.addTilesetImage('tiles', 'tiles');
 
+        this.map.setCollisionBetween(15, 16);
         //create layer
         this.groundLayer = this.map.createLayer('groundLayer');        
         this.backgroundLayer = this.map.createLayer('backgroundLayer');
 
         this.map.setCollision([7, 8, 9, 22, 23, 24, 13], true, this.backgroundLayer);
+
+        console.log('collidets: ' + this.map.collideIndexes);
     },
 
     gameResized: function (width, height) {
@@ -181,6 +181,7 @@ BasicGame.Game.prototype = {
     },
 
     update : function () {
+        this.physics.arcade.collide(this.map, this.characters);
         this.physics.arcade.collide(this.backgroundLayer, this.characters);
         this.physics.arcade.collide(this.characters, this.humans);
         this.physics.arcade.collide(this.characters, this.enemy);
