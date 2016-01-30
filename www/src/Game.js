@@ -68,6 +68,13 @@ BasicGame.Game.prototype = {
         this.load.image('summon', 'asset/summonRed.png');
         this.load.image('characterSingle', 'asset/characterSingle.png');
 
+        this.load.image('keyboardLeft', 'asset/images/keyboardLeft.png');
+        this.load.image('keyboardUp', 'asset/images/keyboardUp.png');
+        this.load.image('keyboardDown', 'asset/images/keyboardDown.png');
+        this.load.image('keyboardRight', 'asset/images/keyboardRight.png');
+        this.load.image('keyboardCtrl', 'asset/images/keyboardCtrl.png');
+        this.load.image('keyboardSpacebar', 'asset/images/keyboardSpacebar.png');
+
         //http://phaser.io/examples/v2/audio/sound-complete
         this.load.audio('crashSound', 'asset/sfx/summon.wav');
         this.load.audio('explosionSound', 'asset/sfx/explosion.mp3');
@@ -77,9 +84,15 @@ BasicGame.Game.prototype = {
     create: function () {
         this.createMap();
 
+        // Keyboard controls
+        this.instructionLayer = this.game.add.group();
+        this.instructionLayer.z = 5;
+        this.instructionLayer.destroyChildren = true;
+
         // Summon graphics
         this.textLayer = this.game.add.group();
         this.textLayer.z = 4;
+
         // Moving objects that are blocked by mountains
         this.characters = this.game.add.group();
         this.characters.enableBody = true;
@@ -152,6 +165,32 @@ BasicGame.Game.prototype = {
             characterLife.anchor.setTo(0.5, 0.5);
             this.textLayer.add(characterLife);
         }
+
+        // Instruction information
+        // Summon those fools from dark earth                
+        this.instructionKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+        this.instructionKey.onDown.add(this.clearInstructions, this);
+
+        var keys = ['keyboardLeft', 'keyboardRight', 'keyboardUp', 'keyboardDown', 'keyboardSpacebar', 'keyboardCtrl'];
+        var keyX = 50;        
+        // TODO: Replace Y with less value once we have less scaling
+        var keyY = GAME_HEIGHT - 250;
+        for (var i=0;i<keys.length;i++) {            
+            var keySprite = this.add.sprite(keyX, keyY, keys[i]);
+            keySprite.scale.setTo(0.75); 
+            keySprite.alpha = 0.5;
+            console.log(keySprite);
+            keyX += keySprite.width + 10;     
+            console.log(keyX);
+            
+            keySprite.anchor.set(0, 0);    
+             
+            this.instructionLayer.addChild(keySprite);
+        }        
+    },
+
+    clearInstructions : function(){
+        this.instructionLayer.destroy();
     },
 
     startMusic: function(){
