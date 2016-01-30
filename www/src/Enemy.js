@@ -59,7 +59,7 @@ var Enemy = (function() {
 
             var closest_human = {};
             var dist_min = 99999;
-            this.game_state.humans.forEach(function(human) {
+            this.game_state.humans.forEachAlive(function(human) {
                 var current_dist = this.game.math.distance(this.body.position.x,
                     this.body.position.y,
                     human.position.x,
