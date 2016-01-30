@@ -64,16 +64,18 @@ var Human = (function() {
 
     Human.prototype.update = function() {
          "use strict";
-        this.game_state.game.physics.arcade.overlap(this, this.game_state.summonLayer, this.humanHitsSummon, null, this);
-        this.game_state.game.physics.arcade.overlap(this, this.game_state.enemy, this.devourHuman, null, this);
-        var moveIn = this.lastMove;
+		if (this.alive) {
+			this.game_state.game.physics.arcade.overlap(this, this.game_state.summonLayer, this.humanHitsSummon, null, this);
+			this.game_state.game.physics.arcade.overlap(this, this.game_state.enemy, this.devourHuman, null, this);
+			var moveIn = this.lastMove;
 
-        if (!this.lastMove || Math.random() > 0.98) {
-            moveIn = this.moves[Math.floor(Math.random() * 10) % 4];
-        }
-        this[moveIn]();
-        this.lastMove = moveIn;
-		if (this.y > this.game_state.game.height || this.y < 0 || this.x > this.game_state.game.height || this.x < 0) this.kill();
+			if (!this.lastMove || Math.random() > 0.98) {
+				moveIn = this.moves[Math.floor(Math.random() * 10) % 4];
+			}
+			this[moveIn]();
+			this.lastMove = moveIn;
+			if (this.y > this.game_state.game.height || this.y < 0 || this.x > this.game_state.game.height || this.x < 0) this.destroy();
+		}
     };
 
     return Human;

@@ -21,8 +21,10 @@ var MovingSprite = (function(){
     MovingSprite.prototype.constructor = MovingSprite;
 
     MovingSprite.prototype.setVelocity = function(x, y){
-        this.body.velocity.x = x;
-        this.body.velocity.y = y;
+        if (this.body) {
+            this.body.velocity.x = x;
+            this.body.velocity.y = y;
+        }
     },
     MovingSprite.prototype.moveUp = function(){
         this.setVelocity(0, -this.speed);

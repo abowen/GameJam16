@@ -105,6 +105,8 @@ BasicGame.Game.prototype = {
         this.createMap();
         this.initialiseGameState();
 
+        this.summonLayer = this.game.add.physicsGroup();
+
         // Keyboard controls
         this.instructionLayer = this.game.add.group();
         this.instructionLayer.z = 5;
@@ -119,10 +121,6 @@ BasicGame.Game.prototype = {
         this.characters.enableBody = true;
         this.characters.z = 3;
 
-        // http://phaser.io/examples/v2/groups/group-as-layer
-        // Summon graphics
-        this.summonLayer = this.game.add.physicsGroup();
-        this.summonLayer.z = 1;
 
        
         //http://phaser.io/examples/v2/input/cursor-key-movement
@@ -251,10 +249,8 @@ BasicGame.Game.prototype = {
     },
 
     update: function() {
-        this.physics.arcade.collide(this.map, this.characters);
         this.physics.arcade.collide(this.backgroundLayer, this.characters);
         this.physics.arcade.collide(this.backgroundLayer, this.humans);
-        this.physics.arcade.collide(this.characters, this.enemy);
 
         /*  if (this.game.game_state.player.rituals_performed === this.game.game_state.win_conditions.rituals_performed) {
              
