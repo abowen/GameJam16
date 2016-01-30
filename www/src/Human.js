@@ -5,7 +5,7 @@ var Human = (function() {
 		this.body.acceleration = {x: 0, y: this.game.rnd.between(0, 50)};
 
 		this.framesPerSecond = 15;
-        
+        this.followers = [];
         
         this.setAnimation();
 	};
@@ -19,6 +19,10 @@ var Human = (function() {
         this.animations.add('up', [12, 13, 14, 15, 16, 17], this.framesPerSecond, true);
         this.animations.add('left', [6, 7, 8, 9, 10, 11], this.framesPerSecond, true);
 	};
+    
+    Human.prototype.addFollower = function(follower){
+        this.followers.push(follower);
+    };
 
 	Human.prototype.update = function() {
 		this.moveDown();

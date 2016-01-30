@@ -332,6 +332,7 @@ BasicGame.Game.prototype = {
             this.scream01Sound.play();
 
             var ghost = new Ghost(this.game, human.x, human.y);
+            human.addFollower(ghost);
         }
     }
 };
