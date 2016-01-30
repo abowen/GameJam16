@@ -21,6 +21,15 @@ var Character = (function(){
     Character.prototype.addFollower = function(follower) {
         this.followers.push(follower);
         follower.follow(this);
+        this.speed *= 0.8;
+    };
+    
+    Character.prototype.performRitual = function() {
+        this.followers.forEach(function(follower) {
+            follower.kill();
+        }, this);;
+        followers.clear();
+        this.speed = 4;
     };
 
     Character.prototype.setAnimation = function() {

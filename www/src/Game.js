@@ -247,23 +247,7 @@ BasicGame.Game.prototype = {
     },
 
     initialiseGameState: function() {
-        this.game.game_state = {
-            init_condition: {
-
-            },
-            win_conditions: {
-                rituals_performed: 3
-            },
-            player: {
-                souls_collected: 0,
-                rituals_performed: 0
-            },
-            enemy: {
-                souls_collected: 0,
-                rituals_performed: 0,
-                difficulty: 5
-            }
-        };
+       this.world_state = new World();
     },
 
     update: function() {

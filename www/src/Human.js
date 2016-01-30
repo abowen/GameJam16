@@ -47,21 +47,8 @@ var Human = (function() {
                 var scream = this.game_state.screams[Math.floor(Math.random() * this.game_state.screams.length)];
                 scream.play();
 
-                var ghost = new Ghost(this.game_state, human.x, human.y);
-                this.game_state.character.addFollower(ghost);
-
-                // Tint the world
-                if (this.humansKilled < 16) {
-                    this.humansKilled++;
-
-                    var tintValue = 16 - this.humansKilled;
-                    var hexString = tintValue.toString(16);
-                    hexString = hexString + hexString;
-                    var tintColour = '0xff' + hexString + 'ff';
-                    //console.log(this.humansKilled + " " + tintColour);
-                    this.groundLayer.tint = tintColour;
-                    this.backgroundLayer.tint = tintColour;
-                }
+                this.game_state.character.addFollower(new Ghost(this.game_state, human.x, human.y));                
+                this.game_state.world_state.sacrificeHuman(this);                
             }
         };
         
