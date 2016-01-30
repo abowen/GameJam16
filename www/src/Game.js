@@ -53,6 +53,8 @@ BasicGame.Game.prototype = {
         // Re-calculate scale mode and update screen size. This only applies if
         // ScaleMode is not set to RESIZE.
         this.scale.refresh();
+        
+        
     },
 
     preload: function () {
@@ -94,10 +96,10 @@ BasicGame.Game.prototype = {
         //this.characters.z = 3;
         //http://phaser.io/examples/v2/input/cursor-key-movement
         cursors = this.game.input.keyboard.createCursorKeys();
-
+        this.game.ai = new Ai();
         this.humans = this.game.add.group();
-
-        this.character = new Character(this.game, this.world.centerX / 2, this.world.centerY, 'characterOrange');
+       
+        this.game.character = this.character = new Character(this.game, this.world.centerX / 2, this.world.centerY, 'characterOrange');
         this.enemy = new Enemy(this.game, 'Enemy', this.world.centerX + (this.world.centerX / 2), this.world.centerY, 'enemy');
 
 

@@ -40,10 +40,12 @@ var Enemy = (function() {
     Enemy.prototype.update = function() {
         "use strict";
         var new_position;
-        // this.game.physics.arcade.collide(this, this.game.layers.walls, this.switch_direction, null, this);
+        //this.game.physics.arcade.collide(this, this.game.groups.humans, this.switch_direction, null, this);
         // this.game.physics.arcade.collide(this, this.game_state.layers.blocks, this.switch_direction, null, this);
         // this.game.physics.arcade.overlap(this, this.game_state.groups.bombs, this.switch_direction, null, this);
         // this.game.physics.arcade.overlap(this, this.game_state.groups.explosions, this.kill, null, this);
+
+        this.game.ai.follow(this, this.game.character, 30.0, 30.0);
 
         if (this.body.velocity.x < 0) {
             // walking left
