@@ -13,10 +13,25 @@ var Human = (function() {
 
 		this.lastMove = null;
 
-        this.devourHuman = function(human, character) {
-            
+        this.devourHuman = function(human, character) {            
             this.game_state.world_state.devourHuman(human);
-            //update score may be?
+
+            // Hardcoding is naughty
+            var bodyPartOneFrame = Math.floor(Math.random() * 2);
+            var bodyPartTwoFrame = Math.floor(Math.random() * 2) + 2;
+
+            var bodyPartOneX = Math.floor(Math.random() * 5);
+            var bodyPartOneY = Math.floor(Math.random() * 5);
+
+            var bodyPartTwoX = Math.floor(Math.random() * 5);
+            var bodyPartTwoY = Math.floor(Math.random() * 5);
+
+            var bodyPartOne = this.game_state.game.add.sprite(human.x - bodyPartOneX, human.y - bodyPartOneY, 'humanparts');
+            bodyPartOne.frame = bodyPartOneFrame;
+            var bodyPartTwo = this.game_state.game.add.sprite(human.x + bodyPartTwoX, human.y + bodyPartTwoX, 'humanparts');
+            bodyPartTwo.frame = bodyPartTwoFrame;
+
+            human.kill();
         };
 
         this.humanHitsSummon = function(human, summon) {

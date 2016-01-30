@@ -63,8 +63,8 @@ BasicGame.Game.prototype = {
         this.load.spritesheet('character', 'asset/images/character_spritesheet_32.png', 32, 32, 12);
         this.load.spritesheet('enemy', 'asset/images/enemy_spritesheet_32.png', 32, 32, 10);
         this.load.spritesheet('offering_stone', 'asset/images/offering_stone_32.png', 32, 32, 1);
-
         this.load.spritesheet('human', 'asset/human.png', 16, 16, 30);
+        this.load.spritesheet('humanparts', 'asset/images/humanparts_spritesheet_8.png', 8, 8, 4);
         this.load.spritesheet('ghost', 'asset/images/ghost_spritesheet_16.png', 16, 16, 10);
 
         this.load.image('summon', 'asset/summonRed.png');
@@ -118,13 +118,9 @@ BasicGame.Game.prototype = {
         this.characters.enableBody = true;
         this.characters.z = 3;
 
-
-       
         //http://phaser.io/examples/v2/input/cursor-key-movement
         cursors = this.game.input.keyboard.createCursorKeys();
-        this.game.ai = new Ai();
-        
-        //this.humans = this.game.add.group();
+        this.game.ai = new Ai();            
 
   //      this.game.offering_stone = this.offering_stone = new OfferingStone(this.game, this.world.centerX, this.world.centerY, 'offering_stone');
         this.character = new Character(this, this.world.centerX / 2, this.world.centerY, 'character');
