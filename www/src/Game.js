@@ -147,8 +147,11 @@ BasicGame.Game.prototype = {
         this.shitJustGotRealKey = this.game.input.keyboard.addKey(Phaser.Keyboard.CONTROL);
         this.shitJustGotRealKey.onDown.add(this.shitJustGotReal, this);
 
+        this.everyManForHimselfKey = this.game.input.keyboard.addKey(Phaser.Keyboard.Z);
+        this.everyManForHimselfKey.onDown.add(this.everyManForHimself, this);
+
         this.bloodParticles = this.make.bitmapData(3, 3);
-        this.bloodParticles.rect(0, 0, 4, 4, '#ff0000');
+        this.bloodParticles.rect(0, 0, 4, 4, COLOR_BLOOD_RED);
         this.bloodParticles.update();
 
         this.emitter = this.add.emitter(0, 0, 128);
@@ -266,16 +269,27 @@ BasicGame.Game.prototype = {
             this.character.y);
     },
 
+    // Perform a ritual
     shitJustGotReal: function() {
+        if (this.character.followers.length > 4){
+            console.log("It's happening");
+
+            this.character.runRitual();
+            this.world_state.runRitual(this.character);
+                                
+            // TODO: Slow down humans & ogre for a temporary amount
+            // TODO: Reduce size of ogre            
+        }
+    },
+
+    // Sacrifice a follower to go faster
+    everyManForHimself: function() {
         if (this.character.followers.length > 0){
             console.log("88888ooooo--- TUUUUUUURRRRRBOOOOOOOOOOO))))>");
 
             var follower = this.character.followers.pop();
             this.character.sacrificeFollower(follower);
-            this.world_state.sacrificeFollower(follower);
-                                
-            // TODO: Slow down humans & ogre (if turbo boost is temp)
-            // TODO: Reduce size of ogre            
+            this.world_state.sacrificeFollower(follower);       
         }
     },
 

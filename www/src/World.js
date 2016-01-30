@@ -34,7 +34,7 @@ var World = (function() {
 
         this.screenShake = {
             effect: 0,
-            counter: [5, 10, 15]
+            counter: [5, 10]
         }
 
         this.game_state = game_state;
@@ -94,7 +94,7 @@ var World = (function() {
         this.refresh();
     };
     
-    World.prototype.runRitual = function(human) {
+    World.prototype.runRitual = function(character) {
     	// kill human?
         this.player.souls_collected = 0;
         this.player.rituals_performed += 1;

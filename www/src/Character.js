@@ -15,16 +15,6 @@ var Character = (function() {
         
         this.followers = []
         this.setAnimation();
-
-        this.performRitual = function(character, offeringStone) {            
-            offeringStone.body.velocity.x = 0;
-            offeringStone.body.velocity.y = 0;
-            
-            this.followers.forEach(function(follower) {
-                this.sacrificeFollower(follower);
-            }, this);
-            this.followers = [];            
-        }
     };
 
     Character.prototype = Object.create(Phaser.Sprite.prototype);
@@ -42,6 +32,18 @@ var Character = (function() {
         this.speed += this.boostSpeed;
         follower.spawnAngel(this);
         follower.kill();     
+    };
+
+
+    Character.prototype.runRitual = function(character, offeringStone) {            
+        // TODO: Reimplement
+        //offeringStone.body.velocity.x = 0;
+        //offeringStone.body.velocity.y = 0;
+        
+        this.followers.forEach(function(follower) {
+            this.sacrificeFollower(follower);
+        }, this);
+        this.followers = [];            
     };
 
     Character.prototype.setAnimation = function() {
@@ -82,7 +84,8 @@ var Character = (function() {
     };
 
     Character.prototype.update = function() {
-        this.game_state.game.physics.arcade.collide(this, this.game_state.offeringStone, this.performRitual, null, this);
+        // TODO: Reimplement
+        // this.game_state.game.physics.arcade.collide(this, this.game_state.offeringStone, this.performRitual, null, this);
     };
 
     return Character;

@@ -1,8 +1,7 @@
 // CONSTANTS
 var GAME_HEIGHT = 640;
 var GAME_WIDTH = 640;
-// TODO: Move to Dom's gamestate
-var MAXIMUM_KILLS = 15;
+var COLOR_BLOOD_RED = "#8A0707";
 
 
 (function () {
