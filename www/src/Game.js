@@ -224,13 +224,13 @@ BasicGame.Game.prototype = {
 
         var summonSpeed = 500;
 
-        var tween = this.game.add.tween(summon);
-        tween.to({
+        summon.fallTween = this.game.add.tween(summon);
+        summon.fallTween.to({
             x: this.character.x,
             y: this.character.y
         }, summonSpeed, Phaser.Easing.Quadratic.Out);
-        
-        tween.start();
+
+        summon.fallTween.start();
 
         var tweenRotate = this.game.add.tween(summon);
         tweenRotate.to({
@@ -259,24 +259,27 @@ BasicGame.Game.prototype = {
 
 
     humanHitsSummon: function(human, summon) {
-        //console.log("Collision");
-        var cloneH = this.add.sprite(summon.x, summon.y, 'summon');        
-        cloneH.anchor.set(0.5);
 
-        var cloneV = this.add.sprite(summon.x, summon.y, 'summon');        
-        cloneV.anchor.set(0.5);
+        if (!summon.fallTween.isRunning) {
+            //console.log("Collision");
+            var cloneH = this.add.sprite(summon.x, summon.y, 'summon');
+            cloneH.anchor.set(0.5);
 
-        // TODO: Replace with ghost
-        human.kill();        
-        summon.kill();
+            var cloneV = this.add.sprite(summon.x, summon.y, 'summon');
+            cloneV.anchor.set(0.5);
 
-        var explosionSpeed = 250;
+            // TODO: Replace with ghost
+            human.kill();
+            summon.kill();
 
-        this.add.tween(cloneV.scale).to( { x: 0.10, y: 10 }, explosionSpeed, "Expo.easeOut", true, 0);
-        this.add.tween(cloneH.scale).to( { x: 10, y: 0.10 }, explosionSpeed, "Expo.easeOut", true, 0);
-        this.add.tween(cloneH).to( { alpha: 0 }, 250, "Linear", true, 250);
-        this.add.tween(cloneV).to( { alpha: 0 }, 250, "Linear", true, 250);
+            var explosionSpeed = 250;
 
-        this.explosionSound.play();
+            this.add.tween(cloneV.scale).to({x: 0.10, y: 10}, explosionSpeed, "Expo.easeOut", true, 0);
+            this.add.tween(cloneH.scale).to({x: 10, y: 0.10}, explosionSpeed, "Expo.easeOut", true, 0);
+            this.add.tween(cloneH).to({alpha: 0}, 250, "Linear", true, 250);
+            this.add.tween(cloneV).to({alpha: 0}, 250, "Linear", true, 250);
+
+            this.explosionSound.play();
+        }
     }
 };
