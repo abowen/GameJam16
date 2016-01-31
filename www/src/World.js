@@ -18,7 +18,7 @@ var World = (function() {
                 // TODO: Move scale as a function of humans_devoured
                 scale: 0.5
             };
-            
+
             this.current_level = {
                 level: "L1"
             };
@@ -77,13 +77,13 @@ var World = (function() {
 
         setTimeout(function() {
             console.log("stopped eating");
-            this.enemy.isEatingHuman = false;           
+            this.enemy.isEatingHuman = false;
         }.bind(this), 1000);
 
         this.refresh();
         this.updateScore();
     };
-    
+
     World.prototype.followerLost = function(human) {
         // Happens when you turn a human to a ghost
         this.player.souls_following -= 1;
@@ -106,11 +106,11 @@ var World = (function() {
         this.calculateScreenShake();
 
         if (this.win_conditions.player.angels_collected <= this.player.angels_collected) {
-            if(this.win_conditions.is_last_level){
+            if (this.win_conditions.is_last_level) {
                 this.game_state.gameOver(true);
                 return;
             }
-            
+
             this.createMap("L2");
             this.reset();
         } else {
@@ -120,12 +120,14 @@ var World = (function() {
         this.refresh();
     };
 
-    World.prototype.setLevelsProperties = function(backgroundLayer){
-        var layer = this.game_state.map.layers.find(function(l){ return l.name === backgroundLayer });;
+    World.prototype.setLevelsProperties = function(backgroundLayer) {
+        var layer = this.game_state.map.layers.find(function(l) {
+            return l.name === backgroundLayer
+        });;
         var gameSettings = JSON.parse(layer.properties.game_settings);
 
         for (var i in gameSettings) {
-                this[i] = gameSettings[i];
+            this[i] = gameSettings[i];
         }
     };
 
@@ -139,10 +141,10 @@ var World = (function() {
         this.refresh();
     };
 
-    World.prototype.devourSlime = function(slime) {        
+    World.prototype.devourSlime = function(slime) {
         this.enemy.isEatingSlime = true;
 
-        setTimeout(function() {            
+        setTimeout(function() {
             this.enemy.isEatingSlime = false;
         }.bind(this), 2000);
 
@@ -152,17 +154,17 @@ var World = (function() {
     World.prototype.refresh = function() {
         console.log(this.player);
         console.log(this.enemy);
-        
+
         this.updateScore();
         this.makeWorldScarierOrCooler();
     };
 
-    World.prototype.reset = function() {            
+    World.prototype.reset = function() {
         this.refreshGroup("humans");
         this.refreshGroup("ghosts");
         this.refreshGroup("enemies");
         this.refreshGroup("scoreLayer");
-        this.refreshGroup("bodyParts");     
+        this.refreshGroup("bodyParts");
 
         this.game_state.levelMusicSoundGroup.playNextSound(true);
 
@@ -180,7 +182,7 @@ var World = (function() {
             isEatingHuman: false,
             scale: 0.5
         };
-        
+
         this.current_level = {
             level: "L2"
         }
@@ -193,19 +195,49 @@ var World = (function() {
         this.game_state[groupName] = this.game_state.game.add.group();
     };
 
+    World.prototype.resetHud = function() {
+        if (!this.game_state.hud) {
+            return;
+        }
+        
+        this.game_state.hud.forEach(function(element) {
+            if (element.name === 'enemyScoreIcon' || element.name === 'playerScoreIcon') {
+                element.kill();
+            }
+        }, this);
+    };
+
     World.prototype.updateScore = function() {
         var width = 16;
         var padding = 4;
-        var xPosition = 16 + (width + padding) * this.player.souls_following + 1;
 
-        var scoreIcon = new Phaser.Sprite(
-            this.game_state.game,
-            xPosition,
-            20,
-            'scoreIcon');
-        scoreIcon.anchor.setTo(0.5, 0.5);
+        this.resetHud();
 
-        this.game_state.scoreLayer.add(scoreIcon);
+        for (var i = 0; i < this.enemy.humans_devoured; i++) {
+            var xPosition = 16 + (width + padding) * this.enemy.humans_devoured + 1;
+
+            var enemyScoreIcon = new Phaser.Sprite(
+                this.game_state.game,
+                xPosition,
+                48,
+                'enemyScoreIcon');
+            enemyScoreIcon.anchor.setTo(0.5, 0.5);
+
+            this.game_state.hud.add(enemyScoreIcon);
+        }
+
+        for (var i = 0; i < this.player.angels_collected; i++) {
+            var xPosition = 16 + (width + padding) * this.player.angels_collected + 1;
+
+            var scoreIcon = new Phaser.Sprite(
+                this.game_state.game,
+                xPosition,
+                64,
+                'playerScoreIcon');
+            scoreIcon.anchor.setTo(0.5, 0.5);
+
+            this.game_state.hud.add(scoreIcon);
+        }
 
         if (this.lose_conditions.enemy.humans_devoured == this.enemy.humans_devoured) {
             this.game_state.gameOver(false);
@@ -240,6 +272,7 @@ var World = (function() {
 
     World.prototype.createMap = function(level) {
         level = level || 'L1';
+        this.resetHud();
         this.game_state.map = this.game_state.add.tilemap('tileset');
         this.game_state.map.addTilesetImage('tiles', 'tiles');
         this.game_state.map.addTilesetImage('tilesdarkgreen', 'tilesdarkgreen');
@@ -263,9 +296,11 @@ var World = (function() {
         }
 
         var tiles = this.game_state.backgroundLayer.getTiles(0, 0, this.game_state.world.width, this.game_state.world.height);
-        this.game_state.game.houseTiles = tiles.filter(function(f){return f.index === 2 || f.index === 3 || f.index === 155 || f.index === 156;});
+        this.game_state.game.houseTiles = tiles.filter(function(f) {
+            return f.index === 2 || f.index === 3 || f.index === 155 || f.index === 156;
+        });
 
-        this.game_state.map.setCollision([5,6,7,8,9,10,13, 22,23, 24, 25, 26, 27, 39,40,41,42, 108,109, 110,113,114,115,116,117,118,119,125,126,127,130,131,133,134,136,144,142,143,148,149,150,151,152,153], true, this.game_state.backgroundLayer);
+        this.game_state.map.setCollision([5, 6, 7, 8, 9, 10, 13, 22, 23, 24, 25, 26, 27, 39, 40, 41, 42, 108, 109, 110, 113, 114, 115, 116, 117, 118, 119, 125, 126, 127, 130, 131, 133, 134, 136, 144, 142, 143, 148, 149, 150, 151, 152, 153], true, this.game_state.backgroundLayer);
     };
 
     return World;

@@ -68,7 +68,8 @@ BasicGame.Game.prototype = {
         this.load.spritesheet('ghost', 'asset/images/ghost_spritesheet_16.png', 16, 16, 10);
         this.load.spritesheet('slime', 'asset/images/slime_spritesheet_16.png', 16, 16, 12);
 
-        this.load.image('scoreIcon', 'asset/images/character_16.png');
+        this.load.image('enemyScoreIcon', 'asset/images/character_16.png');
+        this.load.image('playerScoreIcon', 'asset/images/player_score_16.png');
         this.load.image('summon', 'asset/images/summon_32.png');
         this.load.image('angel', 'asset/images/angel_16.png');
         this.load.image('keyboardLeft', 'asset/images/keyboardLeft.png');
@@ -122,12 +123,12 @@ BasicGame.Game.prototype = {
 
         // Keyboard controls
         this.instructionLayer = this.game.add.group();
-        this.instructionLayer.z = 5;
+        this.instructionLayer.z = 5000;
         this.instructionLayer.destroyChildren = true;
 
         // People killed rating      
-        this.scoreLayer = this.game.add.group();
-        this.scoreLayer.z = 4;
+        this.hud = this.game.add.group();
+        this.hud.z = 4000;
 
         // Moving objects that are blocked by mountains
         this.bodyParts = this.game.add.group();
