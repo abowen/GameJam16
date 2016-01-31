@@ -12,9 +12,9 @@ var COLOR_VOMIT = "#A3C00F";
     var game = new Phaser.Game(GAME_WIDTH, GAME_HEIGHT, Phaser.AUTO, 'game');
 
     //  Add the States your game has.
-    //  You don't have to do this in the html, it could be done in your Game state too, but for simplicity I'll keep it here.
-    game.state.add('Intro', BasicGame.Game);
+    //  You don't have to do this in the html, it could be done in your Game state too, but for simplicity I'll keep it here.    
     game.state.add('Game', BasicGame.Game);
+    game.state.add('Intro', BasicGame.Intro);
     game.state.add('YouLose', BasicGame.YouLose);
     game.state.add('YouWin', BasicGame.YouWin);
 

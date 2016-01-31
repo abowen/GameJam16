@@ -113,12 +113,7 @@ BasicGame.Game.prototype = {
         //this.game.add.plugin(Phaser.Plugin.Debug);
         this.initialiseGameState();
 
-        this.summonLayer = this.game.add.physicsGroup();
-
-        // Keyboard controls
-        this.instructionLayer = this.game.add.group();
-        this.instructionLayer.z = 5;
-        this.instructionLayer.destroyChildren = true;
+        this.summonLayer = this.game.add.physicsGroup();    
 
         // People killed rating      
         this.scoreLayer = this.game.add.group();
@@ -349,10 +344,15 @@ BasicGame.Intro.prototype = {
             'background');        
         this.background.anchor.setTo(0.5, 0.5);
 
+        // Keyboard controls
+        this.instructionLayer = this.game.add.group();
+        this.instructionLayer.z = 5;
+        this.instructionLayer.destroyChildren = true;
+
         this.startGameKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
         this.startGameKey.onDown.add(this.startGame, this);
 
-        var keys = ['keyboardLeft', 'keyboardRight', 'keyboardUp', 'keyboardDown', 'keyboardSpacebar', 'keyboardCtrl'];
+        var keys = ['keyboardLeft', 'keyboardRight', 'keyboardUp', 'keyboardDown', 'keyboardSpacebar'];
         var keyX = 30;
 
         var keyY = GAME_HEIGHT - 75;
@@ -373,13 +373,9 @@ BasicGame.Intro.prototype = {
         "use strict";
 
         this.instructionLayer.destroy();    
-
-        this.levelMusicSoundGroup.stopSound();
+        this.music.stop();
         
-            this.game.state.start("YouWin", true, false, null, "YouWin");
-        } else {
-            this.game.state.start("YouLose", true, false, null, "YouLose");
-        }
+        this.game.state.start("Game", true, false, null, "Game");        
     },
 
     startMusic: function() {
