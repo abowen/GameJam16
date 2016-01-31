@@ -25,7 +25,7 @@ var PowerUp = (function() {
     };
 
     PowerUp.prototype.addPower = function(){
-        var powerRate = 620 / this.game_state.world_state.win_conditions.player.rituals_performed;
+        var powerRate = 1280 / (this.game_state.world_state.win_conditions.player.angels_collected / 3.0);
         this.game.add.tween(this).to({
             width: this.width + powerRate,
             x: this.x + powerRate / 2

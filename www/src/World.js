@@ -168,7 +168,7 @@ var World = (function() {
         this.refreshGroup("humans");
         this.refreshGroup("ghosts");
         this.refreshGroup("enemies");
-        this.refreshGroup("scoreLayer");
+        this.refreshGroup("hud");
         this.refreshGroup("bodyParts");    
 
         this.game_state.levelMusicSoundGroup.playNextSound(true);
@@ -208,6 +208,8 @@ var World = (function() {
         }
         
         this.refreshGroup("hud");
+        
+        this.game_state.powerUp = new PowerUp(this.game_state, 10, 16);
     };
 
     World.prototype.updateScore = function() {
