@@ -250,6 +250,11 @@ var World = (function() {
 
         this.setLevelsProperties(backgroundLayerName);
 
+        if (this.level.use_alt_img) {
+            var img = document.getElementById("altImg");
+            this.game_state.map.tilesets[0].image = img;
+        }
+
         var tiles = this.game_state.backgroundLayer.getTiles(0, 0, this.game_state.world.width, this.game_state.world.height);
         this.game_state.game.houseTiles = tiles.filter(function(f){return f.index === 2 || f.index === 3 || f.index === 155 || f.index === 156;});
 
