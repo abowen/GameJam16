@@ -183,10 +183,14 @@ BasicGame.Game.prototype = {
         // MP3's take time to decode, we can make a call back if required
         this.game.sound.setDecodedCallback(this.levelMusicSoundGroup.sounds, this.startMusic, this);
 
-        this.resetSpawnRate();
+        this.reset();
     },
 
-    resetSpawnRate: function() {
+    reset: function() {
+        if (this.character) {
+            this.character.reset();
+        }
+
         if (this.spawnInterval) {
             clearInterval(this.spawnInterval);
         }

@@ -194,7 +194,7 @@ var World = (function() {
 
         this.updateScore();
 
-        this.game_state.resetSpawnRate();
+        this.game_state.reset();
     };
 
     World.prototype.refreshGroup = function(groupName) {
