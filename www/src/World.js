@@ -122,7 +122,7 @@ var World = (function() {
                 return;
             }
             
-            this.game_state.createMap("L2");
+            this.createMap("L2");
             this.reset();
         } else {
             this.game_state.powerUp.addPower();
