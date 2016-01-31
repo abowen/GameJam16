@@ -85,8 +85,10 @@ var World = (function() {
     };
 
     World.prototype.followerLost = function(human) {
-        // Happens when you turn a human to a ghost
-        this.player.souls_following -= 1;
+        // Happens when slime easts your ghost    
+        if (this.player.souls_following > 0) {
+            this.player.souls_following--;
+        } 
         this.calculateScreenShake();
         this.refresh();
     };
@@ -134,10 +136,9 @@ var World = (function() {
     World.prototype.sacrificeFollower = function() {
         if (this.enemy.humans_devoured > 0) {
             this.enemy.humans_devoured--;
-        } else {
-            this.player.angels_collected++;
-        }
-
+        } 
+        
+        this.player.angels_collected++;
         this.refresh();
     };
 
@@ -214,7 +215,7 @@ var World = (function() {
         this.resetHud();
 
         for (var i = 0; i < this.enemy.humans_devoured; i++) {
-            var xPosition = 16 + (width + padding) * this.enemy.humans_devoured + 1;
+            var xPosition = 16 + (width + padding) * i + 1;
 
             var enemyScoreIcon = new Phaser.Sprite(
                 this.game_state.game,
@@ -227,7 +228,7 @@ var World = (function() {
         }
 
         for (var i = 0; i < this.player.angels_collected; i++) {
-            var xPosition = 16 + (width + padding) * this.player.angels_collected + 1;
+            var xPosition = 16 + (width + padding) * i + 1;
 
             var scoreIcon = new Phaser.Sprite(
                 this.game_state.game,
