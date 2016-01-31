@@ -1,6 +1,13 @@
 var Human = (function() {
     function Human(game_state, x, y) {
-        MovingSprite.call(this, game_state, x, y, 'human', 'humans');
+        
+        var props = {
+            name: 'human',
+            spritesheet: "human",
+            group: 'humans'
+        }
+        
+        MovingSprite.call(this, game_state, x, y, props);
         this.speed = 100;
         this.body.allowGravity = false;
 		this.game = game_state.game;

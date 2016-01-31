@@ -263,7 +263,7 @@ BasicGame.Game.prototype = {
     spawnSlime: function(x,y) {
         
         var slimeProps = {
-            spriteSheet: 'slime',
+            spritesheet: 'slime',
             name: 'slime',
             group: 'slimes',
             master: 'character',

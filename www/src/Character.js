@@ -109,6 +109,24 @@ var Character = (function() {
         this.setVelocity(0, 0);
         this.animations.stop();
     };
+    
+    Character.prototype.mobCollision = function(mob, character) {
+        if(mob.name === 'slime'){
+            
+            if(character.followers.length > 0){
+                var follower = character.followers.pop();
+                follower.kill();
+            }
+            
+            character.speed -= character.boostSpeed;            
+            setTimeout(function() {
+                character.speed += character.boostSpeed;
+            }.bind(this), 2000);
+            mob.kill();
+            this.game_state.world_state.followerLost(this);
+        }
+    };
+
 
     Character.prototype.update = function() {
         this.game_state.game.physics.arcade.collide(this, this.game_state.offeringStone, this.performRitual, null, this);

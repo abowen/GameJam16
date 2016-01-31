@@ -1,11 +1,6 @@
 var MovingSprite = (function(){
-    function MovingSprite(game_state, x, y, sprite, group){
-        properties = {
-            group: group,
-            spritesheet: sprite
-        };
-
-        Prefab.call(this, game_state, 'Player', {x:x, y:y}, properties);
+    function MovingSprite(game_state, x, y, properties){
+        Prefab.call(this, game_state, properties.name, {x:x, y:y}, properties);
 
         game = game_state.game;
         game.physics.enable(this);
