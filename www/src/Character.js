@@ -2,16 +2,14 @@ var Character = (function() {
     function Character(game_state, x, y, sprite) {
         //BasicGame.Prefab.call(this, game, 'Player', {x:x, y:y}, properties);
         Phaser.Sprite.call(this, game_state.game, x, y, sprite);
-        this.speed = 7;
-        this.speed = 200;
+        this.initialSpeed = 200;
+        this.speed = this.initialSpeed;
         this.game_state = game_state;
         game_state.game.physics.arcade.enable(this);
         this.anchor.set(0.5);
 
         this.framesPerSecond = 10;
-        this.body.collideWorldBounds = true;
-
-        this.speed = 200;
+        this.body.collideWorldBounds = true;    
         this.followers = []
         this.setAnimation();
 
@@ -22,7 +20,7 @@ var Character = (function() {
     Character.prototype.constructor = Character;
 
     Character.prototype.reset = function(){
-        this.speed = 200;
+        this.speed = this.initialSpeed;
         this.followers = [];
     };
 
