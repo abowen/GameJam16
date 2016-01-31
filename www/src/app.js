@@ -1,8 +1,8 @@
 // CONSTANTS
 var GAME_HEIGHT = 640;
 var GAME_WIDTH = 1024
-var COLOR_BLOOD_RED = "#8A0707";
-
+var COLOR_BLOOD = "#8A0707";
+var COLOR_VOMIT = "#A3C00F";
 
 (function () {
     /* globals Phaser:false, BasicGame:false */
