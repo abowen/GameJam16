@@ -152,15 +152,24 @@ BasicGame.Game.prototype = {
         this.runRitualKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
         this.runRitualKey.onDown.add(this.runRitual, this);
 
-        ////// GORE EFFECTS
+        ////// EFFECTS
         this.bloodParticles = this.make.bitmapData(3, 3);
-        this.bloodParticles.rect(0, 0, 4, 4, COLOR_BLOOD_RED);
+        this.bloodParticles.rect(0, 0, 4, 4, COLOR_BLOOD);
         this.bloodParticles.update();
 
-        this.emitter = this.add.emitter(0, 0, 128);
-        this.emitter.makeParticles(this.bloodParticles);
-        this.emitter.gravity = 100;
-        this.emitter.setAlpha(1, 0.2, 500);
+        this.bloodEmitter = this.add.emitter(0, 0, 128);
+        this.bloodEmitter.makeParticles(this.bloodParticles);
+        this.bloodEmitter.gravity = 100;
+        this.bloodEmitter.setAlpha(1, 0.2, 500);
+
+        this.vomitParticles = this.make.bitmapData(3, 3);
+        this.vomitParticles.rect(0, 0, 6, 6, COLOR_VOMIT);
+        this.vomitParticles.update();
+
+        this.vomitEmitter = this.add.emitter(0, 0, 128);
+        this.vomitEmitter.makeParticles(this.vomitParticles);
+        this.vomitEmitter.gravity = 100;
+        this.vomitEmitter.setAlpha(1, 0.2, 500);
 
         ////// SOUND EFFECTS
         this.screamSoundGroup.create();
@@ -268,6 +277,11 @@ BasicGame.Game.prototype = {
             console.log('!@#! screen shaking and partying !@#!')
             this.world_state.cameraShake(screenShakeEffect);
         }
+
+        this.vomitEmitter.emitX = this.enemy.x;
+        this.vomitEmitter.emitY = this.enemy.y;
+        this.bloodEmitter.emitX = this.enemy.x;
+        this.bloodEmitter.emitY = this.enemy.y;
     },
 
     summonShit: function(entity) {

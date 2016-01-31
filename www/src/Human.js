@@ -25,8 +25,7 @@ var Human = (function() {
             human.kill();
         };
 
-        this.summonShit = function(human, character) {
-            console.log('SummonShit');
+        this.summonShit = function(human, character) {            
             this.game_state.summonShit(human);
             human.isSummoned = true;
         };
@@ -99,9 +98,6 @@ var Human = (function() {
 			this.lastMove = moveIn;
 			if (this.y > this.game_state.game.height || this.y < 0 || this.x > this.game_state.game.height || this.x < 0) this.destroy();
 
-            // Trying to work out why this one is here
-			this.game_state.emitter.emitX = this.game_state.enemy.x;
-	        this.game_state.emitter.emitY = this.game_state.enemy.y;
 		} else if (this.isSummoned) {
             this.game_state.game.physics.arcade.overlap(this, this.game_state.summonLayer, this.humanHitsSummon, null, this);
             this.setVelocity(0,0);

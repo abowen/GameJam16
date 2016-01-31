@@ -31,8 +31,8 @@ var Slime = (function() {
             }
         };
 
-		this.terrainHit = function(Slime){
-			Slime.forceDirectionChange = true;
+		this.terrainHit = function(slime){
+			slime.forceDirectionChange = true;
 		};
         
         this.animations.add('down', [0, 1, 2], this.framesPerSecond, true);
@@ -61,11 +61,9 @@ var Slime = (function() {
 			}
 			this[moveIn]();
 			this.lastMove = moveIn;
+            
 			if (this.y > this.game_state.game.height || this.y < 0 || this.x > this.game_state.game.height || this.x < 0) this.destroy();
 
-            // Trying to work out why this one is here
-			this.game_state.emitter.emitX = this.game_state.enemy.x;
-	        this.game_state.emitter.emitY = this.game_state.enemy.y;
 		} else if (this.isSummoned) {
             this.game_state.game.physics.arcade.overlap(this, this.game_state.summonLayer, this.slimeHitsSummon, null, this);
             this.setVelocity(0,0);
