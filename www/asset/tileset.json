@@ -29,7 +29,7 @@
          "opacity":1,
          "properties":
             {
-             "game_settings":"{\"init_conditions\" : {\"souls_per_ritual\": 5,\"distance_to_stone\": 64},\"win_conditions\" : {\"is_last_level\": false,\"player\": {\"angels_collected\": 15}},\"lose_conditions\" : {\"enemy\": {\"humans_devoured\": 15}}}"
+             "game_settings":"{\"init_conditions\" : {\"souls_per_ritual\": 1,\"distance_to_stone\": 64},\"win_conditions\" : {\"is_last_level\": false,\"player\": {\"angels_collected\": 15}},\"lose_conditions\" : {\"enemy\": {\"humans_devoured\": 15}}}"
             },
          "type":"tilelayer",
          "visible":true,
@@ -44,7 +44,7 @@
          "opacity":1,
          "properties":
             {
-             "game_settings":"{\"init_conditions\" : {\"souls_per_ritual\": 5,\"distance_to_stone\": 64},\"win_conditions\" : {\"is_last_level\": true,\"player\": {\"angels_collected\": 15}},\"lose_conditions\" : {\"enemy\": {\"humans_devoured\": 15}}}"
+             "game_settings":"{\"init_conditions\" : {\"souls_per_ritual\": 1,\"distance_to_stone\": 64},\"win_conditions\" : {\"is_last_level\": true,\"player\": {\"angels_collected\": 15}},\"lose_conditions\" : {\"enemy\": {\"humans_devoured\": 15}}}"
             },
          "type":"tilelayer",
          "visible":true,
