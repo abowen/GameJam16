@@ -183,9 +183,16 @@ BasicGame.Game.prototype = {
         // MP3's take time to decode, we can make a call back if required
         this.game.sound.setDecodedCallback(this.levelMusicSoundGroup.sounds, this.startMusic, this);
 
-        // TODO: set this per level
+        this.resetSpawnRate();
+    },
+
+    resetSpawnRate: function() {
+        if (this.spawnInterval) {
+            clearInterval(this.spawnInterval);
+        }
         var spawnRate = this.world_state.spawnRates.shift();
-        setInterval(this.spawnHuman.bind(this), spawnRate);                    
+        this.spawnInterval = setInterval(this.spawnHuman.bind(this), spawnRate);        
+        console.log("Spawn Rate : " + spawnRate); 
     },
 
     startMusic: function() {
