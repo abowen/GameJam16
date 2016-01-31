@@ -1,6 +1,12 @@
 var Ghost = (function() {
     function Ghost(game_state, x, y) {
-        MovingSprite.call(this, game_state, x, y, 'ghost', 'ghosts');
+        var properties = {
+            name: 'ghost',
+            spritesheet: 'ghost',
+            group: 'ghosts'
+        };        
+        
+        MovingSprite.call(this, game_state, x, y, properties);
 
         this.speed = 1.5;
         this.game = game_state.game;

@@ -1,6 +1,6 @@
 var FollowingMob = (function() {
     function FollowingMob(game_state, x, y, properties) {
-        MovingSprite.call(this, game_state, x, y, properties.spriteSheet, properties.group);
+        MovingSprite.call(this, game_state, x, y, properties);
 
         this.master = game_state[properties.master];
         this.speed = properties.speed || 10;
@@ -60,7 +60,7 @@ var FollowingMob = (function() {
         "use strict";
         this.game.physics.arcade.collide(this.game_state[properties.group], this.game_state.backgroundLayer, this.terrainHit);
         if (this.alive && !this.isSummoned) {
-            this.game_state.game.physics.arcade.overlap(this, this.game_state.character, this.game_state.summonCollisionHandler, null, this);
+            this.game_state.game.physics.arcade.overlap(this, this.game_state.character, this.game_state.character.mobCollision, null, this);
      
             if (!this.master) {
                 this.wanderAroundLikeAStupid();

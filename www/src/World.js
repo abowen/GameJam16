@@ -83,6 +83,13 @@ var World = (function() {
         this.refresh();
         this.updateScore();
     };
+    
+    World.prototype.followerLost = function(human) {
+        // Happens when you turn a human to a ghost
+        this.player.souls_following -= 1;
+        this.calculateScreenShake();
+        this.refresh();
+    };
 
     World.prototype.sacrificeHuman = function(human) {
         // Happens when you turn a human to a ghost
