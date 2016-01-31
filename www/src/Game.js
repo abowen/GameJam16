@@ -127,7 +127,7 @@ BasicGame.Game.prototype = {
         this.characters.enableBody = true;
         this.characters.z = 3;
 
-        this.powerUp = new PowerUp(this, 10, 16);
+        
 
         //http://phaser.io/examples/v2/input/cursor-key-movement
         cursors = this.game.input.keyboard.createCursorKeys();
