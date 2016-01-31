@@ -66,7 +66,7 @@ BasicGame.Game.prototype = {
         this.load.spritesheet('ghost', 'asset/images/ghost_spritesheet_16.png', 16, 16, 10);
 
         this.load.image('scoreIcon', 'asset/images/character_16.png');
-        this.load.image('summon', 'asset/images/summon_32.png');                
+        this.load.image('summon', 'asset/images/summon_32.png');
         this.load.image('angel', 'asset/images/angel_16.png');
         this.load.image('keyboardLeft', 'asset/images/keyboardLeft.png');
         this.load.image('keyboardUp', 'asset/images/keyboardUp.png');
@@ -78,17 +78,18 @@ BasicGame.Game.prototype = {
 
         //http://phaser.io/examples/v2/audio/sound-complete
         var screamNames = ['screamWilhelm',
-                            'screamCalzon',
-                            'scream_1',
-                            'scream_2',
-                            'scream_3',
-                            'scream_4',
-                            'scream_5',
-                            'scream_6',
-                            'scream_7',
-                            'scream_8',
-                            'scream_9',
-                            'scream_10'];
+            'screamCalzon',
+            'scream_1',
+            'scream_2',
+            'scream_3',
+            'scream_4',
+            'scream_5',
+            'scream_6',
+            'scream_7',
+            'scream_8',
+            'scream_9',
+            'scream_10'
+        ];
         this.screamSoundGroup = new SoundGroup(this, screamNames);
 
         var angelNames = ['angel_1', 'angel_2'];
@@ -100,7 +101,7 @@ BasicGame.Game.prototype = {
         var summonNames = ['summon_1', 'summon_2'];
         this.summonSoundGroup = new SoundGroup(this, summonNames);
 
-        this.load.audio('gameMusic', 'asset/music/DarkExploration.mp3');        
+        this.load.audio('gameMusic', 'asset/music/DarkExploration.mp3');
     },
 
     create: function() {
@@ -131,7 +132,7 @@ BasicGame.Game.prototype = {
 
         //http://phaser.io/examples/v2/input/cursor-key-movement
         cursors = this.game.input.keyboard.createCursorKeys();
-        this.game.ai = new Ai();            
+        this.game.ai = new Ai();
 
         this.offeringStone = new OfferingStone(this, 'OfferingStone', this.world.centerX, this.world.centerY, 'offering_stone');
         this.character = new Character(this, this.world.centerX / 2, this.world.centerY, 'character');
@@ -142,16 +143,8 @@ BasicGame.Game.prototype = {
         this.game.physics.arcade.enable(this.characters);
 
         // Summon those fools from dark earth                
-        //this.summonKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-        //this.summonKey.onDown.add(this.summonShit, this);
-
-        // Yes it did
-        // TODO: Replace with actual ritual stone logic
-        this.runRitualKey = this.game.input.keyboard.addKey(Phaser.Keyboard.CONTROL);
+        this.runRitualKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
         this.runRitualKey.onDown.add(this.runRitual, this);
-
-        this.sacrificeFollowerKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-        this.sacrificeFollowerKey.onDown.add(this.sacrificeFollower, this);
 
         ////// GORE EFFECTS
         this.bloodParticles = this.make.bitmapData(3, 3);
@@ -161,7 +154,7 @@ BasicGame.Game.prototype = {
         this.emitter = this.add.emitter(0, 0, 128);
         this.emitter.makeParticles(this.bloodParticles);
         this.emitter.gravity = 100;
-        this.emitter.setAlpha(1, 0.2, 500);    
+        this.emitter.setAlpha(1, 0.2, 500);
 
         ////// SOUND EFFECTS
         this.screamSoundGroup.create();
@@ -173,24 +166,24 @@ BasicGame.Game.prototype = {
 
         ////// MUSIC
         // http://phaser.io/examples/v2/audio/loop
-        this.music = this.game.add.audio('gameMusic');        
+        this.music = this.game.add.audio('gameMusic');
 
         // MP3's take time to decode, we can make a call back if required
-        this.game.sound.setDecodedCallback([this.music], this.startMusic, this);      
-       
+        this.game.sound.setDecodedCallback([this.music], this.startMusic, this);
+
         // Instruction information        
         this.instructionKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
         this.instructionKey.onDown.add(this.clearInstructions, this);
 
         var keys = ['keyboardLeft', 'keyboardRight', 'keyboardUp', 'keyboardDown', 'keyboardSpacebar', 'keyboardCtrl'];
-        var keyX = 30;        
-        
+        var keyX = 30;
+
         var keyY = GAME_HEIGHT - 75;
         for (var i = 0; i < keys.length; i++) {
             var keySprite = this.add.sprite(keyX, keyY, keys[i]);
             keySprite.scale.setTo(0.75);
             keySprite.alpha = 0.5;
-            keyX += keySprite.width + 10;            
+            keyX += keySprite.width + 10;
             keySprite.anchor.set(0, 0);
             this.instructionLayer.addChild(keySprite);
         }
@@ -221,9 +214,11 @@ BasicGame.Game.prototype = {
         this.backgroundLayer = this.map.createLayer('backgroundLayer');
 
         var tiles = this.backgroundLayer.getTiles(0, 0, this.world.width, this.world.height);
-        this.game.houseTiles = tiles.filter(function(f){return f.index === 2 || f.index === 3;});
+        this.game.houseTiles = tiles.filter(function(f) {
+            return f.index === 2 || f.index === 3;
+        });
 
-        this.map.setCollision([5,6,7,8,9,10,22,23, 24, 25, 26, 27, 39,40,41,42, 13, 130, 113, 24,108,109, 110, 117,118, 119,125,126,127,134, 144,142,143, 151], true, this.backgroundLayer);
+        this.map.setCollision([5, 6, 7, 8, 9, 10, 22, 23, 24, 25, 26, 27, 39, 40, 41, 42, 13, 130, 113, 24, 108, 109, 110, 117, 118, 119, 125, 126, 127, 134, 144, 142, 143, 151], true, this.backgroundLayer);
     },
 
     gameResized: function(width, height) {
@@ -237,7 +232,7 @@ BasicGame.Game.prototype = {
     },
 
     initialiseGameState: function() {
-       this.world_state = new World(this);
+        this.world_state = new World(this);
     },
 
     update: function() {
@@ -254,12 +249,11 @@ BasicGame.Game.prototype = {
             this.character.moveRight();
         } else {
             this.character.stop();
-        }    
+        }
 
         // TODO: All values and logic could belong in world.
         var screenShakeEffect = this.world_state.screenShake.effect;
-        if (screenShakeEffect > 0)
-        {
+        if (screenShakeEffect > 0) {
             console.log('!@#! screen shaking and partying !@#!')
             this.world_state.cameraShake(screenShakeEffect);
         }
@@ -275,26 +269,7 @@ BasicGame.Game.prototype = {
 
     // Perform a ritual
     runRitual: function() {
-        if (this.character.followers.length > 4){
-            console.log("It's happening");
-
-            this.character.runRitual();
-            this.world_state.runRitual(this.character);
-                                
-            // TODO: Slow down humans & ogre for a temporary amount
-            // TODO: Reduce size of ogre            
-        }
-    },
-
-    // Sacrifice a follower to go faster
-    sacrificeFollower: function() {
-        if (this.character.followers.length > 0){
-            console.log("88888ooooo--- TUUUUUUURRRRRBOOOOOOOOOOO))))>");
-
-            var follower = this.character.followers.pop();
-            this.character.sacrificeFollower(follower);
-            this.world_state.sacrificeFollower(follower);       
-        }
+        this.character.runRitual();
     },
 
     spawnHuman: function() {
@@ -302,17 +277,16 @@ BasicGame.Game.prototype = {
         var human = new Human(this, startTile.worldX + 8, startTile.worldY + 8, 'human');
         this.humans.addChild(human);
     },
-    
-    
-    gameOver: function (win) {
+
+    gameOver: function(win) {
         "use strict";
-        
+
         this.stopMusic();
-        if(win) {
+        if (win) {
             this.game.state.start("YouWin", true, false, null, "YouWin");
         } else {
             this.game.state.start("YouLose", true, false, null, "YouLose");
-            
+
         }
     }
 };
@@ -428,7 +402,7 @@ BasicGame.YouLose.prototype = {
 
         this.music = this.game.add.audio('loseMusic');
 
-        this.game.sound.setDecodedCallback([this.music], this.startMusic, this);          
+        this.game.sound.setDecodedCallback([this.music], this.startMusic, this);
     },
 
     startMusic: function() {
