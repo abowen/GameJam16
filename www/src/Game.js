@@ -180,8 +180,7 @@ BasicGame.Game.prototype = {
         this.vomitSoundGroup.create();
 
         setInterval(this.spawnHuman.bind(this), 500);
-        setInterval(this.spawnSlime.bind(this), 2500);
-
+     
         ////// MUSIC
         // http://phaser.io/examples/v2/audio/loop
         this.music = this.game.add.audio('level_music_1');
@@ -292,19 +291,18 @@ BasicGame.Game.prototype = {
         this.humans.addChild(human);
     },
 
-    spawnSlime: function() {
-        var startTile = this.game.houseTiles[this.game.rnd.between(0, this.game.houseTiles.length - 1)];
+    spawnSlime: function(x,y) {
         
         var slimeProps = {
             spriteSheet: 'slime',
             name: 'slime',
             group: 'slimes',
             master: 'character',
-            followingSpeed: 30,
+            followingSpeed: 20,
             speed: 10
         }
-        
-        var slime = new FollowingMob(this, startTile.worldX + 8, startTile.worldY + 8, slimeProps);
+                
+        var slime = new FollowingMob(this, x + 8, y + 8, slimeProps);
         this.slimes.addChild(slime);
     },
         
