@@ -17,12 +17,13 @@ var BACKGROUND_SCALE = 4;
     //  Add the States your game has.
     //  You don't have to do this in the html, it could be done in your Game state too, but for simplicity I'll keep it here.    
     game.state.add('Game', BasicGame.Game);
+    game.state.add('Title', BasicGame.Title);
     game.state.add('Intro', BasicGame.Intro);
     game.state.add('YouLose', BasicGame.YouLose);
     game.state.add('YouWin', BasicGame.YouWin);
 
     //  Now start the Game state.
-    game.state.start('Intro');
+    game.state.start('Title');
 
 })();
 

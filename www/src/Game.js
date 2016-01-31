@@ -5,6 +5,7 @@ BasicGame = {
 };
 
 // create Game function in BasicGame
+BasicGame.Title = function(game) {};
 BasicGame.Intro = function(game) {};
 BasicGame.Game = function(game) {};
 BasicGame.YouWin = function(game) {};
@@ -312,6 +313,67 @@ BasicGame.Game.prototype = {
 };
 
 // create Game function in BasicGame
+BasicGame.Title.prototype = {
+    init: function() {
+        // set up input max pointers
+        this.input.maxPointers = 1;
+        // set up stage disable visibility change
+        this.stage.disableVisibilityChange = true;
+        // Set up the scaling method used by the ScaleManager
+        // Valid values for scaleMode are:
+        // * EXACT_FIT
+        // * NO_SCALE
+        // * SHOW_ALL
+        // * RESIZE
+        // See http://docs.phaser.io/Phaser.ScaleManager.html for full document
+        this.scale.scaleMode = Phaser.ScaleManager.NO_SCALE;        
+        // If you wish to align your game in the middle of the page then you can
+        // set this value to true. It will place a re-calculated margin-left
+        // pixel value onto the canvas element which is updated on orientation /
+        // resizing events. It doesn't care about any other DOM element that may
+        // be on the page, it literally just sets the margin.
+        this.scale.pageAlignHorizontally = true;
+        this.scale.pageAlignVertically = true;
+        // Force the orientation in landscape or portrait.
+        // * Set first to true to force landscape. 
+        // * Set second to true to force portrait.
+        this.scale.forceOrientation(true, false);
+        // Sets the callback that will be called when the window resize event
+        // occurs, or if set the parent container changes dimensions. Use this 
+        // to handle responsive game layout options. Note that the callback will
+        // only be called if the ScaleManager.scaleMode is set to RESIZE.
+        this.scale.setResizeCallback(this.gameResized, this);
+        // Set screen size automatically based on the scaleMode. This is only
+        // needed if ScaleMode is not set to RESIZE.
+        this.scale.updateLayout(true);
+        // Re-calculate scale mode and update screen size. This only applies if
+        // ScaleMode is not set to RESIZE.
+        this.scale.refresh();
+
+    },
+    preload: function() {
+        this.load.image('background', 'asset/images/title.png');                
+    },
+    create: function() {        
+        this.background = this.add.sprite(
+            this.world.centerX, 
+            BACKGROUND_POSITION_Y,
+            'background');        
+        this.background.anchor.setTo(0.5, BACKGROUND_ANCHOR_Y);        
+        this.background.scale.setTo(BACKGROUND_SCALE, BACKGROUND_SCALE);
+        
+        this.startGameKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+        this.startGameKey.onDown.add(this.startGame, this);
+    },
+
+    startGame: function() {
+        "use strict";
+        
+        this.game.state.start("Intro", true, false, null, "Intro");
+    }
+};
+
+// create Game function in BasicGame
 BasicGame.Intro.prototype = {
     init: function() {
         // set up input max pointers
@@ -352,12 +414,12 @@ BasicGame.Intro.prototype = {
     },
     preload: function() {
         this.load.image('background', 'asset/images/intro.png');
-        this.load.image('keyboardLeft', 'asset/images/keyboardLeft.png');
-        this.load.image('keyboardUp', 'asset/images/keyboardUp.png');
-        this.load.image('keyboardDown', 'asset/images/keyboardDown.png');
-        this.load.image('keyboardRight', 'asset/images/keyboardRight.png');
-        this.load.image('keyboardCtrl', 'asset/images/keyboardCtrl.png');
-        this.load.image('keyboardSpacebar', 'asset/images/keyboardSpacebar.png');
+        // this.load.image('keyboardLeft', 'asset/images/keyboardLeft.png');
+        // this.load.image('keyboardUp', 'asset/images/keyboardUp.png');
+        // this.load.image('keyboardDown', 'asset/images/keyboardDown.png');
+        // this.load.image('keyboardRight', 'asset/images/keyboardRight.png');
+        // this.load.image('keyboardCtrl', 'asset/images/keyboardCtrl.png');
+        // this.load.image('keyboardSpacebar', 'asset/images/keyboardSpacebar.png');
 
         this.load.audio('introMusic', 'asset/music/intro_music.mp3');        
     },
