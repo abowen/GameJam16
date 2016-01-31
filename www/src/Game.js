@@ -228,8 +228,6 @@ BasicGame.Game.prototype = {
         this.groundLayer.sendToBack();
         var tiles = this.backgroundLayer.getTiles(0, 0, this.world.width, this.world.height);
         this.game.houseTiles = tiles.filter(function(f){return f.index === 2 || f.index === 3 || f.index === 155 || f.index === 156;});
-            return f.index === 2 || f.index === 3;
-        });
 
         this.map.setCollision([5,6,7,8,9,10,13, 22,23, 24, 25, 26, 27, 39,40,41,42, 108,109, 110,113,114,115,116,117,118,119,125,126,127,130,131,133,134,136,144,142,143,148,149,150,151,152,153], true, this.backgroundLayer);
     },
