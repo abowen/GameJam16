@@ -77,7 +77,7 @@ var World = (function() {
 
         setTimeout(function() {
             console.log("stopped eating");
-            this.enemy.isEatingHuman = false;
+            this.enemy.isEatingHuman = false;           
         }.bind(this), 1000);
 
         this.refresh();

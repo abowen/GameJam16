@@ -188,7 +188,6 @@ BasicGame.Game.prototype = {
 
         // TODO: set this per level
         setInterval(this.spawnHuman.bind(this), 500);
-        setInterval(this.spawnSlime.bind(this), 2500);
                 
         // Instruction information        
         this.instructionKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
