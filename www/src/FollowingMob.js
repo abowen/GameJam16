@@ -30,8 +30,8 @@ var FollowingMob = (function() {
             slime.forceDirectionChange = true;
         };
         
-        console.log("New following mob spawned");
-        console.debug(this);
+        //console.log("New following mob spawned");
+        //console.debug(this);
 
         this.setAnimations();
     };

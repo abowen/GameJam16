@@ -27,7 +27,7 @@ var Character = (function() {
     };
 
     Character.prototype.addFollower = function(follower) {
-        console.log("Slaughter the lamb.");
+        //console.log("Slaughter the lamb.");
         this.speed -= this.boostSpeed;
         follower.follow(this);
         this.followers.push(follower);
@@ -66,7 +66,7 @@ var Character = (function() {
         this.followers = [];
         this.game_state.world_state.runRitual();
         // Print something nice for Andrew
-        console.log("88888ooooo--- TUUUUUUURRRRRBOOOOOOOOOOO))))>");
+        //console.log("88888ooooo--- TUUUUUUURRRRRBOOOOOOOOOOO))))>");
     };
 
     Character.prototype.setAnimation = function() {

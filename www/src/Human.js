@@ -33,12 +33,12 @@ var Human = (function() {
         };
 
         this.summonCollision = function(character) {
-            console.log('humanCollision');
+            //console.log('humanCollision');
             this.isSummoned = true;
         };
 
         this.humanHitsSummon = function(human, summon) {
-            console.log('humanHitsSummon');
+            //console.log('humanHitsSummon');
             if (!summon.fallTween.isRunning && human.alive) {
                 var cloneH = this.game_state.game.add.sprite(summon.x, summon.y, 'summon');
                 cloneH.anchor.set(0.5);

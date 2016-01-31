@@ -49,12 +49,12 @@ var SummonFromHell = (function(){
     };
 
     SummonFromHell.prototype.onDestroy = function() {
-        console.log("summon destroyed!");
-        console.log(this.totalSummonCount);
+        //console.log("summon destroyed!");
+        //console.log(this.totalSummonCount);
         this.destroyCount++;
-        console.log(this.destroyCount);
+        //console.log(this.destroyCount);
         if(this.destroyCount == this.totalSummonCount) {
-            console.log("all summons destroyed!!!");
+            //console.log("all summons destroyed!!!");
             this.gameState.humans.forEach(function(human) { human.isSummoned = false; });
             this.inEffect = false;
         }
