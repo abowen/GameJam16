@@ -33,3 +33,5 @@ See [LICENSE.md](./LICENSE.md) for license terms and conditions.
 - http://freesound.org/people/MaxDemianAGL/sounds/131051/
 - http://freesound.org/people/amliebsch/sounds/324960/
 - http://freesound.org/people/Hitrison/sounds/251410/
+- http://freesound.org/people/Setuniman/sounds/149770/
+- http://freesound.org/people/tyops/sounds/280212/
