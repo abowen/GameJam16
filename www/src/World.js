@@ -114,6 +114,19 @@ var World = (function() {
         this.refresh();
     };
 
+    World.prototype.devourSlime = function(slime) {
+        console.log("started eating");
+            
+        this.enemy.isEatingSlime = true;
+        
+        setTimeout(function() {
+            console.log("stopped eating");
+            this.enemy.isEatingSlime = false;
+        }.bind(this), 500);
+        
+        this.refresh();        
+    };
+
     World.prototype.refresh = function() {
         this.updateScore();        
         this.makeWorldScarierOrCooler();
@@ -150,6 +163,10 @@ var World = (function() {
 
     World.prototype.makeWorldScarierOrCooler = function() {        
         var tintColour = '0xffffff';
+
+        // Red = Enemy eating people
+        // Green = Slimes being eaten (?)
+        // Blue = Sending angels to heaven
 
         var scoreDifference = this.player.angels_collected - this.enemy.humans_devoured;
         if (scoreDifference > 0)

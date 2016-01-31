@@ -64,6 +64,7 @@ BasicGame.Game.prototype = {
         this.load.spritesheet('human', 'asset/images/human_spritesheet_16.png', 16, 16, 30);
         this.load.spritesheet('humanparts', 'asset/images/humanparts_spritesheet_8.png', 8, 8, 4);
         this.load.spritesheet('ghost', 'asset/images/ghost_spritesheet_16.png', 16, 16, 10);
+        this.load.spritesheet('slime', 'asset/images/slime_spritesheet_16.png', 16, 16, 12);
 
         this.load.image('scoreIcon', 'asset/images/character_16.png');
         this.load.image('summon', 'asset/images/summon_32.png');                
@@ -100,6 +101,9 @@ BasicGame.Game.prototype = {
         var summonNames = ['summon_1', 'summon_2'];
         this.summonSoundGroup = new SoundGroup(this, summonNames);
 
+        var vomitNames = ['vomit_1', 'vomit_2'];
+        this.vomitSoundGroup = new SoundGroup(this, vomitNames);
+
         this.load.audio('gameMusic', 'asset/music/DarkExploration.mp3');        
     },
 
@@ -109,7 +113,6 @@ BasicGame.Game.prototype = {
 
         this.createMap();
         this.initialiseGameState();
-
 
         this.summonLayer = this.game.add.physicsGroup();
 
@@ -140,11 +143,7 @@ BasicGame.Game.prototype = {
         this.characters.addChild(this.character);
         this.characters.enableBody = true;
         this.game.physics.arcade.enable(this.characters);
-
-        // Summon those fools from dark earth                
-        //this.summonKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-        //this.summonKey.onDown.add(this.summonShit, this);
-
+        
         // Yes it did
         // TODO: Replace with actual ritual stone logic
         this.runRitualKey = this.game.input.keyboard.addKey(Phaser.Keyboard.CONTROL);
@@ -168,8 +167,10 @@ BasicGame.Game.prototype = {
         this.angelSoundGroup.create();
         this.eatingSoundGroup.create();
         this.summonSoundGroup.create();
+        this.vomitSoundGroup.create();
 
         setInterval(this.spawnHuman.bind(this), 500);
+        setInterval(this.spawnSlime.bind(this), 2500);
 
         ////// MUSIC
         // http://phaser.io/examples/v2/audio/loop
@@ -265,12 +266,12 @@ BasicGame.Game.prototype = {
         }
     },
 
-    summonShit: function(human) {
+    summonShit: function(entity) {
         var summon = new Summon(
             this,
-            human.x, -20,
-            human.x,
-            human.y);
+            entity.x, -20,
+            entity.x,
+            entity.y);
     },
 
     // Perform a ritual
@@ -302,8 +303,13 @@ BasicGame.Game.prototype = {
         var human = new Human(this, startTile.worldX + 8, startTile.worldY + 8, 'human');
         this.humans.addChild(human);
     },
-    
-    
+
+    spawnSlime: function() {
+        var startTile = this.game.houseTiles[this.game.rnd.between(0, this.game.houseTiles.length - 1)];
+        var slime = new Slime(this, startTile.worldX + 8, startTile.worldY + 8, 'slime');
+        this.slimes.addChild(slime);
+    },
+        
     gameOver: function (win) {
         "use strict";
         

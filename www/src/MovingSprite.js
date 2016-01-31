@@ -8,12 +8,10 @@ var MovingSprite = (function(){
         Prefab.call(this, game_state, 'Player', {x:x, y:y}, properties);
 
         game = game_state.game;
-        this.speed = 80;
-
         game.physics.enable(this);
-        this.anchor.set(0.5);
 
-        // animation name, frames, FPS, true? (maybe swap)
+        this.anchor.set(0.5);        
+        this.speed = 80;    
         this.framesPerSecond = 10;
     };
 

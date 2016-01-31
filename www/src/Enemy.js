@@ -49,6 +49,10 @@ var Enemy = (function() {
     Enemy.prototype.devourHuman = function(human) {
         this.makeNastyEatingNoises();
         this.makeNastyMess();
+    };
+
+    Enemy.prototype.devourSlime = function(slime) {
+        this.game_state.vomitSoundGroup.playRandomSound()
     };    
 
     Enemy.prototype.makeNastyMess = function() {  
