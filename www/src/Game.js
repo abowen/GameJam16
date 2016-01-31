@@ -93,29 +93,29 @@ BasicGame.Game.prototype = {
             'scream_9',
             'scream_10'
         ];
-        this.screamSoundGroup = new SoundGroup(this, screamNames);
+        this.screamSoundGroup = new SoundGroup(this, 'sfx', screamNames);
 
         var angelNames = ['angel_1', 'angel_2'];
-        this.angelSoundGroup = new SoundGroup(this, angelNames);
+        this.angelSoundGroup = new SoundGroup(this, 'sfx', angelNames);
 
         var eatingNames = ['eating_1', 'eating_2'];
-        this.eatingSoundGroup = new SoundGroup(this, eatingNames);
+        this.eatingSoundGroup = new SoundGroup(this, 'sfx', eatingNames);
 
         var summonNames = ['summon_1', 'summon_2'];
-        this.summonSoundGroup = new SoundGroup(this, summonNames);
+        this.summonSoundGroup = new SoundGroup(this, 'sfx', summonNames);
 
         var vomitNames = ['vomit_1', 'vomit_2'];
-        this.vomitSoundGroup = new SoundGroup(this, vomitNames);
+        this.vomitSoundGroup = new SoundGroup(this, 'sfx', vomitNames);
 
-        this.load.audio('level_music_1', 'asset/music/level_music_1.mp3');        
-        this.load.audio('level_music_2', 'asset/music/level_music_2.mp3');
-        this.load.audio('level_music_2', 'asset/music/level_music_3.mp3');        
-        this.load.audio('intro_music', 'asset/music/intro_music.mp3');                    
+
+        this.load.audio('intro_music', 'asset/music/intro_music.mp3');
+
+        var levelMusicNames = ['level_music_1', 'level_music_2', 'level_music_3'];
+        this.levelMusicSoundGroup = new SoundGroup(this, 'music', levelMusicNames);    
     },
 
-    create: function() {
-        // TODO: Clearly remove before publishing
-        this.game.add.plugin(Phaser.Plugin.Debug);
+    create: function() {        
+        //this.game.add.plugin(Phaser.Plugin.Debug);
         this.initialiseGameState();
 
         this.summonLayer = this.game.add.physicsGroup();
@@ -179,16 +179,16 @@ BasicGame.Game.prototype = {
         this.summonSoundGroup.create();
         this.vomitSoundGroup.create();
 
-        setInterval(this.spawnHuman.bind(this), 500);
-        setInterval(this.spawnSlime.bind(this), 2500);
-
         ////// MUSIC
         // http://phaser.io/examples/v2/audio/loop
-        this.music = this.game.add.audio('level_music_1');
+        this.levelMusicSoundGroup.create();
 
         // MP3's take time to decode, we can make a call back if required
-        this.game.sound.setDecodedCallback([this.music], this.startMusic, this);
+        this.game.sound.setDecodedCallback(this.levelMusicSoundGroup.sounds, this.startMusic, this);
 
+        // TODO: set this per level
+        setInterval(this.spawnHuman.bind(this), 500);
+                
         // Instruction information        
         this.instructionKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
         this.instructionKey.onDown.add(this.clearInstructions, this);
@@ -213,12 +213,11 @@ BasicGame.Game.prototype = {
 
     startMusic: function() {
         console.log("MUSIC START PARTY");
-        this.music.loopFull(0.6);
+        this.levelMusicSoundGroup.playNextSound(true);
     },
 
     stopMusic: function() {
-        console.log("MUSIC ENDED");
-        this.music.stop();
+        this.levelMusicSoundGroup.stopSound();
     },
 
     gameResized: function(width, height) {
@@ -292,19 +291,18 @@ BasicGame.Game.prototype = {
         this.humans.addChild(human);
     },
 
-    spawnSlime: function() {
-        var startTile = this.game.houseTiles[this.game.rnd.between(0, this.game.houseTiles.length - 1)];
+    spawnSlime: function(x,y) {
         
         var slimeProps = {
             spriteSheet: 'slime',
             name: 'slime',
             group: 'slimes',
             master: 'character',
-            followingSpeed: 30,
+            followingSpeed: 20,
             speed: 10
         }
-        
-        var slime = new FollowingMob(this, startTile.worldX + 8, startTile.worldY + 8, slimeProps);
+                
+        var slime = new FollowingMob(this, x + 8, y + 8, slimeProps);
         this.slimes.addChild(slime);
     },
         

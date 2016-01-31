@@ -15,11 +15,6 @@ var FollowingMob = (function() {
         this.moves = ['moveUp', 'moveDown', 'moveLeft', 'moveRight'];
         this.lastMove = null;
 
-        this.devourSlime = function(slime, enemy) {
-            enemy.devourSlime(slime);
-            slime.kill();
-        };
-
         this.summonCollision = function() {
             this.isSummoned = true;
         };
@@ -66,8 +61,7 @@ var FollowingMob = (function() {
         this.game.physics.arcade.collide(this.game_state[properties.group], this.game_state.backgroundLayer, this.terrainHit);
         if (this.alive && !this.isSummoned) {
             this.game_state.game.physics.arcade.overlap(this, this.game_state.character, this.game_state.summonCollisionHandler, null, this);
-            this.game_state.game.physics.arcade.overlap(this, this.game_state.enemy, this.devourSlime, null, this);
-
+     
             if (!this.master) {
                 this.wanderAroundLikeAStupid();
             } else {
@@ -78,7 +72,7 @@ var FollowingMob = (function() {
 
                 var vel_factor = this.speed;
 
-                if (dist < 200.0) {
+                if (dist < 150.0) {
                     this.game.ai.follow(this, this.master, this.speed * vel_factor, this.speed * vel_factor);
                 } else {
                     this.wanderAroundLikeAStupid();

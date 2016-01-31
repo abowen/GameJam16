@@ -77,7 +77,7 @@ var World = (function() {
 
         setTimeout(function() {
             console.log("stopped eating");
-            this.enemy.isEatingHuman = false;
+            this.enemy.isEatingHuman = false;           
         }.bind(this), 1000);
 
         this.refresh();
@@ -150,14 +150,14 @@ var World = (function() {
         this.makeWorldScarierOrCooler();
     };
 
-    World.prototype.reset = function() {        
-       
-        
+    World.prototype.reset = function() {            
         this.refreshGroup("humans");
         this.refreshGroup("ghosts");
         this.refreshGroup("enemies");
         this.refreshGroup("scoreLayer");
         this.refreshGroup("bodyParts");     
+
+        this.game_state.levelMusicSoundGroup.playNextSound(true);
 
         this.game_state.enemies.addChild(new Enemy(this.game_state, 'Enemy', this.game_state.world.centerX + (this.game_state.world.centerX / 2), this.game_state.world.centerY, 'enemy'));
 
