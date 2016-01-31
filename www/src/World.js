@@ -24,7 +24,7 @@ var World = (function() {
                 level: "L1"
             };
 
-            this.spawnRates = [2500, 1500, 1000, 750];
+            this.spawnRates = [2500, 1500, 1000, 750];        
 
             this.screenShake = {
                 effect: 0,
@@ -169,10 +169,10 @@ var World = (function() {
         this.refreshGroup("ghosts");
         this.refreshGroup("enemies");
         this.refreshGroup("scoreLayer");
-        this.refreshGroup("bodyParts");
+        this.refreshGroup("bodyParts");    
 
         this.game_state.levelMusicSoundGroup.playNextSound(true);
-
+        
         this.game_state.enemies.addChild(new Enemy(this.game_state, 'Enemy', this.game_state.world.centerX + (this.game_state.world.centerX / 2), this.game_state.world.centerY, 'enemy'));
 
         this.player = {
@@ -193,6 +193,8 @@ var World = (function() {
         }
 
         this.updateScore();
+
+        this.game_state.resetSpawnRate();
     };
 
     World.prototype.refreshGroup = function(groupName) {
