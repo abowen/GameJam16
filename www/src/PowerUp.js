@@ -1,8 +1,9 @@
 var PowerUp = (function() {
     function PowerUp(game_state, x, y) {
         properties = {
-            group: 'powerUp',
-            spritesheet: 'powerup'
+            group: 'hud',
+            spritesheet: 'powerup',
+            name: 'powerup'
         };
         Prefab.call(this, game_state, 'PowerUp', {x:x, y:y}, properties);
         game_state.game.physics.arcade.enable(this);
