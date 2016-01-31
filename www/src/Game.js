@@ -184,7 +184,7 @@ BasicGame.Game.prototype = {
         this.game.sound.setDecodedCallback(this.levelMusicSoundGroup.sounds, this.startMusic, this);
 
         // TODO: set this per level
-        setInterval(this.spawnHuman.bind(this), 500);                    
+        setInterval(this.spawnHuman.bind(this), 2000);                    
     },
 
     startMusic: function() {
