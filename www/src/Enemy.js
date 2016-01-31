@@ -46,22 +46,16 @@ var Enemy = (function() {
         this.body.velocity.y = 0;
     };
 
-    Enemy.prototype.devourHuman = function(human) {
-        this.makeNastyEatingNoises();
-        this.makeNastyMess();
+    // TODO: Pass in as parameter from property on entity
+    Enemy.prototype.devourHuman = function(human) {        
+        this.game_state.bloodEmitter.flow(500, 30, 2, 100, false);
+        this.game_state.eatingSoundGroup.playRandomSound();        
     };
 
     Enemy.prototype.devourSlime = function(slime) {
+        this.game_state.vomitEmitter.flow(500, 30, 2, 100, false);
         this.game_state.vomitSoundGroup.playRandomSound()
     };    
-
-    Enemy.prototype.makeNastyMess = function() {  
-        this.game_state.emitter.flow(500, 30, 2, 100, false);
-    };
-    
-    Enemy.prototype.makeNastyEatingNoises = function() {        
-        this.game_state.eatingSoundGroup.playRandomSound();
-    };
 
     Enemy.prototype.giggleWhileEating = function() {        
         // Make him wobble on the spot because he is munching
@@ -69,8 +63,7 @@ var Enemy = (function() {
         var min = -1;
         
         var movement = Math.floor(Math.random() * (max - min + 1)) + min;
-        //console.log('Got the giggles : ' + movement);
-
+        
         this.body.velocity.x = 0;
         this.body.velocity.y = 0;
         
@@ -85,7 +78,6 @@ var Enemy = (function() {
             this.gotTheGiggles();
         }
         else {
-
             var new_position;
         }
 
@@ -152,15 +144,14 @@ var Enemy = (function() {
             this.scale.setTo(scaleX, scaleY);
         }    
 
-        if (this.body.velocity.x === 0 && this.body.velocity.y === 0) {
-                // stop current animation                
-                this.animations.stop();                
-            }
+        if (this.body.velocity.x === 0 && this.body.velocity.y === 0) {                
+            this.animations.stop();                
+        }
 
         new_position = (this.axis === "x") ? this.x : this.y;        
 
         if (Math.abs(new_position - this.previous_position) >= this.walking_distance) {
-                this.switch_direction();
+            this.switch_direction();
         }
     };
 
@@ -168,14 +159,7 @@ var Enemy = (function() {
         this.body.velocity.x = 0;
         this.body.velocity.y = 0;
         var max = 2;
-        var min = 1;
-        // TODO: Make him bigger
-
-        // TODO: Make him wobble
-
-        //var movement = Math.floor(Math.random() * (max - min + 1)) + min;
-        //console.log('Got the giggles');
-        //this.body.velocity.x        
+        var min = 1;            
     };
 
     Enemy.prototype.switch_direction = function() {

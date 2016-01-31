@@ -5,12 +5,13 @@ var World = (function() {
         if (!game_settings) {
             this.init_conditions = {
                 souls_per_ritual: 5,
-                distance_to_stone: 64 //2 big game frames
+                distance_to_stone: 64, //2 big game frames
             };
 
             this.win_conditions = {
+                last_level: 'L2',
                 player: {
-                    rituals_performed: 3
+                    angels_collected: 15
                 }
             };
 
@@ -21,8 +22,8 @@ var World = (function() {
             };
 
             this.player = {
+                souls_following: 0,
                 angels_collected: 0,
-                souls_collected: 0,
                 rituals_performed: 0
             };
 
@@ -34,6 +35,10 @@ var World = (function() {
                 isEatingHuman: false,
                 // TODO: Move scale as a function of humans_devoured
                 scale: 0.5
+            };
+            
+            this.current_level = {
+                level: "L1"
             };
 
             this.screenShake = {
@@ -61,7 +66,7 @@ var World = (function() {
     };
 
     World.prototype.calculateScreenShake = function() {
-        var isItTimeToScreenShakePartyYet = this.screenShake.counter.indexOf(this.player.souls_collected) == 0;
+        var isItTimeToScreenShakePartyYet = this.screenShake.counter.indexOf(this.player.souls_following) == 0;
 
         var effect = isItTimeToScreenShakePartyYet ? this.screenShake.counter.shift() : 1;
         var timer = isItTimeToScreenShakePartyYet ? 2000 : 250;
@@ -99,19 +104,29 @@ var World = (function() {
 
     World.prototype.sacrificeHuman = function(human) {
         // Happens when you turn a human to a ghost
-        this.player.souls_collected += 1;
+        this.player.souls_following += 1;
         this.calculateScreenShake();
         this.refresh();
     };
 
     World.prototype.runRitual = function(character) {
         // Happens when you sarcifice ghosts on the stone
-        this.player.souls_collected = 0;
+        this.player.angels_colleted += this.player.souls_following;
+        this.player.souls_following = 0;
         this.player.rituals_performed += 1;
         this.calculateScreenShake();
-        this.game_state.powerUp.addPower();
-        this.createMap("L2");
-        this.world_state.reset();
+
+        if (this.win_conditions.player.angels_collected <= this.player.angels_collected) {            
+            if(this.current_level.level == this.win_conditions.last_level){
+                this.game_state.gameOver(true);
+                return;
+            }
+            
+            this.game_state.createMap("L2");
+            this.reset();
+        } else {
+            this.game_state.powerUp.addPower();
+        }
 
         this.refresh();
     };
@@ -136,15 +151,15 @@ var World = (function() {
 
     World.prototype.devourSlime = function(slime) {
         console.log("started eating");
-            
+
         this.enemy.isEatingSlime = true;
-        
+
         setTimeout(function() {
             console.log("stopped eating");
             this.enemy.isEatingSlime = false;
         }.bind(this), 500);
-        
-        this.refresh();        
+
+        this.refresh();
     };
 
     World.prototype.refresh = function() {
@@ -152,33 +167,38 @@ var World = (function() {
         this.makeWorldScarierOrCooler();
     };
 
-    World.prototype.reset = function(){
+    World.prototype.reset = function() {        
+       
+        
         this.refreshGroup("humans");
         this.refreshGroup("ghosts");
         this.refreshGroup("enemies");
         this.refreshGroup("scoreLayer");
-        this.refreshGroup("bodyParts");
+        this.refreshGroup("bodyParts");     
 
         this.game_state.enemies.addChild(new Enemy(this.game_state, 'Enemy', this.game_state.world.centerX + (this.game_state.world.centerX / 2), this.game_state.world.centerY, 'enemy'));
 
-
         this.player = {
             angels_collected: 0,
-            souls_collected: 0,
+            souls_following: 0,
             rituals_performed: 0
         };
 
         this.enemy = {
             humans_devoured: 0,
             difficulty: 5,
-            isEatingHuman : false,
-            scale : 0.5
+            isEatingHuman: false,
+            scale: 0.5
         };
+        
+        this.current_level = {
+            level: "L2"
+        }
 
         this.updateScore();
     };
 
-    World.prototype.refreshGroup = function(groupName){
+    World.prototype.refreshGroup = function(groupName) {
         this.game_state[groupName] && this.game_state[groupName].destroy();
         this.game_state[groupName] = this.game_state.game.add.group();
     };
@@ -186,7 +206,7 @@ var World = (function() {
     World.prototype.updateScore = function() {
         var width = 16;
         var padding = 4;
-        var xPosition = 16 + (width + padding) * this.player.souls_collected + 1;
+        var xPosition = 16 + (width + padding) * this.player.souls_following + 1;
 
         var scoreIcon = new Phaser.Sprite(
             this.game_state.game,
@@ -196,7 +216,6 @@ var World = (function() {
         scoreIcon.anchor.setTo(0.5, 0.5);
 
         this.game_state.scoreLayer.add(scoreIcon);
-
 
         if (this.lose_conditions.enemy.humans_devoured == this.enemy.humans_devoured) {
             this.game_state.gameOver(false);

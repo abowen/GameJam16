@@ -55,7 +55,7 @@ var Character = (function() {
         if (distToStone > this.game_state.world_state.init_conditions.distance_to_stone) {
             return;
         }
-
+        
         // Sarcifice all followers (ghosts)
         this.followers.forEach(function(follower) {
             this.sacrificeFollower(follower);
@@ -64,7 +64,7 @@ var Character = (function() {
             }.bind(this), 500);
         }, this);
         this.followers = [];
-
+        this.game_state.world_state.runRitual();
         // Print something nice for Andrew
         console.log("88888ooooo--- TUUUUUUURRRRRBOOOOOOOOOOO))))>");
     };
