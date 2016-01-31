@@ -132,6 +132,9 @@ var Human = (function() {
         bodyPartTwo.frame = bodyPartTwoFrame;
         bodyPartTwo.visible = false;
 
+        this.game_state.bodyParts.addChild(bodyPartOne);
+        this.game_state.bodyParts.addChild(bodyPartTwo);
+
         var bodyPartOneTween = this.game.add.tween(bodyPartOne);
         var bodyPartTwoTween = this.game.add.tween(bodyPartTwo);
         bodyPartOne.visible = bodyPartTwo.visible = true;

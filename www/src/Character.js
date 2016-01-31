@@ -21,6 +21,11 @@ var Character = (function() {
     Character.prototype = Object.create(Phaser.Sprite.prototype);
     Character.prototype.constructor = Character;
 
+    Character.prototype.reset = function(){
+        this.speed = 200;
+        this.followers = [];
+    };
+
     Character.prototype.addFollower = function(follower) {
         console.log("Slaughter the lamb.");
         this.speed -= this.boostSpeed;

@@ -128,6 +128,37 @@ var World = (function() {
         this.makeWorldScarierOrCooler();
     };
 
+    World.prototype.reset = function(){
+        this.refreshGroup("humans");
+        this.refreshGroup("ghosts");
+        this.refreshGroup("enemies");
+        this.refreshGroup("scoreLayer");
+        this.refreshGroup("bodyParts");
+
+        this.game_state.enemies.addChild(new Enemy(this.game_state, 'Enemy', this.game_state.world.centerX + (this.game_state.world.centerX / 2), this.game_state.world.centerY, 'enemy'));
+
+
+        this.player = {
+            angels_collected: 0,
+            souls_collected: 0,
+            rituals_performed: 0
+        };
+
+        this.enemy = {
+            humans_devoured: 0,
+            difficulty: 5,
+            isEatingHuman : false,
+            scale : 0.5
+        };
+
+        this.updateScore();
+    };
+
+    World.prototype.refreshGroup = function(groupName){
+        this.game_state[groupName] && this.game_state[groupName].destroy();
+        this.game_state[groupName] = this.game_state.game.add.group();
+    };
+
     World.prototype.updateScore = function() {
         var width = 16;
         var padding = 4;

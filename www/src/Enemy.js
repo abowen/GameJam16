@@ -185,5 +185,6 @@ var Enemy = (function() {
             this.body.velocity.y *= -1;
         }
     };
+
     return Enemy;
 })();
