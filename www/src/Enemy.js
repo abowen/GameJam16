@@ -19,7 +19,7 @@ var Enemy = (function() {
         this.walking_speed = +properties.walking_speed;
         this.walking_distance = +properties.walking_distance;
         this.direction = +properties.direction;
-        this.axis = properties.axis;        
+        this.axis = properties.axis;
 
         this.previous_position = (this.axis === "x") ? this.x : this.y;
 
@@ -47,44 +47,43 @@ var Enemy = (function() {
     };
 
     // TODO: Pass in as parameter from property on entity
-    Enemy.prototype.devourHuman = function(human) {        
+    Enemy.prototype.devourHuman = function(human) {
         this.game_state.bloodEmitter.flow(500, 30, 2, 100, false);
-        this.game_state.eatingSoundGroup.playRandomSound();        
+        this.game_state.eatingSoundGroup.playRandomSound();
+        
+        var position = this.body.position.clone();
+        setTimeout(function() {
+            this.game_state.spawnSlime(position.x, position.y);
+        }.bind(this), 1000);
     };
 
-    Enemy.prototype.devourSlime = function(slime) {
-        this.game_state.vomitEmitter.flow(500, 30, 2, 100, false);
-        this.game_state.vomitSoundGroup.playRandomSound()
-    };    
 
-    Enemy.prototype.giggleWhileEating = function() {        
+    Enemy.prototype.giggleWhileEating = function() {
         // Make him wobble on the spot because he is munching
         var max = 1;
         var min = -1;
-        
+
         var movement = Math.floor(Math.random() * (max - min + 1)) + min;
-        
+
         this.body.velocity.x = 0;
         this.body.velocity.y = 0;
-        
+
         this.body.x += movement;
-        this.body.y += movement;        
-    };    
+        this.body.y += movement;
+    };
 
     Enemy.prototype.update = function() {
         "use strict";
 
-        if (this.game_state.world_state.enemy.isEatingHuman){
+        if (this.game_state.world_state.enemy.isEatingHuman) {
             this.gotTheGiggles();
-        }
-        else {
+        } else {
             var new_position;
         }
 
-        if (this.game_state.world_state.enemy.isEatingHuman){
+        if (this.game_state.world_state.enemy.isEatingHuman) {
             this.giggleWhileEating();
-        }
-        else {
+        } else {
             var followed_mob = {};
             var dist = 0.0;
             var scaleX = this.game_state.world_state.enemy.scale;
@@ -99,8 +98,8 @@ var Enemy = (function() {
                         this.body.position.y,
                         human.position.x,
                         human.position.y);
-                    
-                    if(dist < dist_min){
+
+                    if (dist < dist_min) {
                         dist = dist_min;
                         current_dist = dist_min;
                         closest_human = human;
@@ -139,27 +138,27 @@ var Enemy = (function() {
             } else if (this.body.velocity.y > 0) {
                 // walking down
                 this.animations.play("down");
-            }        
+            }
 
             this.scale.setTo(scaleX, scaleY);
-        }    
-
-        if (this.body.velocity.x === 0 && this.body.velocity.y === 0) {                
-            this.animations.stop();                
         }
 
-        new_position = (this.axis === "x") ? this.x : this.y;        
+        if (this.body.velocity.x === 0 && this.body.velocity.y === 0) {
+            this.animations.stop();
+        }
+
+        new_position = (this.axis === "x") ? this.x : this.y;
 
         if (Math.abs(new_position - this.previous_position) >= this.walking_distance) {
             this.switch_direction();
         }
     };
 
-    Enemy.prototype.gotTheGiggles = function() {        
+    Enemy.prototype.gotTheGiggles = function() {
         this.body.velocity.x = 0;
         this.body.velocity.y = 0;
         var max = 2;
-        var min = 1;            
+        var min = 1;
     };
 
     Enemy.prototype.switch_direction = function() {
