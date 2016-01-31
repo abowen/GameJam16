@@ -20,7 +20,6 @@ var World = (function() {
             };
 
             this.player = {
-                angels_collected: 0,
                 souls_collected: 0,
                 rituals_performed: 0
             };
@@ -186,7 +185,10 @@ var World = (function() {
 
         this.game_state.scoreLayer.add(scoreIcon);
 
-
+        if (this.win_conditions.player.rituals_performed == this.player.rituals_performed) {
+            this.game_state.gameOver(true);
+        }
+        
         if (this.lose_conditions.enemy.humans_devoured == this.enemy.humans_devoured) {
             this.game_state.gameOver(false);
         }
