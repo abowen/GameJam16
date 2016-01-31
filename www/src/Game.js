@@ -107,7 +107,10 @@ BasicGame.Game.prototype = {
         var vomitNames = ['vomit_1', 'vomit_2'];
         this.vomitSoundGroup = new SoundGroup(this, vomitNames);
 
-        this.load.audio('gameMusic', 'asset/music/DarkExploration.mp3');        
+        this.load.audio('level_music_1', 'asset/music/level_music_1.mp3');        
+        this.load.audio('level_music_2', 'asset/music/level_music_2.mp3');
+        this.load.audio('level_music_2', 'asset/music/level_music_3.mp3');        
+        this.load.audio('intro_music', 'asset/music/intro_music.mp3');                    
     },
 
     create: function() {
@@ -181,7 +184,7 @@ BasicGame.Game.prototype = {
 
         ////// MUSIC
         // http://phaser.io/examples/v2/audio/loop
-        this.music = this.game.add.audio('gameMusic');
+        this.music = this.game.add.audio('level_music_1');
 
         // MP3's take time to decode, we can make a call back if required
         this.game.sound.setDecodedCallback([this.music], this.startMusic, this);
@@ -359,6 +362,8 @@ BasicGame.YouWin.prototype = {
     },
     preload: function() {
         this.load.image('background', 'asset/images/you_win.png');
+
+        this.load.audio('winMusic', 'asset/music/win_music.mp3');        
     },
     create: function() {
         // Add logo to the center of the stage
@@ -369,8 +374,13 @@ BasicGame.YouWin.prototype = {
         // Set the anchor to the center of the sprite
         this.background.anchor.setTo(0.5, 0.5);
 
-    }
+        this.music = this.game.add.audio('winMusic');
+        this.game.sound.setDecodedCallback([this.music], this.startMusic, this);
+    },
 
+    startMusic: function() {
+        this.music.play();
+    }
 };
 
 
@@ -416,7 +426,7 @@ BasicGame.YouLose.prototype = {
     preload: function() {
         this.load.image('background', 'asset/images/you_lose.png');
 
-        this.load.audio('loseMusic', 'asset/music/CreepyGhostPiano.mp3');
+        this.load.audio('loseMusic', 'asset/music/lose_music.mp3');
     },
     create: function() {
         // Add logo to the center of the stage
@@ -428,7 +438,6 @@ BasicGame.YouLose.prototype = {
         this.background.anchor.setTo(0.5, 0.5);
 
         this.music = this.game.add.audio('loseMusic');
-
         this.game.sound.setDecodedCallback([this.music], this.startMusic, this);
     },
 
