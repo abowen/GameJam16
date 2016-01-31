@@ -1,6 +1,7 @@
 var World = (function() {
     function World(game_state, game_settings) {
-
+        this.game_state = game_state;
+        this.createMap();
         if (!game_settings) {
             this.init_conditions = {
                 souls_per_ritual: 5,
@@ -47,7 +48,6 @@ var World = (function() {
             }
         }
 
-        this.game_state = game_state;
 
         var max = this.screenShake.counter.max();
         this.game_state.game.world.setBounds(-max, -max, this.game_state.game.width + max, this.game_state.game.height + 2);
@@ -112,7 +112,16 @@ var World = (function() {
         this.game_state.powerUp.addPower();
         this.createMap("L2");
         this.world_state.reset();
+
         this.refresh();
+    };
+
+    World.prototype.setLevelsProperties = function(backgroundLayer){
+        var layer = this.game_state.map.layers.find(function(l){ return l.name === backgroundLayer });;
+
+        for (var i in layer.properties) {
+                this[i] = obj[i];
+        }
     };
 
     World.prototype.sacrificeFollower = function() {
@@ -218,7 +227,32 @@ var World = (function() {
         //console.log('tint : ' + tintColour)
         this.game_state.groundLayer.tint = tintColour;
         this.game_state.backgroundLayer.tint = tintColour;
-    }
+    };
+
+    World.prototype.createMap = function(level) {
+        level = level || 'L1';
+        this.game_state.map = this.game_state.add.tilemap('tileset');
+        this.game_state.map.addTilesetImage('tiles', 'tiles');
+        this.game_state.map.addTilesetImage('tilesdarkgreen', 'tilesdarkgreen');
+
+        this.game_state.map.setCollisionBetween(15, 16);
+        //create layer
+        this.game_state.groundLayer && this.game_state.groundLayer.destroy();
+        this.game_state.groundLayer = this.game_state.map.createLayer('groundLayer_' + level);
+
+        this.game_state.backgroundLayer && this.game_state.backgroundLayer.destroy();
+        var backgroundLayerName = 'backgroundLayer_' + level;
+        this.game_state.backgroundLayer = this.game_state.map.createLayer(backgroundLayerName);
+        this.game_state.backgroundLayer.sendToBack();
+        this.game_state.groundLayer.sendToBack();
+
+        //this.game_state.world_state.setLevelsProperties(backgroundLayerName);
+
+        var tiles = this.game_state.backgroundLayer.getTiles(0, 0, this.game_state.world.width, this.game_state.world.height);
+        this.game_state.game.houseTiles = tiles.filter(function(f){return f.index === 2 || f.index === 3 || f.index === 155 || f.index === 156;});
+
+        this.game_state.map.setCollision([5,6,7,8,9,10,13, 22,23, 24, 25, 26, 27, 39,40,41,42, 108,109, 110,113,114,115,116,117,118,119,125,126,127,130,131,133,134,136,144,142,143,148,149,150,151,152,153], true, this.backgroundLayer);
+    };
 
     return World;
 })();

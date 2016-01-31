@@ -27,6 +27,10 @@
          "height":40,
          "name":"backgroundLayer_L1",
          "opacity":1,
+         "properties":
+            {
+             "win_condition_rituals":"5"
+            },
          "type":"tilelayer",
          "visible":false,
          "width":64,
@@ -38,6 +42,10 @@
          "height":40,
          "name":"backgroundLayer_L2",
          "opacity":1,
+         "properties":
+            {
+             "win_condition_rituals":"10"
+            },
          "type":"tilelayer",
          "visible":true,
          "width":64,
