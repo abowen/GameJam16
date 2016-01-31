@@ -69,7 +69,8 @@ BasicGame.Game.prototype = {
         this.load.spritesheet('ghost', 'asset/images/ghost_spritesheet_16.png', 16, 16, 10);
         this.load.spritesheet('slime', 'asset/images/slime_spritesheet_16.png', 16, 16, 12);
 
-        this.load.image('scoreIcon', 'asset/images/character_16.png');
+        this.load.image('enemyScoreIcon', 'asset/images/character_16.png');
+        this.load.image('playerScoreIcon', 'asset/images/player_score_16.png');
         this.load.image('summon', 'asset/images/summon_32.png');
         this.load.image('angel', 'asset/images/angel_16.png');        
         this.load.image('powerup', 'asset/images/powerup.png')
@@ -117,8 +118,8 @@ BasicGame.Game.prototype = {
         this.summonLayer = this.game.add.physicsGroup();    
 
         // People killed rating      
-        this.scoreLayer = this.game.add.group();
-        this.scoreLayer.z = 4;
+        this.hud = this.game.add.group();
+        this.hud.z = 4000;
 
         // Moving objects that are blocked by mountains
         this.bodyParts = this.game.add.group();
@@ -312,7 +313,7 @@ BasicGame.Intro.prototype = {
         // * SHOW_ALL
         // * RESIZE
         // See http://docs.phaser.io/Phaser.ScaleManager.html for full document
-        this.scale.scaleMode = Phaser.ScaleManager.USER_SCALE;
+        this.scale.scaleMode = Phaser.ScaleManager.NO_SCALE;        
         // If you wish to align your game in the middle of the page then you can
         // set this value to true. It will place a re-calculated margin-left
         // pixel value onto the canvas element which is updated on orientation /
@@ -351,30 +352,31 @@ BasicGame.Intro.prototype = {
     create: function() {        
         this.background = this.add.sprite(
             this.world.centerX, 
-            this.world.centerY,
+            BACKGROUND_POSITION_Y,
             'background');        
-        this.background.anchor.setTo(0.5, 0.5);
-
-        // Keyboard controls
-        this.instructionLayer = this.game.add.group();
-        this.instructionLayer.z = 5;
-        this.instructionLayer.destroyChildren = true;
-
+        this.background.anchor.setTo(0.5, BACKGROUND_ANCHOR_Y);        
+        this.background.scale.setTo(BACKGROUND_SCALE, BACKGROUND_SCALE);
+        
         this.startGameKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
         this.startGameKey.onDown.add(this.startGame, this);
 
-        var keys = ['keyboardLeft', 'keyboardRight', 'keyboardUp', 'keyboardDown', 'keyboardSpacebar'];
-        var keyX = 30;
+        // Keyboard controls
+        // this.instructionLayer = this.game.add.group();
+        // this.instructionLayer.z = 5;
+        // this.instructionLayer.destroyChildren = true;
 
-        var keyY = GAME_HEIGHT - 75;
-        for (var i = 0; i < keys.length; i++) {
-            var keySprite = this.add.sprite(keyX, keyY, keys[i]);
-            keySprite.scale.setTo(0.75);
-            keySprite.alpha = 0.5;
-            keyX += keySprite.width + 10;
-            keySprite.anchor.set(0, 0);
-            this.instructionLayer.addChild(keySprite);
-        }
+        // var keys = ['keyboardLeft', 'keyboardRight', 'keyboardUp', 'keyboardDown', 'keyboardSpacebar'];
+        // var keyX = 30;
+
+        // var keyY = GAME_HEIGHT - 75;
+        // for (var i = 0; i < keys.length; i++) {
+        //     var keySprite = this.add.sprite(keyX, keyY, keys[i]);
+        //     keySprite.scale.setTo(0.75);
+        //     keySprite.alpha = 0.5;
+        //     keyX += keySprite.width + 10;
+        //     keySprite.anchor.set(0, 0);
+        //     this.instructionLayer.addChild(keySprite);
+        // }
 
         this.music = this.game.add.audio('introMusic');
         this.game.sound.setDecodedCallback([this.music], this.startMusic, this);
@@ -383,7 +385,7 @@ BasicGame.Intro.prototype = {
     startGame: function() {
         "use strict";
 
-        this.instructionLayer.destroy();    
+        //this.instructionLayer.destroy();    
         this.music.stop();
         
         this.game.state.start("Game", true, false, null, "Game");        
@@ -408,7 +410,7 @@ BasicGame.YouWin.prototype = {
         // * SHOW_ALL
         // * RESIZE
         // See http://docs.phaser.io/Phaser.ScaleManager.html for full document
-        this.scale.scaleMode = Phaser.ScaleManager.USER_SCALE;
+        this.scale.scaleMode = Phaser.ScaleManager.NO_SCALE;
         // If you wish to align your game in the middle of the page then you can
         // set this value to true. It will place a re-calculated margin-left
         // pixel value onto the canvas element which is updated on orientation /
@@ -438,14 +440,14 @@ BasicGame.YouWin.prototype = {
 
         this.load.audio('winMusic', 'asset/music/win_music.mp3');        
     },
-    create: function() {
-        // Add logo to the center of the stage
+    create: function() {        
         this.background = this.add.sprite(
-            this.world.centerX, // (centerX, centerY) is the center coordination
-            this.world.centerY,
+            this.world.centerX, 
+            BACKGROUND_POSITION_Y,
             'background');
-        // Set the anchor to the center of the sprite
-        this.background.anchor.setTo(0.5, 0.5);
+        
+        this.background.anchor.setTo(0.5, BACKGROUND_ANCHOR_Y);
+        this.background.scale.setTo(BACKGROUND_SCALE,BACKGROUND_SCALE);
 
         this.music = this.game.add.audio('winMusic');
         this.game.sound.setDecodedCallback([this.music], this.startMusic, this);
@@ -471,7 +473,7 @@ BasicGame.YouLose.prototype = {
         // * SHOW_ALL
         // * RESIZE
         // See http://docs.phaser.io/Phaser.ScaleManager.html for full document
-        this.scale.scaleMode = Phaser.ScaleManager.USER_SCALE;
+        this.scale.scaleMode = Phaser.ScaleManager.NO_SCALE;
         // If you wish to align your game in the middle of the page then you can
         // set this value to true. It will place a re-calculated margin-left
         // pixel value onto the canvas element which is updated on orientation /
@@ -501,14 +503,13 @@ BasicGame.YouLose.prototype = {
 
         this.load.audio('loseMusic', 'asset/music/lose_music.mp3');
     },
-    create: function() {
-        // Add logo to the center of the stage
+    create: function() {        
         this.background = this.add.sprite(
-            this.world.centerX, // (centerX, centerY) is the center coordination
-            this.world.centerY,
-            'background');
-        // Set the anchor to the center of the sprite
-        this.background.anchor.setTo(0.5, 0.5);
+            this.world.centerX, 
+            BACKGROUND_ANCHOR_Y,
+            'background');        
+        this.background.anchor.setTo(0.5, BACKGROUND_POSITION_Y);
+        this.background.scale.setTo(BACKGROUND_SCALE,BACKGROUND_SCALE);
 
         this.music = this.game.add.audio('loseMusic');
         this.game.sound.setDecodedCallback([this.music], this.startMusic, this);
