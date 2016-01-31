@@ -105,6 +105,7 @@ BasicGame.Game.prototype = {
 
 
         this.load.audio('intro_music', 'asset/music/intro_music.mp3');
+        this.load.audio('hyena', 'asset/sfx/hyena.mp3');
 
         var levelMusicNames = ['level_music_1', 'level_music_2', 'level_music_3'];
         this.levelMusicSoundGroup = new SoundGroup(this, 'music', levelMusicNames);    
@@ -144,6 +145,11 @@ BasicGame.Game.prototype = {
         this.runRitualKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
         this.runRitualKey.onDown.add(this.runRitual, this);
 
+        this.hyena = this.game.add.audio('hyena');
+        //Summon from hell key
+        this.summonFromHellKey = this.game.input.keyboard.addKey(Phaser.Keyboard.H);
+        this.summonFromHellKey.onDown.add(this.summonFromHell, this);
+
         ////// EFFECTS
         this.bloodParticles = this.make.bitmapData(3, 3);
         this.bloodParticles.rect(0, 0, 4, 4, COLOR_BLOOD);
@@ -178,7 +184,7 @@ BasicGame.Game.prototype = {
         this.game.sound.setDecodedCallback(this.levelMusicSoundGroup.sounds, this.startMusic, this);
 
         // TODO: set this per level
-        setInterval(this.spawnHuman.bind(this), 500);                    
+        setInterval(this.spawnHuman.bind(this), 2000);                    
     },
 
     startMusic: function() {
@@ -274,6 +280,11 @@ BasicGame.Game.prototype = {
                 
         var slime = new FollowingMob(this, x + 8, y + 8, slimeProps);
         this.slimes.addChild(slime);
+    },
+
+    summonFromHell: function() {
+        if(!this.summonFromHellObj) this.summonFromHellObj = new SummonFromHell(this, this.world.centerX, this.world.centerY);
+        this.summonFromHellObj.unleash();
     },
         
     gameOver: function (win) {
