@@ -96,7 +96,7 @@ var Human = (function() {
 			}
 			this[moveIn]();
 			this.lastMove = moveIn;
-			if (this.y > this.game_state.game.height || this.y < 0 || this.x > this.game_state.game.height || this.x < 0) this.destroy();
+			if (this.y > this.game_state.game.height || this.y < 0 || this.x > this.game_state.game.width || this.x < 0) this.destroy();
 
 		} else if (this.isSummoned) {
             this.game_state.game.physics.arcade.overlap(this, this.game_state.summonLayer, this.humanHitsSummon, null, this);
