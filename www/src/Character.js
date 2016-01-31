@@ -7,7 +7,7 @@ var Character = (function() {
         this.game_state = game_state;
         game_state.game.physics.arcade.enable(this);
         this.anchor.set(0.5);
-        
+
         this.framesPerSecond = 10;
         this.body.collideWorldBounds = true;
 
@@ -15,54 +15,58 @@ var Character = (function() {
         this.followers = []
         this.setAnimation();
 
-        this.performRitual = function(character, offeringStone) {            
-            offeringStone.body.velocity.x = 0;
-            offeringStone.body.velocity.y = 0;
-            
-            this.followers.forEach(function(follower) {
-                follower.kill();
-            }, this);;
-            this.followers = [];
-            this.speed = 200;
-        };
         this.boostSpeed = 10;
     };
 
     Character.prototype = Object.create(Phaser.Sprite.prototype);
     Character.prototype.constructor = Character;
 
+    Character.prototype.reset = function(){
+        this.speed = 200;
+        this.followers = [];
+    };
+
     Character.prototype.addFollower = function(follower) {
-        // This order is important
-        this.speed -= this.boostSpeed;  
+        console.log("Slaughter the lamb.");
+        this.speed -= this.boostSpeed;
         follower.follow(this);
-        this.followers.push(follower);                    
+        this.followers.push(follower);
     };
 
     Character.prototype.sacrificeFollower = function(follower) {
-        console.log("Slaughter the lamb.");   
+        this.game_state.world_state.sacrificeFollower(follower);
         this.speed += this.boostSpeed;
         follower.spawnAngel(this);
-        follower.kill();     
+        follower.kill();
     };
 
+    Character.prototype.runRitual = function(character, offeringStone) {
+        // Run ritual only if have min number of ghosts following
+        if (this.game_state.world_state.init_conditions.souls_per_ritual > this.followers.length) {
+            return;
+        }
 
-    Character.prototype.runRitual = function(character, offeringStone) {            
-        // TODO: Reimplement
-        //offeringStone.body.velocity.x = 0;
-        //offeringStone.body.velocity.y = 0;
-        
+        //  Run ritual only when close to the stone
+        var distToStone = this.game.math.distance(this.body.position.x,
+            this.body.position.y,
+            this.game_state.offeringStone.body.position.x,
+            this.game_state.offeringStone.body.position.y);
+
+        if (distToStone > this.game_state.world_state.init_conditions.distance_to_stone) {
+            return;
+        }
+
+        // Sarcifice all followers (ghosts)
         this.followers.forEach(function(follower) {
             this.sacrificeFollower(follower);
+            setTimeout(function() {
+
+            }.bind(this), 500);
         }, this);
-        this.followers = [];            
-    };
-    
-    Character.prototype.performRitual = function() {
-        this.followers.forEach(function(follower) {
-            follower.kill();
-        }, this);
-        followers.clear();
-        this.speed = 4;
+        this.followers = [];
+
+        // Print something nice for Andrew
+        console.log("88888ooooo--- TUUUUUUURRRRRBOOOOOOOOOOO))))>");
     };
 
     Character.prototype.setAnimation = function() {
@@ -72,29 +76,31 @@ var Character = (function() {
         this.animations.add('left', [9, 10, 11], this.framesPerSecond, true);
     };
 
-    Character.prototype.setVelocity = function(x, y){
+    Character.prototype.setVelocity = function(x, y) {
         this.body.velocity.x = x;
         this.body.velocity.y = y;
-
-        //this.powerUp.setVelocity(x, y);
-    },
+    };
 
     Character.prototype.moveUp = function() {
         this.setVelocity(0, -this.speed);
         this.animations.play('up');
     };
+
     Character.prototype.moveDown = function() {
         this.setVelocity(0, this.speed);
         this.animations.play('down');
     };
+
     Character.prototype.moveLeft = function() {
         this.setVelocity(-this.speed, 0);
         this.animations.play('left');
     };
+
     Character.prototype.moveRight = function() {
         this.setVelocity(this.speed, 0);
         this.animations.play('right');
     };
+
     Character.prototype.kill = function() {
         this.destroy();
     };
