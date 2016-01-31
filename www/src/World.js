@@ -201,11 +201,7 @@ var World = (function() {
             return;
         }
         
-        this.game_state.hud.forEach(function(element) {
-            if (element.name === 'enemyScoreIcon' || element.name === 'playerScoreIcon') {
-                element.kill();
-            }
-        }, this);
+        this.refreshGroup("hud");
     };
 
     World.prototype.updateScore = function() {
