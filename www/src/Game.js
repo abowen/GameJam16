@@ -291,7 +291,17 @@ BasicGame.Game.prototype = {
 
     spawnSlime: function() {
         var startTile = this.game.houseTiles[this.game.rnd.between(0, this.game.houseTiles.length - 1)];
-        var slime = new Slime(this, startTile.worldX + 8, startTile.worldY + 8, 'slime');
+        
+        var slimeProps = {
+            spriteSheet: 'slime',
+            name: 'slime',
+            group: 'slimes',
+            master: 'character',
+            followingSpeed: 30,
+            speed: 10
+        }
+        
+        var slime = new FollowingMob(this, startTile.worldX + 8, startTile.worldY + 8, slimeProps);
         this.slimes.addChild(slime);
     },
         
