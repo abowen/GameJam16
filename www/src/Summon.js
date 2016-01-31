@@ -14,8 +14,14 @@ var Summon = (function(){
         
         this.anchor.set(0.5);
 
-        var summonSpeed = 500;
+        this.animate(targetX, targetY);
+    };
 
+    Summon.prototype = Object.create(Phaser.Sprite.prototype);
+    Summon.prototype.constructor = Summon;
+
+    Summon.prototype.animate = function(targetX, targetY) {
+        var summonSpeed = 500;
         this.fallTween = game.add.tween(this);
         this.fallTween.to({
             x: targetX,
@@ -49,9 +55,6 @@ var Summon = (function(){
 
         this.game_state.summonSoundGroup.playRandomSound();
     };
-
-    Summon.prototype = Object.create(Phaser.Sprite.prototype);
-    Summon.prototype.constructor = Summon;
 
 
     return Summon;
