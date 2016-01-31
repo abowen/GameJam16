@@ -6,7 +6,7 @@
          "name":"groundLayer_L1",
          "opacity":1,
          "type":"tilelayer",
-         "visible":false,
+         "visible":true,
          "width":64,
          "x":0,
          "y":0
@@ -29,10 +29,10 @@
          "opacity":1,
          "properties":
             {
-             "win_condition_rituals":"5"
+             "game_settings":"{\"init_conditions\" : {\"souls_per_ritual\": 5,\"distance_to_stone\": 64},\"win_conditions\" : {\"is_last_level\": false,\"player\": {\"angels_collected\": 15}},\"lose_conditions\" : {\"enemy\": {\"humans_devoured\": 15}}}"
             },
          "type":"tilelayer",
-         "visible":false,
+         "visible":true,
          "width":64,
          "x":0,
          "y":0
@@ -44,7 +44,7 @@
          "opacity":1,
          "properties":
             {
-             "win_condition_rituals":"10"
+             "game_settings":"{\"init_conditions\" : {\"souls_per_ritual\": 5,\"distance_to_stone\": 64},\"win_conditions\" : {\"is_last_level\": true,\"player\": {\"angels_collected\": 15}},\"lose_conditions\" : {\"enemy\": {\"humans_devoured\": 15}}}"
             },
          "type":"tilelayer",
          "visible":true,

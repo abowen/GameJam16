@@ -3,24 +3,6 @@ var World = (function() {
         this.game_state = game_state;
         this.createMap();
         if (!game_settings) {
-            this.init_conditions = {
-                souls_per_ritual: 1,
-                distance_to_stone: 64, //2 big game frames
-            };
-
-            this.win_conditions = {
-                last_level: 'L2',
-                player: {
-                    angels_collected: 15
-                }
-            };
-
-            this.lose_conditions = {
-                enemy: {
-                    humans_devoured: 15
-                }
-            };
-
             this.player = {
                 souls_following: 0,
                 angels_collected: 0,
@@ -116,8 +98,8 @@ var World = (function() {
         this.player.rituals_performed += 1;
         this.calculateScreenShake();
 
-        if (this.win_conditions.player.angels_collected <= this.player.angels_collected) {            
-            if(this.current_level.level == this.win_conditions.last_level){
+        if (this.win_conditions.player.angels_collected <= this.player.angels_collected) {
+            if(this.win_conditions.is_last_level){
                 this.game_state.gameOver(true);
                 return;
             }
@@ -133,9 +115,10 @@ var World = (function() {
 
     World.prototype.setLevelsProperties = function(backgroundLayer){
         var layer = this.game_state.map.layers.find(function(l){ return l.name === backgroundLayer });;
+        var gameSettings = JSON.parse(layer.properties.game_settings);
 
-        for (var i in layer.properties) {
-                this[i] = obj[i];
+        for (var i in gameSettings) {
+                this[i] = gameSettings[i];
         }
     };
 
@@ -265,12 +248,12 @@ var World = (function() {
         this.game_state.backgroundLayer.sendToBack();
         this.game_state.groundLayer.sendToBack();
 
-        //this.game_state.world_state.setLevelsProperties(backgroundLayerName);
+        this.setLevelsProperties(backgroundLayerName);
 
         var tiles = this.game_state.backgroundLayer.getTiles(0, 0, this.game_state.world.width, this.game_state.world.height);
         this.game_state.game.houseTiles = tiles.filter(function(f){return f.index === 2 || f.index === 3 || f.index === 155 || f.index === 156;});
 
-        this.game_state.map.setCollision([5,6,7,8,9,10,13, 22,23, 24, 25, 26, 27, 39,40,41,42, 108,109, 110,113,114,115,116,117,118,119,125,126,127,130,131,133,134,136,144,142,143,148,149,150,151,152,153], true, this.backgroundLayer);
+        this.game_state.map.setCollision([5,6,7,8,9,10,13, 22,23, 24, 25, 26, 27, 39,40,41,42, 108,109, 110,113,114,115,116,117,118,119,125,126,127,130,131,133,134,136,144,142,143,148,149,150,151,152,153], true, this.game_state.backgroundLayer);
     };
 
     return World;
