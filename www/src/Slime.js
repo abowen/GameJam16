@@ -24,8 +24,7 @@ var Slime = (function() {
             slime.isSummoned = true;
         };
 
-        this.slimeHitsSummon = function(slime, summon) {
-            console.log('SlimeHitsSummon');
+        this.slimeHitsSummon = function(slime, summon) {            
             if (!summon.fallTween.isRunning && slime.alive) {                
                 slime.kill();
                 summon.kill();            
