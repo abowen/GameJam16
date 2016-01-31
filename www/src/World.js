@@ -24,6 +24,8 @@ var World = (function() {
                 level: "L1"
             };
 
+            this.spawnRates = [2500, 1500, 1000, 750];
+
             this.screenShake = {
                 effect: 0,
                 counter: [5, 10]
@@ -155,8 +157,8 @@ var World = (function() {
     };
 
     World.prototype.refresh = function() {
-        console.log(this.player);
-        console.log(this.enemy);
+        //console.log(this.player);
+        //console.log(this.enemy);
 
         this.updateScore();
         this.makeWorldScarierOrCooler();
