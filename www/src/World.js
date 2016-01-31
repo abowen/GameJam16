@@ -149,15 +149,12 @@ var World = (function() {
         this.refresh();
     };
 
-    World.prototype.devourSlime = function(slime) {
-        console.log("started eating");
-
+    World.prototype.devourSlime = function(slime) {        
         this.enemy.isEatingSlime = true;
 
-        setTimeout(function() {
-            console.log("stopped eating");
+        setTimeout(function() {            
             this.enemy.isEatingSlime = false;
-        }.bind(this), 500);
+        }.bind(this), 2000);
 
         this.refresh();
     };

@@ -19,12 +19,33 @@ var Slime = (function() {
             slime.kill();
         };
 
-        this.summonCollision = function() {                        
+        this.summonCollision = function() {
+            console.log('slimeCollision');
             this.isSummoned = true;
         };
 
         this.slimeHitsSummon = function(slime, summon) {            
-            if (!summon.fallTween.isRunning && slime.alive) {                
+            if (!summon.fallTween.isRunning && slime.alive) {
+                var clone = this.game_state.game.add.sprite(slime.x, slime.y, 'slime');                
+                clone.anchor.set(0.5, 0.5);
+                clone.frame = 1;
+
+                var tween = this.game_state.game.add.tween(clone.scale);
+                tween.to({
+                    x: 10,
+                    y: 0.1
+                }, 200, Phaser.Easing.Quadratic.In);
+                tween.start();
+                tween.onComplete.add(function(){
+                    console.log('MURDERER')
+                    this.kill();
+                }, this);
+
+                this.game_state.game.add.tween(clone).to({
+                    alpha: 0
+                }, 250, "Linear", true, 250);
+
+
                 slime.kill();
                 summon.kill();            
             }
