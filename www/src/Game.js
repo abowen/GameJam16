@@ -281,9 +281,6 @@ BasicGame.Game.prototype = {
     // Perform a ritual
     runRitual: function() {
         this.character.runRitual();
-
-            this.createMap("L2");
-            this.world_state.reset();
     },
 
     spawnHuman: function() {

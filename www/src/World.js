@@ -109,6 +109,8 @@ var World = (function() {
         this.player.rituals_performed += 1;
         this.calculateScreenShake();
         this.game_state.powerUp.addPower();
+        this.createMap("L2");
+        this.world_state.reset();
         this.refresh();
     };
 
