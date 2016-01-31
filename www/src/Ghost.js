@@ -49,7 +49,7 @@ var Ghost = (function() {
         var tween = this.game.add.tween(angel);
         tween.to({
             y: -40
-        }, 200, Phaser.Easing.Quadratic.In);
+        }, 600, Phaser.Easing.Quadratic.In);
         tween.start();
 
         tween.onComplete.add(function(){
