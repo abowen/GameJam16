@@ -85,7 +85,7 @@ var Human = (function() {
 		this.game.physics.arcade.collide(this.game_state.humans, this.game_state.backgroundLayer, this.terrainHit);
 		if (this.alive && !this.isSummoned) {
 			this.game_state.game.physics.arcade.overlap(this, this.game_state.character, this.game_state.summonCollisionHandler, null, this);
-            this.game_state.game.physics.arcade.overlap(this, this.game_state.enemy, this.devourHuman, null, this);
+            this.game_state.game.physics.arcade.overlap(this, this.game_state.enemies, this.devourHuman, null, this);
 			
 
 			var moveIn = this.lastMove;
