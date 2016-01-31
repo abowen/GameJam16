@@ -3,6 +3,9 @@ var GAME_HEIGHT = 640;
 var GAME_WIDTH = 1024
 var COLOR_BLOOD = "#8A0707";
 var COLOR_VOMIT = "#A3C00F";
+var BACKGROUND_ANCHOR_Y = 0;
+var BACKGROUND_POSITION_Y = 0;
+var BACKGROUND_SCALE = 4;
 
 (function () {
     /* globals Phaser:false, BasicGame:false */
