@@ -289,8 +289,8 @@ var World = (function() {
 
         this.setLevelsProperties(backgroundLayerName);
 
-        if (this.level.use_alt_img) {
-            var img = document.getElementById("altImg");
+        if (this.level.alt_img) {
+            var img = document.getElementById(this.level.alt_img);
             this.game_state.map.tilesets[0].image = img;
         }
 
