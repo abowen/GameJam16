@@ -113,8 +113,6 @@ BasicGame.Game.prototype = {
     create: function() {
         // TODO: Clearly remove before publishing
         this.game.add.plugin(Phaser.Plugin.Debug);
-
-        this.createMap();
         this.initialiseGameState();
 
         this.summonLayer = this.game.add.physicsGroup();
@@ -218,27 +216,6 @@ BasicGame.Game.prototype = {
     stopMusic: function() {
         console.log("MUSIC ENDED");
         this.music.stop();
-    },
-
-    createMap: function(level) {
-        level = level || 'L1';
-        this.map = this.add.tilemap('tileset');
-        this.map.addTilesetImage('tiles', 'tiles');
-        this.map.addTilesetImage('tilesdarkgreen', 'tilesdarkgreen');
-
-        this.map.setCollisionBetween(15, 16);
-        //create layer
-        this.groundLayer && this.groundLayer.destroy();
-        this.groundLayer = this.map.createLayer('groundLayer_' + level);
-
-        this.backgroundLayer && this.backgroundLayer.destroy();
-        this.backgroundLayer = this.map.createLayer('backgroundLayer_' + level);
-        this.backgroundLayer.sendToBack();
-        this.groundLayer.sendToBack();
-        var tiles = this.backgroundLayer.getTiles(0, 0, this.world.width, this.world.height);
-        this.game.houseTiles = tiles.filter(function(f){return f.index === 2 || f.index === 3 || f.index === 155 || f.index === 156;});
-
-        this.map.setCollision([5,6,7,8,9,10,13, 22,23, 24, 25, 26, 27, 39,40,41,42, 108,109, 110,113,114,115,116,117,118,119,125,126,127,130,131,133,134,136,144,142,143,148,149,150,151,152,153], true, this.backgroundLayer);
     },
 
     gameResized: function(width, height) {
