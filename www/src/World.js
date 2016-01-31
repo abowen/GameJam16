@@ -3,7 +3,7 @@ var World = (function() {
 
         if (!game_settings) {
             this.init_conditions = {
-                souls_per_ritual: 5,
+                souls_per_ritual: 1,
                 distance_to_stone: 64, //2 big game frames
             };
 
@@ -111,7 +111,7 @@ var World = (function() {
 
     World.prototype.runRitual = function(character) {
         // Happens when you sarcifice ghosts on the stone
-        this.player.angels_colleted += this.player.souls_following;
+        this.player.angels_collected += this.player.souls_following;
         this.player.souls_following = 0;
         this.player.rituals_performed += 1;
         this.calculateScreenShake();
@@ -155,6 +155,9 @@ var World = (function() {
     };
 
     World.prototype.refresh = function() {
+        console.log(this.player);
+        console.log(this.enemy);
+        
         this.updateScore();
         this.makeWorldScarierOrCooler();
     };
