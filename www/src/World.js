@@ -118,7 +118,7 @@ var World = (function() {
         var gameSettings = JSON.parse(layer.properties.game_settings);
 
         for (var i in gameSettings) {
-                this[i] = layer.properties[i];
+                this[i] = gameSettings[i];
         }
     };
 
