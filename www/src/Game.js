@@ -284,12 +284,21 @@ BasicGame.Game.prototype = {
         this.bloodEmitter.emitY = this.enemy.y;
     },
 
-    summonShit: function(entity) {
+    summonCollisionHandler: function(sourceEntity, destinationEntity) {
         var summon = new Summon(
-            this,
-            entity.x, -20,
-            entity.x,
-            entity.y);
+            this.game_state,
+            sourceEntity.x, -20,
+            sourceEntity.x,
+            sourceEntity.y);
+
+        if (sourceEntity.summonCollision)
+        {
+            sourceEntity.summonCollision(destinationEntity);
+        }
+        if (destinationEntity.summonCollision)
+        {
+            destinationEntity.summonCollision(sourceEntity);
+        }
     },
 
     // Perform a ritual

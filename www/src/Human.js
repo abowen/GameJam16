@@ -25,9 +25,9 @@ var Human = (function() {
             human.kill();
         };
 
-        this.summonShit = function(human, character) {            
-            this.game_state.summonShit(human);
-            human.isSummoned = true;
+        this.summonCollision = function(character) {
+            console.log('humanCollision');
+            this.isSummoned = true;
         };
 
         this.humanHitsSummon = function(human, summon) {
@@ -84,7 +84,7 @@ var Human = (function() {
          "use strict";
 		this.game.physics.arcade.collide(this.game_state.humans, this.game_state.backgroundLayer, this.terrainHit);
 		if (this.alive && !this.isSummoned) {
-			this.game_state.game.physics.arcade.overlap(this, this.game_state.character, this.summonShit, null, this);
+			this.game_state.game.physics.arcade.overlap(this, this.game_state.character, this.game_state.summonCollisionHandler, null, this);
             this.game_state.game.physics.arcade.overlap(this, this.game_state.enemy, this.devourHuman, null, this);
 			
 

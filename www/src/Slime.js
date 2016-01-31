@@ -19,9 +19,8 @@ var Slime = (function() {
             slime.kill();
         };
 
-        this.summonShit = function(slime, character) {            
-            this.game_state.summonShit(slime);
-            slime.isSummoned = true;
+        this.summonCollision = function() {                        
+            this.isSummoned = true;
         };
 
         this.slimeHitsSummon = function(slime, summon) {            
@@ -49,7 +48,7 @@ var Slime = (function() {
          "use strict";
 		this.game.physics.arcade.collide(this.game_state.Slimes, this.game_state.backgroundLayer, this.terrainHit);
 		if (this.alive && !this.isSummoned) {
-			this.game_state.game.physics.arcade.overlap(this, this.game_state.character, this.summonShit, null, this);
+			this.game_state.game.physics.arcade.overlap(this, this.game_state.character, this.game_state.summonCollisionHandler, null, this);
             this.game_state.game.physics.arcade.overlap(this, this.game_state.enemy, this.devourSlime, null, this);
 			
 
@@ -61,7 +60,7 @@ var Slime = (function() {
 			}
 			this[moveIn]();
 			this.lastMove = moveIn;
-            
+
 			if (this.y > this.game_state.game.height || this.y < 0 || this.x > this.game_state.game.height || this.x < 0) this.destroy();
 
 		} else if (this.isSummoned) {
