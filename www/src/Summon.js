@@ -20,6 +20,8 @@ var Summon = (function(){
     Summon.prototype = Object.create(Phaser.Sprite.prototype);
     Summon.prototype.constructor = Summon;
 
+    Summon.prototype.kill = function() { this.destroy(); };
+
     Summon.prototype.animate = function(targetX, targetY) {
         var summonSpeed = 500;
         this.fallTween = game.add.tween(this);
