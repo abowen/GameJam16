@@ -5,6 +5,7 @@ BasicGame = {
 };
 
 // create Game function in BasicGame
+BasicGame.Intro = function(game) {};
 BasicGame.Game = function(game) {};
 BasicGame.YouWin = function(game) {};
 BasicGame.YouLose = function(game) {};
@@ -70,13 +71,7 @@ BasicGame.Game.prototype = {
 
         this.load.image('scoreIcon', 'asset/images/character_16.png');
         this.load.image('summon', 'asset/images/summon_32.png');
-        this.load.image('angel', 'asset/images/angel_16.png');
-        this.load.image('keyboardLeft', 'asset/images/keyboardLeft.png');
-        this.load.image('keyboardUp', 'asset/images/keyboardUp.png');
-        this.load.image('keyboardDown', 'asset/images/keyboardDown.png');
-        this.load.image('keyboardRight', 'asset/images/keyboardRight.png');
-        this.load.image('keyboardCtrl', 'asset/images/keyboardCtrl.png');
-        this.load.image('keyboardSpacebar', 'asset/images/keyboardSpacebar.png');
+        this.load.image('angel', 'asset/images/angel_16.png');        
         this.load.image('powerup', 'asset/images/powerup.png')
 
         //http://phaser.io/examples/v2/audio/sound-complete
@@ -187,28 +182,7 @@ BasicGame.Game.prototype = {
         this.game.sound.setDecodedCallback(this.levelMusicSoundGroup.sounds, this.startMusic, this);
 
         // TODO: set this per level
-        setInterval(this.spawnHuman.bind(this), 500);
-                
-        // Instruction information        
-        this.instructionKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-        this.instructionKey.onDown.add(this.clearInstructions, this);
-
-        var keys = ['keyboardLeft', 'keyboardRight', 'keyboardUp', 'keyboardDown', 'keyboardSpacebar', 'keyboardCtrl'];
-        var keyX = 30;
-
-        var keyY = GAME_HEIGHT - 75;
-        for (var i = 0; i < keys.length; i++) {
-            var keySprite = this.add.sprite(keyX, keyY, keys[i]);
-            keySprite.scale.setTo(0.75);
-            keySprite.alpha = 0.5;
-            keyX += keySprite.width + 10;
-            keySprite.anchor.set(0, 0);
-            this.instructionLayer.addChild(keySprite);
-        }
-    },
-
-    clearInstructions: function() {
-        this.instructionLayer.destroy();
+        setInterval(this.spawnHuman.bind(this), 500);                    
     },
 
     startMusic: function() {
@@ -314,8 +288,102 @@ BasicGame.Game.prototype = {
             this.game.state.start("YouWin", true, false, null, "YouWin");
         } else {
             this.game.state.start("YouLose", true, false, null, "YouLose");
-
         }
+    }
+};
+
+// create Game function in BasicGame
+BasicGame.Intro.prototype = {
+    init: function() {
+        // set up input max pointers
+        this.input.maxPointers = 1;
+        // set up stage disable visibility change
+        this.stage.disableVisibilityChange = true;
+        // Set up the scaling method used by the ScaleManager
+        // Valid values for scaleMode are:
+        // * EXACT_FIT
+        // * NO_SCALE
+        // * SHOW_ALL
+        // * RESIZE
+        // See http://docs.phaser.io/Phaser.ScaleManager.html for full document
+        this.scale.scaleMode = Phaser.ScaleManager.USER_SCALE;
+        // If you wish to align your game in the middle of the page then you can
+        // set this value to true. It will place a re-calculated margin-left
+        // pixel value onto the canvas element which is updated on orientation /
+        // resizing events. It doesn't care about any other DOM element that may
+        // be on the page, it literally just sets the margin.
+        this.scale.pageAlignHorizontally = true;
+        this.scale.pageAlignVertically = true;
+        // Force the orientation in landscape or portrait.
+        // * Set first to true to force landscape. 
+        // * Set second to true to force portrait.
+        this.scale.forceOrientation(true, false);
+        // Sets the callback that will be called when the window resize event
+        // occurs, or if set the parent container changes dimensions. Use this 
+        // to handle responsive game layout options. Note that the callback will
+        // only be called if the ScaleManager.scaleMode is set to RESIZE.
+        this.scale.setResizeCallback(this.gameResized, this);
+        // Set screen size automatically based on the scaleMode. This is only
+        // needed if ScaleMode is not set to RESIZE.
+        this.scale.updateLayout(true);
+        // Re-calculate scale mode and update screen size. This only applies if
+        // ScaleMode is not set to RESIZE.
+        this.scale.refresh();
+
+    },
+    preload: function() {
+        this.load.image('background', 'asset/images/intro.png');
+        this.load.image('keyboardLeft', 'asset/images/keyboardLeft.png');
+        this.load.image('keyboardUp', 'asset/images/keyboardUp.png');
+        this.load.image('keyboardDown', 'asset/images/keyboardDown.png');
+        this.load.image('keyboardRight', 'asset/images/keyboardRight.png');
+        this.load.image('keyboardCtrl', 'asset/images/keyboardCtrl.png');
+        this.load.image('keyboardSpacebar', 'asset/images/keyboardSpacebar.png');
+
+        this.load.audio('introMusic', 'asset/music/intro_music.mp3');        
+    },
+    create: function() {        
+        this.background = this.add.sprite(
+            this.world.centerX, 
+            this.world.centerY,
+            'background');        
+        this.background.anchor.setTo(0.5, 0.5);
+
+        this.startGameKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+        this.startGameKey.onDown.add(this.startGame, this);
+
+        var keys = ['keyboardLeft', 'keyboardRight', 'keyboardUp', 'keyboardDown', 'keyboardSpacebar', 'keyboardCtrl'];
+        var keyX = 30;
+
+        var keyY = GAME_HEIGHT - 75;
+        for (var i = 0; i < keys.length; i++) {
+            var keySprite = this.add.sprite(keyX, keyY, keys[i]);
+            keySprite.scale.setTo(0.75);
+            keySprite.alpha = 0.5;
+            keyX += keySprite.width + 10;
+            keySprite.anchor.set(0, 0);
+            this.instructionLayer.addChild(keySprite);
+        }
+
+        this.music = this.game.add.audio('introMusic');
+        this.game.sound.setDecodedCallback([this.music], this.startMusic, this);
+    },
+
+    startGame: function() {
+        "use strict";
+
+        this.instructionLayer.destroy();    
+
+        this.levelMusicSoundGroup.stopSound();
+        
+            this.game.state.start("YouWin", true, false, null, "YouWin");
+        } else {
+            this.game.state.start("YouLose", true, false, null, "YouLose");
+        }
+    },
+
+    startMusic: function() {
+        this.music.play();
     }
 };
 
@@ -422,7 +490,7 @@ BasicGame.YouLose.prototype = {
 
     },
     preload: function() {
-        this.load.image('background', 'asset/images/you_lose.png');
+        this.load.image('background', 'asset/images/you_lose.png');        
 
         this.load.audio('loseMusic', 'asset/music/lose_music.mp3');
     },
