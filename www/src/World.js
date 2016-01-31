@@ -1,8 +1,9 @@
 var World = (function() {
     function World(game_state, game_settings) {
         this.game_state = game_state;
-        this.createMap();
+        this.createMap("L1");
         if (!game_settings) {
+            this.currentLevel = 1;
             this.player = {
                 souls_following: 0,
                 angels_collected: 0,
@@ -113,7 +114,8 @@ var World = (function() {
                 return;
             }
 
-            this.createMap("L2");
+            this.currentLevel += 1;
+            this.createMap("L" + this.currentLevel);
             this.reset();
         } else {
             this.game_state.powerUp.addPower();
@@ -201,11 +203,7 @@ var World = (function() {
             return;
         }
         
-        this.game_state.hud.forEach(function(element) {
-            if (element.name === 'enemyScoreIcon' || element.name === 'playerScoreIcon') {
-                element.kill();
-            }
-        }, this);
+        this.refreshGroup("hud");
     };
 
     World.prototype.updateScore = function() {
@@ -301,7 +299,7 @@ var World = (function() {
             return f.index === 2 || f.index === 3 || f.index === 155 || f.index === 156;
         });
 
-        this.game_state.map.setCollision([5, 6, 7, 8, 9, 10, 13, 22, 23, 24, 25, 26, 27, 39, 40, 41, 42, 108, 109, 110, 113, 114, 115, 116, 117, 118, 119, 125, 126, 127, 130, 131, 133, 134, 136, 144, 142, 143, 148, 149, 150, 151, 152, 153], true, this.game_state.backgroundLayer);
+        this.game_state.map.setCollision([5,6,7,8,9,10,12,13,14,15,16,17,29,30,31,32,33,34, 22,23, 24, 25, 26, 27, 39,40,41,42,46,47,48,49,50, 108,109, 110,113,114,115,116,117,118,119,125,126,127,130,131,133,134,136,144,142,143,148,149,150,151,152,153], true, this.game_state.backgroundLayer);
     };
 
     return World;
